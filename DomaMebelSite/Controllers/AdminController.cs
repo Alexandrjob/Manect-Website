@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using DomaMebelSite.Data;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace DomaMebelSite.Controllers
@@ -10,6 +9,17 @@ namespace DomaMebelSite.Controllers
     [Authorize]
     public class AdminController : Controller
     {
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+
+        public AdminController(
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager)
+        {
+            _userManager = userManager;
+            _signInManager = signInManager;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -23,28 +33,33 @@ namespace DomaMebelSite.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Login(LoginViewModel viewModel)
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (!ModelState.IsValid)
             {
-                return Content("Bitch");
+                return Redirect("/Home/Index");
             }
 
-            var claims = new List<Claim>
+            var user = await _userManager.FindByEmailAsync(model.Email);
+
+            if (user == null)
             {
-                new Claim(ClaimTypes.Email, viewModel.Email)
-            };
-            var claimIdentity = new ClaimsIdentity(claims, "Cookie");
-            var claimsPrincipal = new ClaimsPrincipal(claimIdentity);
-            await HttpContext.SignInAsync("Cookie", claimsPrincipal);
+                return Redirect("/Home/Index");
+            }
 
+            var result = await _signInManager.PasswordSignInAsync(user, model.Password, false, false);
 
-            return Redirect(viewModel.ReturnUrl);
+            if (result.Succeeded)
+            {
+                return Redirect(model.ReturnUrl);
+            }
+
+            return View(model);
         }
 
-        public IActionResult LogOff()
+        public async Task<IActionResult> LogOffAsync()
         {
-            HttpContext.SignOutAsync("Cookie");
+            await _signInManager.SignOutAsync();
             return Redirect("/Home/Index");
         }
     }
