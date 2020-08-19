@@ -1,14 +1,13 @@
-﻿{
-  
+{
   "profiles": {
     "DomaMebelSite": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "Admin/index",
-      "applicationUrl": "https://localhost:5001;http://localhost:5000",
+      "launchUrl": "Admin/Index",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "applicationUrl": "https://localhost:5001;http://localhost:5000"
     }
   }
 }

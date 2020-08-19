@@ -37,18 +37,17 @@ namespace DomaMebelSite.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return Redirect("/Home/Index");
+                return Redirect("/Error/Index");
             }
 
             var user = await _userManager.FindByEmailAsync(model.Email);
 
             if (user == null)
             {
-                return Redirect("/Home/Index");
+                return Redirect("/Error/Index");
             }
 
             var result = await _signInManager.PasswordSignInAsync(user, model.Password, false, false);
-
             if (result.Succeeded)
             {
                 return Redirect(model.ReturnUrl);

@@ -2,9 +2,10 @@ using DomaMebelSite.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace DomaMebelSite
 {
@@ -16,7 +17,7 @@ namespace DomaMebelSite
         {
             Configuration = configuration;
         }
-         
+
         public void ConfigureServices(IServiceCollection services)
         {
             string connection = Configuration.GetConnectionString("DefaultConnection");
@@ -29,21 +30,13 @@ namespace DomaMebelSite
             {
                 config.LoginPath = "/Admin/Login";
             });
-            #region
-            //Больше не нужна т.к. есть Identity
-            //services.AddAuthentication("Cookie")
-            //    .AddCookie("Cookie", config =>
-            //     {
-            //         config.LoginPath = "/Admin/Login";
-            //     });
-            #endregion
 
             services.AddAuthorization();
 
             services.AddControllersWithViews();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
             app.UseDeveloperExceptionPage();
             app.UseStaticFiles();
