@@ -9,12 +9,12 @@ namespace DomaMebelSite.Controllers
     [Authorize]
     public class AdminController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
 
         public AdminController(
-            UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager)
+            UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -37,18 +37,17 @@ namespace DomaMebelSite.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return Redirect("/Home/Index");
+                return Redirect("/Error/Index");
             }
 
             var user = await _userManager.FindByEmailAsync(model.Email);
 
             if (user == null)
             {
-                return Redirect("/Home/Index");
+                return Redirect("/Error/Index");
             }
 
             var result = await _signInManager.PasswordSignInAsync(user, model.Password, false, false);
-
             if (result.Succeeded)
             {
                 return Redirect(model.ReturnUrl);

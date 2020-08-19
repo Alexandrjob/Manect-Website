@@ -5,7 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\" />
+    <Compile Remove="Migrations\20200821051628_AddUserType.cs" />
+    <Compile Remove="Migrations\20200821051628_AddUserType.Designer.cs" />
+    <Compile Remove="Migrations\20200821051902_AddUserType.cs" />
+    <Compile Remove="Migrations\20200821051902_AddUserType.Designer.cs" />
+    <Compile Remove="Migrations\20200821052238_AddUserType.cs" />
+    <Compile Remove="Migrations\20200821052238_AddUserType.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
