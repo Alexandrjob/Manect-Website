@@ -4,16 +4,14 @@ using DomaMebelSite.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace DomaMebelSite.Migrations
+namespace DomaMebelSite.Migrations.MigrationsAppIdentityDbContext
 {
-    [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200821052528_AddUserType")]
-    partial class AddUserType
+    [DbContext(typeof(AppIdentityDbContext))]
+    partial class AppIdentityDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace DomaMebelSite.Migrations
+namespace DomaMebelSite.Migrations.MigrationsAppIdentityDbContext
 {
-    public partial class AddUserType : Migration
+    public partial class InitialCreateAppIdentityDbContext : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

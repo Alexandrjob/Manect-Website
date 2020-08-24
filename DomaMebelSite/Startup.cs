@@ -20,11 +20,13 @@ namespace DomaMebelSite
 
         public void ConfigureServices(IServiceCollection services)
         {
-            string connection = Configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<ProjectDbContext>(c =>
+                c.UseSqlServer(Configuration.GetConnectionString("ProjectConnection")));
 
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connection))
+            services.AddDbContext<AppIdentityDbContext>(options =>
+               options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")))
                     .AddIdentity<IdentityUser, IdentityRole>()
-                    .AddEntityFrameworkStores<ApplicationDbContext>();
+                    .AddEntityFrameworkStores<AppIdentityDbContext>();
 
             services.ConfigureApplicationCookie(config =>
             {
