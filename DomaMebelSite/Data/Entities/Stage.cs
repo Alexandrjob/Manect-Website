@@ -5,7 +5,7 @@ namespace DomaMebelSite.Entities
     /// <summary>
     /// Этап.
     /// </summary>
-    public class Stage: BaseEntity
+    public class Stage : BaseEntity
     {
         /// <summary>
         /// Дополнительные исполнители, которые могут работать над этапом.
@@ -29,13 +29,15 @@ namespace DomaMebelSite.Entities
         /// <param name="expirationDate"> Окончание этапа. </param>
         /// <param name="performer"> Добавить исполнителя. </param>
         /// <param name="comment"> Комментарий этапа. </param>
-        public Stage(string name, DateTime expirationDate, string performer ="", string comment ="")
+        public Stage(string name, DateTime expirationDate, string performer = "", string comment = "", bool isDone = false)
         {
             Name = "Этап: " + name;
-            CreationDate = DateTime.Now;
             ExpirationDate = expirationDate;
             AdditionalPerformer = performer;
             Comment = comment;
+            IsDone = isDone;
+
+            CreationDate = DateTime.Now;
         }
     }
 }

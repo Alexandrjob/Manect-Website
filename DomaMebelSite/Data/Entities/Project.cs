@@ -6,7 +6,7 @@ namespace DomaMebelSite.Entities
     /// <summary>
     /// Мебельный проект.
     /// </summary>
-    public class Project: BaseEntity
+    public class Project : BaseEntity
     {
         /// <summary>
         /// Цена проекта.
@@ -29,12 +29,13 @@ namespace DomaMebelSite.Entities
         /// <param name="expirationDate"> Дата завершения проекта. </param>
         /// <param name="price"> Цена проекта. </param>
         /// <param name="stages"> Этапы проекта. </param>
-        public Project(string name, DateTime expirationDate, int price, List<Stage> stages)
+        public Project(string name, DateTime expirationDate, int price, List<Stage> stages, bool isDone = false)
         {
             Name = name;
             ExpirationDate = expirationDate;
             Price = price;
             Stages = stages;
+            IsDone = isDone;
 
             CreationDate = DateTime.Now;
         }
