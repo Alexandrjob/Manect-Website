@@ -7,6 +7,7 @@ namespace DomaMebelSite.Data
     {
         public ProjectDbContext(DbContextOptions<ProjectDbContext> options) : base(options)
         {
+
         }
 
         public DbSet<Stage> Stages { get; set; }

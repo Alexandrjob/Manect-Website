@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DomaMebelSite.Identity;
+using System;
 
 namespace DomaMebelSite.Entities
 {
@@ -8,19 +9,11 @@ namespace DomaMebelSite.Entities
     public class Stage : BaseEntity
     {
         /// <summary>
-        /// Дополнительные исполнители, которые могут работать над этапом.
-        /// </summary>
-        public string? AdditionalPerformer { get; private set; }
-
-        /// <summary>
         /// Комментарий.
         /// </summary>
         public string? Comment { get; private set; }
 
-        public Stage()
-        {
-
-        }
+        public Stage() { }
 
         /// <summary>
         /// Создание этапа.
@@ -30,11 +23,11 @@ namespace DomaMebelSite.Entities
         /// <param name="performer"> Добавить исполнителя. </param>
         /// <param name="comment"> Комментарий этапа. </param>
         /// <param name="isDone"> Завершен этап или нет. </param>
-        public Stage(string name, DateTime expirationDate, string performer = "", string comment = "", bool isDone = false)
+        public Stage(string name, DateTime expirationDate, ApplicationUser executor = null, string comment = "", bool isDone = false)
         {
             Name = "Этап: " + name;
             ExpirationDate = expirationDate;
-            AdditionalPerformer = performer;
+            Executor = executor;
             Comment = comment;
             IsDone = isDone;
 

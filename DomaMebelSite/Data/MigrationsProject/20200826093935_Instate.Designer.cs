@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace DomaMebelSite.Migrations.Migrations
+namespace DomaMebelSite.Migrations.MigrationsProject
 {
     [DbContext(typeof(ProjectDbContext))]
-    [Migration("20200826073442_AddField")]
-    partial class AddField
+    [Migration("20200826093935_Instate")]
+    partial class Instate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -31,6 +31,9 @@ namespace DomaMebelSite.Migrations.Migrations
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("ExecutorId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<DateTime>("ExpirationDate")
                         .HasColumnType("datetime2");
 
@@ -45,6 +48,8 @@ namespace DomaMebelSite.Migrations.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ExecutorId");
+
                     b.ToTable("FurnitureProjects");
                 });
 
@@ -55,14 +60,14 @@ namespace DomaMebelSite.Migrations.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AdditionalPerformer")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Comment")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("ExecutorId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("ExpirationDate")
                         .HasColumnType("datetime2");
@@ -78,13 +83,78 @@ namespace DomaMebelSite.Migrations.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ExecutorId");
+
                     b.HasIndex("ProjectId");
 
                     b.ToTable("Stages");
                 });
 
+            modelBuilder.Entity("DomaMebelSite.Identity.ApplicationUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ApplicationUser");
+                });
+
+            modelBuilder.Entity("DomaMebelSite.Entities.Project", b =>
+                {
+                    b.HasOne("DomaMebelSite.Identity.ApplicationUser", "Executor")
+                        .WithMany("Projects")
+                        .HasForeignKey("ExecutorId");
+                });
+
             modelBuilder.Entity("DomaMebelSite.Entities.Stage", b =>
                 {
+                    b.HasOne("DomaMebelSite.Identity.ApplicationUser", "Executor")
+                        .WithMany()
+                        .HasForeignKey("ExecutorId");
+
                     b.HasOne("DomaMebelSite.Entities.Project", null)
                         .WithMany("Stages")
                         .HasForeignKey("ProjectId");

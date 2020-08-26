@@ -1,12 +1,10 @@
 using DomaMebelSite.Data;
 using DomaMebelSite.Identity;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 namespace DomaMebelSite
 {
@@ -26,7 +24,7 @@ namespace DomaMebelSite
 
             services.AddDbContext<AppIdentityDbContext>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")))
-                    .AddIdentity<IdentityUser, IdentityRole>()
+                    .AddIdentity<ApplicationUser, IdentityRole>()
                     .AddEntityFrameworkStores<AppIdentityDbContext>();
 
             services.ConfigureApplicationCookie(config =>

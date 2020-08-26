@@ -1,19 +1,20 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace DomaMebelSite.Migrations.Migrations
+namespace DomaMebelSite.Migrations.MigrationsIdentity
 {
-    public partial class AddField : Migration
+    public partial class fix : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "FurnitureProjects",
+                name: "Project",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: true),
+                    ExecutorId = table.Column<string>(nullable: true),
                     CreationDate = table.Column<DateTime>(nullable: false),
                     ExpirationDate = table.Column<DateTime>(nullable: false),
                     IsDone = table.Column<bool>(nullable: false),
@@ -21,47 +22,69 @@ namespace DomaMebelSite.Migrations.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FurnitureProjects", x => x.Id);
+                    table.PrimaryKey("PK_Project", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Project_AspNetUsers_ExecutorId",
+                        column: x => x.ExecutorId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Stages",
+                name: "Stage",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: true),
+                    ExecutorId = table.Column<string>(nullable: true),
                     CreationDate = table.Column<DateTime>(nullable: false),
                     ExpirationDate = table.Column<DateTime>(nullable: false),
                     IsDone = table.Column<bool>(nullable: false),
-                    AdditionalPerformer = table.Column<string>(nullable: true),
                     Comment = table.Column<string>(nullable: true),
                     ProjectId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Stages", x => x.Id);
+                    table.PrimaryKey("PK_Stage", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Stages_FurnitureProjects_ProjectId",
+                        name: "FK_Stage_AspNetUsers_ExecutorId",
+                        column: x => x.ExecutorId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Stage_Project_ProjectId",
                         column: x => x.ProjectId,
-                        principalTable: "FurnitureProjects",
+                        principalTable: "Project",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Stages_ProjectId",
-                table: "Stages",
+                name: "IX_Project_ExecutorId",
+                table: "Project",
+                column: "ExecutorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Stage_ExecutorId",
+                table: "Stage",
+                column: "ExecutorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Stage_ProjectId",
+                table: "Stage",
                 column: "ProjectId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Stages");
+                name: "Stage");
 
             migrationBuilder.DropTable(
-                name: "FurnitureProjects");
+                name: "Project");
         }
     }
 }

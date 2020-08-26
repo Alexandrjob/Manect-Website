@@ -5,10 +5,13 @@ namespace DomaMebelSite.Identity
 {
     public class AppIdentityDbContextSeed
     {
-        public static async Task SeedAsync(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+        public static async Task SeedAsync(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
-            var defaultUser = new IdentityUser { UserName = "Sasha", Email = "Sasha@gmail.com" };
-            await userManager.CreateAsync(defaultUser, "325DR_qwer");
+            var SashatUser = new ApplicationUser { UserName = "Sasha", Email = "Sasha@gmail.com" };
+            var KostyatUser = new ApplicationUser { UserName = "Kostya", Email = "Kostya@gmail.com" };
+
+            await userManager.CreateAsync(SashatUser, "325DR_qwer");
+            await userManager.CreateAsync(KostyatUser, "325DR_qwer");
         }
     }
 }

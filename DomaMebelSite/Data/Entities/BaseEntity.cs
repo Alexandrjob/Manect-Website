@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DomaMebelSite.Identity;
+using System;
 
 namespace DomaMebelSite.Entities
 {
@@ -14,6 +15,11 @@ namespace DomaMebelSite.Entities
         public string Name { get; protected set; }
 
         /// <summary>
+        /// Исполнитель проекта или этапа(в зависимости от класса реализующий данный класс).
+        /// </summary>
+        public ApplicationUser? Executor { get; set; }
+
+        /// <summary>
         /// Дата создания проекта или этапа(в зависимости от класса реализующий данный класс).
         /// </summary>
         public DateTime CreationDate { get; protected set; }
@@ -21,11 +27,14 @@ namespace DomaMebelSite.Entities
         /// <summary>
         /// Дата завершения проекта или этапа(в зависимости от класса реализующий данный класс).
         /// </summary>
-        public DateTime ExpirationDate { get; protected set; }
+        public DateTime ExpirationDate { get; set; }
 
         /// <summary>
         /// Флаг.
         /// </summary>
         public bool IsDone { get; set; }
+
+        
+        
     }
 }

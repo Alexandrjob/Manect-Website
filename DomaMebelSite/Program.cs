@@ -4,25 +4,24 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Threading.Tasks;
 
 namespace DomaMebelSite
 {
     public class Program
     {
-        public static async System.Threading.Tasks.Task Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
             using (var scope = host.Services.CreateScope())
             {
-                var services = scope.ServiceProvider;
-               
+                var services = scope.ServiceProvider; 
                 var context = services.GetRequiredService<ProjectDbContext>();
-                await ProjfectDbContextSeed.SeedAsync(context);
-
-                var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+                var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
                 var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-                await AppIdentityDbContextSeed.SeedAsync(userManager, roleManager);
 
+                await AppIdentityDbContextSeed.SeedAsync(userManager, roleManager);
+                await ProjectDbContextSeed.SeedAsync(context, userManager);
             }
             host.Run();
         }

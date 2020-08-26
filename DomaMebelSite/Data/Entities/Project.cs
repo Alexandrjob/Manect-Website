@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DomaMebelSite.Identity;
+using System;
 using System.Collections.Generic;
 
 namespace DomaMebelSite.Entities
@@ -18,10 +19,8 @@ namespace DomaMebelSite.Entities
         /// </summary>
         public ICollection<Stage> Stages { get; private set; }
 
-        public Project()
-        {
-
-        }
+        public Project() { }
+        
         /// <summary>
         /// Создание проекта.
         /// </summary>
@@ -30,11 +29,12 @@ namespace DomaMebelSite.Entities
         /// <param name="price"> Цена проекта. </param>
         /// <param name="stages"> Этапы проекта. </param>
         /// <param name="isDone"> Завершен проект или нет. </param>
-        public Project(string name, DateTime expirationDate, int price, List<Stage> stages, bool isDone = false)
+        public Project(string name, DateTime expirationDate,  int price, ApplicationUser executor, List<Stage> stages, bool isDone = false)
         {
             Name = name;
             ExpirationDate = expirationDate;
             Price = price;
+            Executor = executor;
             Stages = stages;
             IsDone = isDone;
 
