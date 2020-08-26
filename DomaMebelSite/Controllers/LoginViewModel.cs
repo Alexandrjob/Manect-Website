@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DomaMebelSite.Controllers
+namespace Manect.Controllers
 {
     public class LoginViewModel
     {

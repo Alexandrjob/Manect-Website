@@ -1,8 +1,8 @@
-﻿using DomaMebelSite.Identity;
+﻿using Manect.Identity;
 using System;
 using System.Collections.Generic;
 
-namespace DomaMebelSite.Entities
+namespace Manect.Entities
 {
     /// <summary>
     /// Мебельный проект.

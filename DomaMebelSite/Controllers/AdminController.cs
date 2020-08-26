@@ -1,10 +1,10 @@
-﻿using DomaMebelSite.Identity;
+﻿using Manect.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
-namespace DomaMebelSite.Controllers
+namespace Manect.Controllers
 {
     [Authorize]
     public class AdminController : Controller

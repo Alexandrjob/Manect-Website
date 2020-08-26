@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using DomaMebelSite.Entities;
+using Manect.Entities;
 
-namespace DomaMebelSite.Data
+namespace Manect.Data
 {
     public class ProjectDbContext: DbContext
     {

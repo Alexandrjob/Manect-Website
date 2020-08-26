@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace DomaMebelSite.Migrations.MigrationsProject
+namespace Manect.Migrations.MigrationsProject
 {
     public partial class Instate : Migration
     {

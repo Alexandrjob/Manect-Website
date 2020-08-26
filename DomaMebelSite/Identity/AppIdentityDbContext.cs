@@ -1,8 +1,8 @@
-﻿using DomaMebelSite.Data;
+﻿using Manect.Data;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace DomaMebelSite.Identity
+namespace Manect.Identity
 {
     public class AppIdentityDbContext : IdentityDbContext<ApplicationUser>
     {

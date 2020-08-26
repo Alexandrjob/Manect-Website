@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 
-namespace DomaMebelSite.Identity
+namespace Manect.Identity
 {
     public class AppIdentityDbContextSeed
     {

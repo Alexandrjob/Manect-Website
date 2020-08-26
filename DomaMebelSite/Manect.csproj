@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>Manect</AssemblyName>
+    <RootNamespace>Manect</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

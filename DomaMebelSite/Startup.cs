@@ -1,12 +1,12 @@
-using DomaMebelSite.Data;
-using DomaMebelSite.Identity;
+using Manect.Data;
+using Manect.Identity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DomaMebelSite
+namespace Manect
 {
     public class Startup
     {

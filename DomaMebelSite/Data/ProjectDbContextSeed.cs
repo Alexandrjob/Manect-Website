@@ -1,12 +1,12 @@
-﻿using DomaMebelSite.Entities;
-using DomaMebelSite.Identity;
+﻿using Manect.Entities;
+using Manect.Identity;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DomaMebelSite.Data
+namespace Manect.Data
 {
     public class ProjectDbContextSeed
     {

@@ -1,7 +1,7 @@
-﻿using DomaMebelSite.Identity;
+﻿using Manect.Identity;
 using System;
 
-namespace DomaMebelSite.Entities
+namespace Manect.Entities
 {
     /// <summary>
     /// Этап.

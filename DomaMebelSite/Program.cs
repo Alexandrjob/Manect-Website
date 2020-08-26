@@ -1,12 +1,12 @@
-using DomaMebelSite.Data;
-using DomaMebelSite.Identity;
+using Manect.Data;
+using Manect.Identity;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Threading.Tasks;
 
-namespace DomaMebelSite
+namespace Manect
 {
     public class Program
     {

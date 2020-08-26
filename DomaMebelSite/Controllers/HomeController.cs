@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace DomaMebelSite.Controllers
+namespace Manect.Controllers
 {
     public class HomeController : Controller
     {

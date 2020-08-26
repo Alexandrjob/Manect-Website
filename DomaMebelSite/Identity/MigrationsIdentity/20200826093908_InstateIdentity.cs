@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace DomaMebelSite.Migrations.MigrationsIdentity
+namespace Manect.Migrations.MigrationsIdentity
 {
     public partial class InstateIdentity : Migration
     {

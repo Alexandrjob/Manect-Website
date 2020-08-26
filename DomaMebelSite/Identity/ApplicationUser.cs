@@ -1,8 +1,8 @@
-﻿using DomaMebelSite.Entities;
+﻿using Manect.Entities;
 using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 
-namespace DomaMebelSite.Identity
+namespace Manect.Identity
 {
     public class ApplicationUser : IdentityUser
     {   
