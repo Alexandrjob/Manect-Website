@@ -29,6 +29,7 @@ namespace DomaMebelSite.Entities
         /// <param name="expirationDate"> Окончание этапа. </param>
         /// <param name="performer"> Добавить исполнителя. </param>
         /// <param name="comment"> Комментарий этапа. </param>
+        /// <param name="isDone"> Завершен этап или нет. </param>
         public Stage(string name, DateTime expirationDate, string performer = "", string comment = "", bool isDone = false)
         {
             Name = "Этап: " + name;

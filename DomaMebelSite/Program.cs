@@ -1,9 +1,9 @@
 using DomaMebelSite.Data;
+using DomaMebelSite.Identity;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
 
 namespace DomaMebelSite
 {
@@ -15,11 +15,14 @@ namespace DomaMebelSite
             using (var scope = host.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
-
                
-                    var context = services.GetRequiredService<ProjectDbContext>();
-                await ProjectDbContextSeed.SeedAsync(context);
-                
+                var context = services.GetRequiredService<ProjectDbContext>();
+                await ProjfectDbContextSeed.SeedAsync(context);
+
+                var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+                var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                await AppIdentityDbContextSeed.SeedAsync(userManager, roleManager);
+
             }
             host.Run();
         }

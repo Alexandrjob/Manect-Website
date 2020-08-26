@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace DomaMebelSite.Data
 {
-    public class ProjectDbContextSeed
+    public class ProjfectDbContextSeed
     {
         public static async System.Threading.Tasks.Task SeedAsync(ProjectDbContext context)
         {

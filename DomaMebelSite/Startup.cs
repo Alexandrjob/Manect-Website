@@ -1,4 +1,5 @@
 using DomaMebelSite.Data;
+using DomaMebelSite.Identity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -38,7 +39,7 @@ namespace DomaMebelSite
             services.AddControllersWithViews();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
+        public void Configure(IApplicationBuilder app)
         {
             app.UseDeveloperExceptionPage();
             app.UseStaticFiles();

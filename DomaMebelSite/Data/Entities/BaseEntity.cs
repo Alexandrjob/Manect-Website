@@ -22,6 +22,10 @@ namespace DomaMebelSite.Entities
         /// Дата завершения проекта или этапа(в зависимости от класса реализующий данный класс).
         /// </summary>
         public DateTime ExpirationDate { get; protected set; }
+
+        /// <summary>
+        /// Флаг.
+        /// </summary>
         public bool IsDone { get; set; }
     }
 }

@@ -29,6 +29,7 @@ namespace DomaMebelSite.Entities
         /// <param name="expirationDate"> Дата завершения проекта. </param>
         /// <param name="price"> Цена проекта. </param>
         /// <param name="stages"> Этапы проекта. </param>
+        /// <param name="isDone"> Завершен проект или нет. </param>
         public Project(string name, DateTime expirationDate, int price, List<Stage> stages, bool isDone = false)
         {
             Name = name;

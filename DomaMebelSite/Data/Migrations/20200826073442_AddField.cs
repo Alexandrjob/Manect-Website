@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DomaMebelSite.Migrations.Migrations
 {
-    public partial class Installation : Migration
+    public partial class AddField : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -16,6 +16,7 @@ namespace DomaMebelSite.Migrations.Migrations
                     Name = table.Column<string>(nullable: true),
                     CreationDate = table.Column<DateTime>(nullable: false),
                     ExpirationDate = table.Column<DateTime>(nullable: false),
+                    IsDone = table.Column<bool>(nullable: false),
                     Price = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -32,6 +33,7 @@ namespace DomaMebelSite.Migrations.Migrations
                     Name = table.Column<string>(nullable: true),
                     CreationDate = table.Column<DateTime>(nullable: false),
                     ExpirationDate = table.Column<DateTime>(nullable: false),
+                    IsDone = table.Column<bool>(nullable: false),
                     AdditionalPerformer = table.Column<string>(nullable: true),
                     Comment = table.Column<string>(nullable: true),
                     ProjectId = table.Column<int>(nullable: true)
