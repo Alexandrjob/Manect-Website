@@ -1,6 +1,9 @@
-﻿using Manect.Entities;
+﻿using Manect.Data.Entities;
+using Manect.Entities;
 using Manect.Identity;
-using Microsoft.AspNetCore.Identity;
+using Manect.Services;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,26 +13,31 @@ namespace Manect.Data
 {
     public class ProjectDbContextSeed
     {
-        public static async Task SeedAsync(ProjectDbContext context, UserManager<ApplicationUser> userManager)
+        public static async Task SeedAsync(ProjectDbContext dataContext, AppIdentityDbContext identityContext)
         {
-            //context.FurnitureProjects.RemoveRange(context.FurnitureProjects);
-            //context.Stages.RemoveRange(context.Stages);
+            //dataContext.Stages.RemoveRange(dataContext.Stages);
+            //dataContext.FurnitureProjects.RemoveRange(dataContext.FurnitureProjects);
+            //dataContext.SaveChanges();
 
-            //context.SaveChanges();
-
-            if (!context.FurnitureProjects.Any())
+            if (!dataContext.ExecutorUsers.Any())
             {
-                var user = await userManager.FindByEmailAsync("Sasha@gmail.com");
-                var userK = await userManager.FindByEmailAsync("Kostya@gmail.com");
+                await SyncTables.UsersAsync(dataContext, identityContext);
+            }
 
-                await context.FurnitureProjects.AddRangeAsync(
-                    GetPreconfiguredProjectsAsync(user, userK));
+            if (!dataContext.FurnitureProjects.Any())
+            {
+                //TODO: Оптимизировать (1 и 2 убрать) сделать автоматически
+                var user1 = await dataContext.ExecutorUsers.FirstOrDefaultAsync(user => user.Id == 1);
+                var user2 = await dataContext.ExecutorUsers.FirstOrDefaultAsync(user => user.Id == 2);
 
-                context.SaveChanges();
+                await dataContext.FurnitureProjects.AddRangeAsync(
+                    GetPreconfiguredProjectsAsync(user1, user2));
+
+                dataContext.SaveChanges();
             }
         }
 
-        static IEnumerable<Project> GetPreconfiguredProjectsAsync(ApplicationUser user, ApplicationUser userK)
+        static IEnumerable<Project> GetPreconfiguredProjectsAsync(ExecutorUser user, ExecutorUser userK)
         {
             return new List<Project>()
             {

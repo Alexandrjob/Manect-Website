@@ -15,13 +15,17 @@ namespace Manect
             var host = CreateHostBuilder(args).Build();
             using (var scope = host.Services.CreateScope())
             {
-                var services = scope.ServiceProvider; 
-                var context = services.GetRequiredService<ProjectDbContext>();
+                var services = scope.ServiceProvider;
+
                 var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
                 var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-
                 await AppIdentityDbContextSeed.SeedAsync(userManager, roleManager);
-                await ProjectDbContextSeed.SeedAsync(context, userManager);
+
+                
+                var datacontext = services.GetRequiredService<ProjectDbContext>();
+                var identityContext = services.GetRequiredService<AppIdentityDbContext>();
+
+                await ProjectDbContextSeed.SeedAsync(datacontext, identityContext);
             }
             host.Run();
         }

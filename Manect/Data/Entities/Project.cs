@@ -1,4 +1,4 @@
-﻿using Manect.Identity;
+﻿using Manect.Data.Entities;
 using System;
 using System.Collections.Generic;
 
@@ -29,7 +29,7 @@ namespace Manect.Entities
         /// <param name="price"> Цена проекта. </param>
         /// <param name="stages"> Этапы проекта. </param>
         /// <param name="isDone"> Завершен проект или нет. </param>
-        public Project(string name, DateTime expirationDate,  int price, ApplicationUser executor, List<Stage> stages, bool isDone = false)
+        public Project(string name, DateTime expirationDate,  int price, ExecutorUser executor, List<Stage> stages, bool isDone = false)
         {
             Name = name;
             ExpirationDate = expirationDate;

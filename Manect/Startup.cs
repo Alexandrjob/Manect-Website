@@ -16,7 +16,6 @@ namespace Manect
         {
             Configuration = configuration;
         }
-
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ProjectDbContext>(c =>

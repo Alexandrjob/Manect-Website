@@ -1,4 +1,4 @@
-﻿using Manect.Identity;
+﻿using Manect.Data.Entities;
 using System;
 
 namespace Manect.Entities
@@ -11,7 +11,7 @@ namespace Manect.Entities
         /// <summary>
         /// Комментарий.
         /// </summary>
-        public string? Comment { get; private set; }
+        public string Comment { get; private set; }
 
         public Stage() { }
 
@@ -23,7 +23,7 @@ namespace Manect.Entities
         /// <param name="performer"> Добавить исполнителя. </param>
         /// <param name="comment"> Комментарий этапа. </param>
         /// <param name="isDone"> Завершен этап или нет. </param>
-        public Stage(string name, DateTime expirationDate, ApplicationUser executor = null, string comment = "", bool isDone = false)
+        public Stage(string name, DateTime expirationDate, ExecutorUser executor = null, string comment = "", bool isDone = false)
         {
             Name = "Этап: " + name;
             ExpirationDate = expirationDate;

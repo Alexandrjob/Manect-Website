@@ -5,13 +5,14 @@ namespace Manect.Identity
 {
     public class AppIdentityDbContextSeed
     {
+        // TODO: оптимизировать.
         public static async Task SeedAsync(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
-            var SashatUser = new ApplicationUser { UserName = "Sasha", Email = "Sasha@gmail.com" };
-            var KostyatUser = new ApplicationUser { UserName = "Kostya", Email = "Kostya@gmail.com" };
+            //var SashatUser = new ApplicationUser { UserName = "Sasha", Email = "Sasha@gmail.com" };
+            //var KostyatUser = new ApplicationUser { UserName = "Kostya", Email = "Kostya@gmail.com" };
 
-            await userManager.CreateAsync(SashatUser, "325DR_qwer");
-            await userManager.CreateAsync(KostyatUser, "325DR_qwer");
+            //await userManager.CreateAsync(SashatUser, "325DR_qwer");
+            //await userManager.CreateAsync(KostyatUser, "325DR_qwer");
         }
     }
 }

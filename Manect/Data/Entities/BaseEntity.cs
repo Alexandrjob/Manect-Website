@@ -1,4 +1,4 @@
-﻿using Manect.Identity;
+﻿using Manect.Data.Entities;
 using System;
 
 namespace Manect.Entities
@@ -17,7 +17,7 @@ namespace Manect.Entities
         /// <summary>
         /// Исполнитель проекта или этапа(в зависимости от класса реализующий данный класс).
         /// </summary>
-        public ApplicationUser? Executor { get; set; }
+        public ExecutorUser Executor { get; set; }
 
         /// <summary>
         /// Дата создания проекта или этапа(в зависимости от класса реализующий данный класс).
