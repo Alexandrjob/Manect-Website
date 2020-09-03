@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "DomaMebelSite": {
+    "Manect": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "Admin/Index",

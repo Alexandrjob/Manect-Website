@@ -1,7 +1,6 @@
-﻿using Manect.Data.Entities;
-using System;
+﻿using System;
 
-namespace Manect.Entities
+namespace Manect.Data.Entities
 {
     /// <summary>
     /// Этап.
@@ -11,7 +10,7 @@ namespace Manect.Entities
         /// <summary>
         /// Комментарий.
         /// </summary>
-        public string Comment { get; private set; }
+        public string Comment { get; set; }
 
         public Stage() { }
 

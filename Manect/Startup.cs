@@ -31,8 +31,7 @@ namespace Manect
                 config.LoginPath = "/Admin/Login";
             });
 
-            services.AddAuthorization();
-
+            services.AddAuthorization();;
             services.AddControllersWithViews();
         }
 

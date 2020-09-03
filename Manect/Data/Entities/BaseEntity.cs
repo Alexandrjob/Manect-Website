@@ -1,28 +1,27 @@
-﻿using Manect.Data.Entities;
-using System;
+﻿using System;
 
-namespace Manect.Entities
+namespace Manect.Data.Entities
 {
     /// <summary>
     /// Класс в котором хранятся стандартные для всех классов свойства.
     /// </summary>
     public class BaseEntity
     {
-        public int Id { get; protected set; }
+        public int Id { get; set; }
         /// <summary>
         /// Название проекта или этапа(в зависимости от класса реализующий данный класс).
         /// </summary>
-        public string Name { get; protected set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Исполнитель проекта или этапа(в зависимости от класса реализующий данный класс).
-        /// </summary>
+        /// </summary>  
         public ExecutorUser Executor { get; set; }
 
         /// <summary>
         /// Дата создания проекта или этапа(в зависимости от класса реализующий данный класс).
         /// </summary>
-        public DateTime CreationDate { get; protected set; }
+        public DateTime CreationDate { get; set; }
 
         /// <summary>
         /// Дата завершения проекта или этапа(в зависимости от класса реализующий данный класс).

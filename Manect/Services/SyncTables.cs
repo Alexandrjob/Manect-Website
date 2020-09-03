@@ -9,7 +9,6 @@ namespace Manect.Services
 {
     public class SyncTables
     {
-        //TODO: проверить чтобы было оптимизироавнно(заполнение происходило всех пользователей и если пользователь уже есть он не синхронизировался(может создать перегрузку))
         public static async Task UsersAsync(ProjectDbContext dataContext, AppIdentityDbContext identityContext)
         {
             //TODO: настроить на то чтобы вытаскивал только имя и емэил.

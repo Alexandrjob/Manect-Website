@@ -1,5 +1,4 @@
-﻿using Manect.Entities;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Manect.Data.Entities
 {

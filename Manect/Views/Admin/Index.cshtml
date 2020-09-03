@@ -1,9 +1,18 @@
-﻿    <div class="case">
-        <div>Admin</div>
+﻿@using Manect.Data.Entities;
+@model IEnumerable<Project>
 
+!<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+    <div class="case">
+        <div>Admin</div>
         <a asp-controller="Home" asp-action="Index">Home</a>
         <a asp-controller="Admin" asp-action="LogOff">LogOff</a>
     </div>
+</body>
+</html>
 
     <style>
         .case {

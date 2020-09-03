@@ -1,7 +1,10 @@
-﻿using Manect.Identity;
+﻿using Manect.Data;
+using Manect.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Manect.Controllers
@@ -12,17 +15,20 @@ namespace Manect.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
 
+        public ProjectDbContext DataContext { get; set; }
         public AdminController(
             UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager)
+            SignInManager<ApplicationUser> signInManager, 
+            ProjectDbContext dataContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            DataContext = dataContext;
         }
 
         public IActionResult Index()
         {
-            return View();
+            return View(DataContext.FurnitureProjects.Include(user => user.Executor).ToList());
         }
 
         [AllowAnonymous]

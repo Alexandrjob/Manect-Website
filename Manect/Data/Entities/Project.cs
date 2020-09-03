@@ -1,8 +1,7 @@
-﻿using Manect.Data.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
-namespace Manect.Entities
+namespace Manect.Data.Entities
 {
     /// <summary>
     /// Мебельный проект.
@@ -12,14 +11,16 @@ namespace Manect.Entities
         /// <summary>
         /// Цена проекта.
         /// </summary>
-        public int Price { get; private set; }
+        public int Price { get; set; }
 
         /// <summary>
         /// Список этапов.
         /// </summary>
-        public ICollection<Stage> Stages { get; private set; }
+        public ICollection<Stage> Stages { get; set; }
 
-        public Project() { }
+        public Project() 
+        {
+        }
         
         /// <summary>
         /// Создание проекта.
