@@ -29,7 +29,7 @@ namespace Manect.Data.Entities
         public DateTime ExpirationDate { get; set; }
 
         /// <summary>
-        /// Флаг.
+        /// Возвращает true, если проект или этап выполнен, иначе false.
         /// </summary>
         public bool IsDone { get; set; }
 

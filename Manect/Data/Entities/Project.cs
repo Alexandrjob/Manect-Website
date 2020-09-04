@@ -20,6 +20,7 @@ namespace Manect.Data.Entities
 
         public Project() 
         {
+            Stages = new List<Stage>();
         }
         
         /// <summary>

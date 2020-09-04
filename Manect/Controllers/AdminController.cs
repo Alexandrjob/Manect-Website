@@ -1,10 +1,8 @@
-﻿using Manect.Data;
-using Manect.Identity;
+﻿using Manect.Identity;
+using Manect.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Manect.Controllers
@@ -14,21 +12,22 @@ namespace Manect.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        IDataRepository DataRepository; 
 
-        public ProjectDbContext DataContext { get; set; }
         public AdminController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager, 
-            ProjectDbContext dataContext)
+            IDataRepository dataRepository)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            DataContext = dataContext;
+            DataRepository = dataRepository;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> IndexAsync()
         {
-            return View(DataContext.FurnitureProjects.Include(user => user.Executor).ToList());
+            string currentUser = this.User.Identity.Name;
+            return View(await DataRepository.ToListProjectsAsync(currentUser));
         }
 
         [AllowAnonymous]
@@ -52,7 +51,6 @@ namespace Manect.Controllers
             {
                 return Redirect("/Error/Index");
             }
-
             var result = await _signInManager.PasswordSignInAsync(user, model.Password, false, false);
             if (result.Succeeded)
             {

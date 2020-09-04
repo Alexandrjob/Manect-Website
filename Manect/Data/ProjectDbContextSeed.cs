@@ -15,9 +15,9 @@ namespace Manect.Data
         public static async Task SeedAsync(ProjectDbContext dataContext, AppIdentityDbContext identityContext)
         {
             
-            //dataContext.FurnitureProjects.RemoveRange(dataContext.FurnitureProjects);
-            //dataContext.Stages.RemoveRange(dataContext.Stages);
-            //dataContext.SaveChanges();
+            dataContext.FurnitureProjects.RemoveRange(dataContext.FurnitureProjects);
+            dataContext.Stages.RemoveRange(dataContext.Stages);
+            dataContext.SaveChanges();
 
             if (!dataContext.ExecutorUsers.Any())
             {
@@ -32,16 +32,16 @@ namespace Manect.Data
                 
 
                 await dataContext.FurnitureProjects.AddRangeAsync(
-                    GetPreconfiguredProjectsAsync(userK, userS));
+                    GetPreconfiguredProjects(userK, userS));
                
                 dataContext.SaveChanges();
             }
         }
 
-        static IEnumerable<Project> GetPreconfiguredProjectsAsync(ExecutorUser userK, ExecutorUser userS)
+        static IEnumerable<Project> GetPreconfiguredProjects(ExecutorUser userK, ExecutorUser userS)
         {
             return new List<Project>()
-            {   
+            {
                 new Project("Кухня", new DateTime(2020, 9, 24), 160000, userK,
                         new List<Stage>()
                         {
@@ -53,6 +53,19 @@ namespace Manect.Data
                             new Stage("Производство", new DateTime(2020, 9, 28), userK),
                             new Stage("Монтаж", new DateTime(2020, 9, 30),userS),
                             new Stage("Сдача объекта", new DateTime(2020, 9, 30), userK)
+                        }),
+
+                new Project("Туалет", new DateTime(2020, 10, 22), 260000, userK,
+                        new List<Stage>()
+                        {
+                            new Stage("Производство", new DateTime(2020, 9, 28), userK)
+                        }),
+
+
+                new Project("Шкаф", new DateTime(2020, 11, 11), 50000, userK,
+                        new List<Stage>()
+                        {
+                            new Stage("Производство", new DateTime(2020, 9, 28), userK)
                         })
             };
         }

@@ -1,5 +1,6 @@
 using Manect.Data;
 using Manect.Identity;
+using Manect.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +31,8 @@ namespace Manect
             {
                 config.LoginPath = "/Admin/Login";
             });
+
+            services.AddTransient<IDataRepository, DataRepository>();
 
             services.AddAuthorization();;
             services.AddControllersWithViews();
