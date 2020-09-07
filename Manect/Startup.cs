@@ -1,6 +1,7 @@
 using Manect.Data;
 using Manect.Identity;
 using Manect.Interfaces;
+using Manect.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -33,6 +34,7 @@ namespace Manect
             });
 
             services.AddTransient<IDataRepository, DataRepository>();
+            services.AddTransient<ISyncTables, SyncTables>();
 
             services.AddAuthorization();;
             services.AddControllersWithViews();

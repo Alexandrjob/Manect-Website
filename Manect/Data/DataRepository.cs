@@ -26,7 +26,7 @@ namespace Manect.Data
         {
             //TODO: Сделать проверку, были ли загружены ранее данные о заказах,
             // для этого пользователя, если нет, то использовать явную загрузку.
-            //if (DataContext.Entry(user).Collection(p => p.Projects).IsLoaded)
+            //if (DataContext.Entry(DataContext.ExecutorUsers).Collection(p => p.Projects).IsLoaded)
             //{
             //    DataContext.ExecutorUsers.Include(p => p.Projects).Load();
             //}
@@ -39,7 +39,7 @@ namespace Manect.Data
                 .Where(p => p.Executor.Name == userName)
                 .ToListAsync();
             }
-            return null;
+            return new List<Project>();
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Manect.Data.Entities;
 using Manect.Identity;
-using Manect.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using System;
@@ -14,14 +13,14 @@ namespace Manect.Data
     {
         public static async Task SeedAsync(ProjectDbContext dataContext, AppIdentityDbContext identityContext)
         {
-            
-            dataContext.FurnitureProjects.RemoveRange(dataContext.FurnitureProjects);
-            dataContext.Stages.RemoveRange(dataContext.Stages);
-            dataContext.SaveChanges();
+
+            //dataContext.FurnitureProjects.RemoveRange(dataContext.FurnitureProjects);
+            //dataContext.Stages.RemoveRange(dataContext.Stages);
+            //dataContext.SaveChanges();
 
             if (!dataContext.ExecutorUsers.Any())
             {
-                await SyncTables.UsersAsync(dataContext, identityContext);
+                await dataContext.SyncTables.UsersAsync();
             }
 
             if (!dataContext.FurnitureProjects.Any())

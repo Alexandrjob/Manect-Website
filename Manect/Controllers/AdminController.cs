@@ -12,11 +12,11 @@ namespace Manect.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        IDataRepository DataRepository; 
+        readonly IDataRepository DataRepository;
 
         public AdminController(
             UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager, 
+            SignInManager<ApplicationUser> signInManager,
             IDataRepository dataRepository)
         {
             _userManager = userManager;
@@ -56,7 +56,6 @@ namespace Manect.Controllers
             {
                 return Redirect(model.ReturnUrl);
             }
-
             return View(model);
         }
 
