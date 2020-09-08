@@ -12,7 +12,7 @@ namespace Manect.Data
 
         public ProjectDbContext(DbContextOptions<ProjectDbContext> options, AppIdentityDbContext identityContext/*, ISyncTables syncTables*/) : base(options)
         {
-            //TODO: В будущем изметь(наверное).
+            //TODO: В будущем изменить(наверное).
             SyncTables = new SyncTables(this, identityContext);
             SyncTables.AddEventHandler();
         }

@@ -1,9 +1,10 @@
-﻿@using Manect.Data.Entities;
+@using Manect.Data.Entities;
 @model IEnumerable<Project>
 
-!<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head>
-    <title></title>
+    <title>Мои проекты</title>
+    <link rel="stylesheet" href="~/css/Admin.css">
 </head>
 <body>
     <div class="case">
@@ -11,17 +12,40 @@
         <a asp-controller="Home" asp-action="Index">Home</a>
         <a asp-controller="Admin" asp-action="LogOff">LogOff</a>
     </div>
+    <div class="tasks">
+        <p>Задачи на сегодня</p>
+    </div>
+
+    <div class="block2">
+        <p>Актуальные проекты</p>
+        <div class="projects">
+            <div class="project">
+                <img src="/DefaultImage.png" alt="" />
+                <div class="text_projects">Название проекта</div>
+                <div class="text_projects">Дата создания</div>
+            </div>
+            <div class="project">
+                <img src="/DefaultImage.png" alt="" />
+                <div class="text_projects">Название проекта</div>
+                <div class="text_projects">Дата создания</div>
+            </div>
+            <div class="project">
+                <img src="/DefaultImage.png" alt="" />
+                <div class="text_projects">Название проекта</div>
+                <div class="text_projects">Дата создания</div>
+            </div>
+            <div class="project">
+                <img src="/DefaultImage.png" alt="" />
+                <div class="text_projects">Название проекта</div>
+                <div class="text_projects">Дата создания</div>
+            </div>
+            <div class="project">
+                <img src="/DefaultImage.png" alt="" />
+                <div class="text_projects">Название проекта</div>
+                <div class="text_projects">Дата создания</div>
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>
-
-    <style>
-        .case {
-            align-items: center;
-            position: fixed;
-            top: 40px;
-            left: 86px;
-            width: 26px;
-            height: 26px;
-        }
-    </style>

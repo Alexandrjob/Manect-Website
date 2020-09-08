@@ -28,8 +28,6 @@ namespace Manect.Data
                 var userK = await dataContext.ExecutorUsers.FirstOrDefaultAsync(user => user.Id == 1);
                 var userS = await dataContext.ExecutorUsers.FirstOrDefaultAsync(user => user.Id == 2);
 
-                
-
                 await dataContext.FurnitureProjects.AddRangeAsync(
                     GetPreconfiguredProjects(userK, userS));
                
