@@ -20,11 +20,12 @@ html{
 }
 .projects{
   display: flex;
-  justify-content: space-between;
   width: 1000px;
   height: 200px;
 }
 .project {
+    width: 200px;
+    height: 200px;
     margin-left: 20px;
 }
 img{

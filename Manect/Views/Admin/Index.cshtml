@@ -19,31 +19,14 @@
     <div class="block2">
         <p>Актуальные проекты</p>
         <div class="projects">
-            <div class="project">
-                <img src="/DefaultImage.png" alt="" />
-                <div class="text_projects">Название проекта</div>
-                <div class="text_projects">Дата создания</div>
-            </div>
-            <div class="project">
-                <img src="/DefaultImage.png" alt="" />
-                <div class="text_projects">Название проекта</div>
-                <div class="text_projects">Дата создания</div>
-            </div>
-            <div class="project">
-                <img src="/DefaultImage.png" alt="" />
-                <div class="text_projects">Название проекта</div>
-                <div class="text_projects">Дата создания</div>
-            </div>
-            <div class="project">
-                <img src="/DefaultImage.png" alt="" />
-                <div class="text_projects">Название проекта</div>
-                <div class="text_projects">Дата создания</div>
-            </div>
-            <div class="project">
-                <img src="/DefaultImage.png" alt="" />
-                <div class="text_projects">Название проекта</div>
-                <div class="text_projects">Дата создания</div>
-            </div>
+            @foreach (Project project in Model)
+            {
+                <div class="project">
+                    <img src="/DefaultImage.png" alt="" />
+                    <div class="text_projects">@project.Name</div>
+                    <div class="text_projects">@project.CreationDate</div>
+                </div>
+            }
         </div>
     </div>
 

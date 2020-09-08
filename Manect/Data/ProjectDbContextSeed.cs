@@ -63,6 +63,11 @@ namespace Manect.Data
                         new List<Stage>()
                         {
                             new Stage("Производство", new DateTime(2020, 9, 28), userK)
+                        }),
+                new Project("Спальня", new DateTime(2020, 11, 11), 50000, userS,
+                        new List<Stage>()
+                        {
+                            new Stage("Производство", new DateTime(2020, 9, 28), userS)
                         })
             };
         }
