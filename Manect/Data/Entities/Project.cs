@@ -31,16 +31,16 @@ namespace Manect.Data.Entities
         /// <param name="price"> Цена проекта. </param>
         /// <param name="stages"> Этапы проекта. </param>
         /// <param name="isDone"> Завершен проект или нет. </param>
-        public Project(string name, DateTime expirationDate,  int price, ExecutorUser executor, List<Stage> stages, bool isDone = false)
+        public Project(string name, int price, ExecutorUser executor, List<Stage> stages)
         {
-            Name = name;
-            ExpirationDate = expirationDate;
+           Name = name;
             Price = price;
             Executor = executor;
             Stages = stages;
-            IsDone = isDone;
 
             CreationDate = DateTime.Now;
+            ExpirationDate = CreationDate.AddDays(30);
+            IsDone = false;
         }
     }
 }

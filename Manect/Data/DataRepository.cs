@@ -1,44 +1,87 @@
 ﻿using Manect.Data.Entities;
 using Manect.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
+using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Manect.Data
 {
-    public class DataRepository : IDataRepository 
+    public class DataRepository : IDataRepository
     {
-        public ProjectDbContext DataContext { get; private set; }
-
-        public DataRepository(ProjectDbContext dataContext)
+        private readonly IServiceScopeFactory _serviceScopeFactory;
+        public DataRepository(IServiceScopeFactory serviceScopeFactory)
         {
-            DataContext = dataContext;
+            _serviceScopeFactory = serviceScopeFactory;
         }
 
-        public Task<ExecutorUser> FindByEmailAsync(string email)
-        {
-            throw new NotImplementedException();
+
+        public async Task<ExecutorUser> FindUserByNameOrDefaultAsync(string name)
+        {;
+            using var scope = _serviceScopeFactory.CreateScope();
+            var dataContext = scope.ServiceProvider.GetService<ProjectDbContext>();
+
+            return await dataContext.ExecutorUsers.FirstOrDefaultAsync(user => user.Name == name);
         }
 
-        public async Task<List<Project>> ToListProjectsAsync(string userName)
+        public async Task<ExecutorUser> FindUserByEmailAsync(string email)
         {
-            //TODO: Сделать проверку, были ли загружены ранее данные о заказах,
-            // для этого пользователя, если нет, то использовать явную загрузку.
-            //if (DataContext.Entry(DataContext.ExecutorUsers).Collection(p => p.Projects).IsLoaded)
-            //{
-            //    DataContext.ExecutorUsers.Include(p => p.Projects).Load();
-            //}
-            DataContext.FurnitureProjects.Include(p => p.Executor).Load();
+            using var scope = _serviceScopeFactory.CreateScope();
+            var dataContext = scope.ServiceProvider.GetService<ProjectDbContext>();
 
-            if (DataContext.FurnitureProjects.Any(p => p.Executor.Name == userName))
+            return await dataContext.ExecutorUsers.FirstOrDefaultAsync(user => user.Email == email);
+        }
+
+        public async Task AddStageAsync(ExecutorUser user, Project project)
+        {
+            using var scope = _serviceScopeFactory.CreateScope();
+            var dataContext = scope.ServiceProvider.GetService<ProjectDbContext>();
+
+            //TODO: может получше можно придумать?
+            var stage = new Stage("Тест2", user)
             {
-                return await DataContext.FurnitureProjects
-                .AsNoTracking()
-                .Where(p => p.Executor.Name == userName)
-                .ToListAsync();
+                ProjectId = project.Id
+            };
+            
+            dataContext.Entry(stage).State = EntityState.Added;
+            await dataContext.SaveChangesAsync();
+
+        }
+
+        //TODO: сделать метод универсальным (получать значение по которому можно понять какой проект(шаблоны будут записаны в новой таблице) нужно создать)
+        public async Task AddProjectDefaultAsync(ExecutorUser user)
+        {
+
+            using var scope = _serviceScopeFactory.CreateScope();
+            var dataContext = scope.ServiceProvider.GetService<ProjectDbContext>();
+
+            Project project = new Project("Стандартный шаблон проекта", 0, user,
+                new List<Stage>()
+                {
+                        new Stage("Обсуждение пожеланий клиента, предварительный эскиз", user),
+                        new Stage("Замер обьекта", user),
+                        new Stage("Окончательный эскиз ", user),
+                        new Stage("Просчёт ", user),
+                        new Stage("Дополнительные комплектующие и нюансы", user),
+                        new Stage("Производство", user),
+                        new Stage("Монтаж", user),
+                        new Stage("Сдача объекта", user)
+                });
+            dataContext.Entry(project).State = EntityState.Added;
+            await dataContext.SaveChangesAsync();
+        }
+
+        public async Task<List<Project>> ToListProjectsAsync(ExecutorUser user)
+        {
+            using var scope = _serviceScopeFactory.CreateScope();
+            var dataContext = scope.ServiceProvider.GetService<ProjectDbContext>();
+            var projects = await dataContext.FurnitureProjects.Where(p => p.Executor == user).ToListAsync();
+            if (projects != null)
+            {
+                return projects;
             }
+
             return new List<Project>();
         }
     }

@@ -23,14 +23,13 @@ namespace Manect.Services
 
         public async Task UsersAsync()
         {
-            var users = await IdentityContext.Users.
-                OrderBy(c => c.Email).
-                Select(c => new
+            var users = await IdentityContext.Users
+                .Select(c => new
                 {
                     c.UserName,
                     c.Email
-                }).
-                ToListAsync();
+                })
+                .ToListAsync();
 
             await AddUsersAsync(users);
         }

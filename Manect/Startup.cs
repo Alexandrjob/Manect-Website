@@ -32,8 +32,7 @@ namespace Manect
             {
                 config.LoginPath = "/Admin/Login";
             });
-
-            services.AddTransient<IDataRepository, DataRepository>();
+            services.AddScoped<IDataRepository, DataRepository>();
             services.AddTransient<ISyncTables, SyncTables>();
 
             services.AddAuthorization();;
