@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using System.Linq;
 
 namespace Manect.Controllers
 {
@@ -14,15 +13,18 @@ namespace Manect.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IDataRepository _dataRepository;
+        private readonly ISyncTables _syncTables;
 
         public AdminController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            IDataRepository dataRepository)
+            IDataRepository dataRepository,
+            ISyncTables syncTables)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _dataRepository = dataRepository;
+            _syncTables = syncTables;
         }
 
         public async Task<IActionResult> IndexAsync() 
@@ -55,6 +57,8 @@ namespace Manect.Controllers
             var result = await _signInManager.PasswordSignInAsync(user, model.Password, false, false);
             if (result.Succeeded)
             {
+                ///TODO: Поменять на добавление одного юзера, и конено внутри проверка: а вдруг он уже существует?
+                await _syncTables.UsersAsync();
                 return Redirect(model.ReturnUrl);
             }
             return View(model);
@@ -63,10 +67,10 @@ namespace Manect.Controllers
         public async Task<IActionResult> LogOffAsync()
         {
             await _signInManager.SignOutAsync();
-            return Redirect("/Home/Index");
+            return Redirect("/Admin/Index");
         }
 
-        [HttpPost]
+        //[HttpPost]
         public async void AddProject()
         {
             var name = HttpContext.User.Identity.Name;

@@ -63,7 +63,8 @@ namespace Manect.Data
                         new Stage("Монтаж", user),
                         new Stage("Сдача объекта", user)
                 });
-            DataContext.Entry(project).State = EntityState.Added;
+            //DataContext.Entry(project).State = EntityState.Added;
+            await DataContext.FurnitureProjects.AddAsync(project);
             await DataContext.SaveChangesAsync();
         }
 

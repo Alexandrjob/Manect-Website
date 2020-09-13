@@ -20,7 +20,7 @@ namespace Manect
 
                 var dataContext = services.GetRequiredService<ProjectDbContext>();
                 var identityContext = services.GetRequiredService<AppIdentityDbContext>();
-                await ProjectDbContextSeed.SeedAsync(dataContext, identityContext);
+                //await ProjectDbContextSeed.SeedAsync(dataContext, identityContext);
 
                 var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
                 var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();

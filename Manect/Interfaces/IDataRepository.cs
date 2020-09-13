@@ -7,6 +7,7 @@ namespace Manect.Interfaces
     public interface IDataRepository 
     {
         //TODO: Создать метод, который находит 1 проект(мы еще должны понять какой это проект).
+        //TODO: Создать метод, который удаляет 1 этап.
         Task<ExecutorUser> FindUserByNameOrDefaultAsync(string name);
         Task<ExecutorUser> FindUserByEmailAsync(string email);
         Task AddStageAsync(ExecutorUser user, Project project);

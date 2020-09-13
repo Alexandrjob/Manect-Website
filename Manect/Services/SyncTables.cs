@@ -21,6 +21,7 @@ namespace Manect.Services
             IdentityContext = identityContext;
         }
 
+        //TODO: Создать метод, который синхранизирует только что зарегистрированого пользователя с таблицей ExecutorUsers
         public async Task UsersAsync()
         {
             var users = await IdentityContext.Users
@@ -29,6 +30,7 @@ namespace Manect.Services
                     c.UserName,
                     c.Email
                 })
+                //AsQverebale
                 .ToListAsync();
 
             await AddUsersAsync(users);
@@ -54,6 +56,7 @@ namespace Manect.Services
         };
         }
 
+        //TODO: Почему IList?
         private async Task AddUsersAsync(IList users)
         {
             var newUsers = new List<ExecutorUser>();
