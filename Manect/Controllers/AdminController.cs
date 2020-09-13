@@ -14,7 +14,6 @@ namespace Manect.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IDataRepository _dataRepository;
-        
 
         public AdminController(
             UserManager<ApplicationUser> userManager,
@@ -29,8 +28,7 @@ namespace Manect.Controllers
         public async Task<IActionResult> IndexAsync() 
         { 
             var name = HttpContext.User.Identity.Name;
-            var currentUser = await _dataRepository.FindUserByNameOrDefaultAsync(name);
-            return View(await _dataRepository.ToListProjectsAsync(currentUser));
+            return View(await _dataRepository.ToListProjectsAsync(name));
         }
 
         [AllowAnonymous]
@@ -71,14 +69,8 @@ namespace Manect.Controllers
         [HttpPost]
         public async void AddProject()
         {
-            
             var name = HttpContext.User.Identity.Name;
             var currentUser = await _dataRepository.FindUserByNameOrDefaultAsync(name);
-            //TODO: Создать метод, который находит 1 проект(мы еще должны понять какой это проект).
-            var projects = await _dataRepository.ToListProjectsAsync(currentUser);
-            var project = projects.FirstOrDefault();
-            
-            await _dataRepository.AddStageAsync(currentUser, project);
             await _dataRepository.AddProjectDefaultAsync(currentUser);
         }
     }

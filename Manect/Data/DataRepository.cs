@@ -11,51 +11,46 @@ namespace Manect.Data
     public class DataRepository : IDataRepository
     {
         private readonly IServiceScopeFactory _serviceScopeFactory;
+        private ProjectDbContext DataContext 
+        {
+            get
+            {
+                var scope = _serviceScopeFactory.CreateScope();
+                return scope.ServiceProvider.GetService<ProjectDbContext>();
+            }
+        }
+
         public DataRepository(IServiceScopeFactory serviceScopeFactory)
         {
             _serviceScopeFactory = serviceScopeFactory;
         }
 
-
         public async Task<ExecutorUser> FindUserByNameOrDefaultAsync(string name)
-        {;
-            using var scope = _serviceScopeFactory.CreateScope();
-            var dataContext = scope.ServiceProvider.GetService<ProjectDbContext>();
-
-            return await dataContext.ExecutorUsers.FirstOrDefaultAsync(user => user.Name == name);
+        {
+            return await DataContext.ExecutorUsers.FirstOrDefaultAsync(user => user.Name == name);
         }
 
         public async Task<ExecutorUser> FindUserByEmailAsync(string email)
         {
-            using var scope = _serviceScopeFactory.CreateScope();
-            var dataContext = scope.ServiceProvider.GetService<ProjectDbContext>();
-
-            return await dataContext.ExecutorUsers.FirstOrDefaultAsync(user => user.Email == email);
+            return await DataContext.ExecutorUsers.FirstOrDefaultAsync(user => user.Email == email);
         }
 
         public async Task AddStageAsync(ExecutorUser user, Project project)
         {
-            using var scope = _serviceScopeFactory.CreateScope();
-            var dataContext = scope.ServiceProvider.GetService<ProjectDbContext>();
-
             //TODO: может получше можно придумать?
-            var stage = new Stage("Тест2", user)
+            var stage = new Stage("", user)
             {
                 ProjectId = project.Id
             };
             
-            dataContext.Entry(stage).State = EntityState.Added;
-            await dataContext.SaveChangesAsync();
+            DataContext.Entry(stage).State = EntityState.Added;
+            await DataContext.SaveChangesAsync();
 
         }
 
         //TODO: сделать метод универсальным (получать значение по которому можно понять какой проект(шаблоны будут записаны в новой таблице) нужно создать)
         public async Task AddProjectDefaultAsync(ExecutorUser user)
         {
-
-            using var scope = _serviceScopeFactory.CreateScope();
-            var dataContext = scope.ServiceProvider.GetService<ProjectDbContext>();
-
             Project project = new Project("Стандартный шаблон проекта", 0, user,
                 new List<Stage>()
                 {
@@ -68,15 +63,13 @@ namespace Manect.Data
                         new Stage("Монтаж", user),
                         new Stage("Сдача объекта", user)
                 });
-            dataContext.Entry(project).State = EntityState.Added;
-            await dataContext.SaveChangesAsync();
+            DataContext.Entry(project).State = EntityState.Added;
+            await DataContext.SaveChangesAsync();
         }
 
-        public async Task<List<Project>> ToListProjectsAsync(ExecutorUser user)
+        public async Task<List<Project>> ToListProjectsAsync(string userName)
         {
-            using var scope = _serviceScopeFactory.CreateScope();
-            var dataContext = scope.ServiceProvider.GetService<ProjectDbContext>();
-            var projects = await dataContext.FurnitureProjects.Where(p => p.Executor == user).ToListAsync();
+            var projects = await DataContext.FurnitureProjects.Where(p => p.Executor.Name == userName).ToListAsync();
             if (projects != null)
             {
                 return projects;
