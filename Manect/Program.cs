@@ -1,5 +1,6 @@
 using Manect.Data;
 using Manect.Identity;
+using Manect.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,9 +18,9 @@ namespace Manect
             {
                 var services = scope.ServiceProvider;
 
-                var datacontext = services.GetRequiredService<ProjectDbContext>();
+                var dataContext = services.GetRequiredService<ProjectDbContext>();
                 var identityContext = services.GetRequiredService<AppIdentityDbContext>();
-                await ProjectDbContextSeed.SeedAsync(datacontext, identityContext);
+                await ProjectDbContextSeed.SeedAsync(dataContext, identityContext);
 
                 var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
                 var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();

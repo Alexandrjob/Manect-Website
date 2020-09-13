@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Manect.Data.Entities
 {
@@ -11,6 +12,10 @@ namespace Manect.Data.Entities
         /// Комментарий.
         /// </summary>
         public string Comment { get; set; }
+        // Внешний ключ
+        [ForeignKey("Project")]
+
+        public int ProjectId { get; set; }
 
         public Stage() { }
 
@@ -18,19 +23,17 @@ namespace Manect.Data.Entities
         /// Создание этапа.
         /// </summary>
         /// <param name="name"> Имя этапа. </param>
-        /// <param name="expirationDate"> Окончание этапа. </param>
-        /// <param name="performer"> Добавить исполнителя. </param>
+        /// <param name="executor"> Добавить исполнителя. </param>
         /// <param name="comment"> Комментарий этапа. </param>
-        /// <param name="isDone"> Завершен этап или нет. </param>
-        public Stage(string name, DateTime expirationDate, ExecutorUser executor = null, string comment = "", bool isDone = false)
+        public Stage(string name, ExecutorUser executor, string comment = "")
         {
-            Name = "Этап: " + name;
-            ExpirationDate = expirationDate;
+            Name = name;
             Executor = executor;
             Comment = comment;
-            IsDone = isDone;
-
+            
             CreationDate = DateTime.Now;
+            ExpirationDate = CreationDate.AddDays(30);
+            IsDone = false;
         }
     }
 }

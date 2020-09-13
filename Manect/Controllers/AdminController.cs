@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace Manect.Controllers
 {
@@ -12,7 +13,8 @@ namespace Manect.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        readonly IDataRepository DataRepository;
+        private readonly IDataRepository _dataRepository;
+        
 
         public AdminController(
             UserManager<ApplicationUser> userManager,
@@ -21,13 +23,14 @@ namespace Manect.Controllers
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            DataRepository = dataRepository;
+            _dataRepository = dataRepository;
         }
 
-        public async Task<IActionResult> IndexAsync()
-        {
-            string currentUser = this.User.Identity.Name;
-            return View(await DataRepository.ToListProjectsAsync(currentUser));
+        public async Task<IActionResult> IndexAsync() 
+        { 
+            var name = HttpContext.User.Identity.Name;
+            var currentUser = await _dataRepository.FindUserByNameOrDefaultAsync(name);
+            return View(await _dataRepository.ToListProjectsAsync(currentUser));
         }
 
         [AllowAnonymous]
@@ -63,6 +66,20 @@ namespace Manect.Controllers
         {
             await _signInManager.SignOutAsync();
             return Redirect("/Home/Index");
+        }
+
+        [HttpPost]
+        public async void AddProject()
+        {
+            
+            var name = HttpContext.User.Identity.Name;
+            var currentUser = await _dataRepository.FindUserByNameOrDefaultAsync(name);
+            //TODO: Создать метод, который находит 1 проект(мы еще должны понять какой это проект).
+            var projects = await _dataRepository.ToListProjectsAsync(currentUser);
+            var project = projects.FirstOrDefault();
+            
+            await _dataRepository.AddStageAsync(currentUser, project);
+            await _dataRepository.AddProjectDefaultAsync(currentUser);
         }
     }
 }

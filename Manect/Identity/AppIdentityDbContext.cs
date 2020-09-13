@@ -8,7 +8,7 @@ namespace Manect.Identity
         public AppIdentityDbContext(DbContextOptions<AppIdentityDbContext> options)
             : base(options)
         {
-            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+
         }
     }
 }

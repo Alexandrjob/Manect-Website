@@ -1,6 +1,4 @@
-﻿using Manect.Identity;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Manect.Data.Entities
 {
@@ -34,11 +32,6 @@ namespace Manect.Data.Entities
         public ExecutorUser()
         {
 
-        }
-
-        public static implicit operator ExecutorUser(ApplicationUser v)
-        {
-            throw new NotImplementedException();
         }
     }
 }
