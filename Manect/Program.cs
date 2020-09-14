@@ -19,8 +19,11 @@ namespace Manect
                 var services = scope.ServiceProvider;
 
                 var dataContext = services.GetRequiredService<ProjectDbContext>();
-                var identityContext = services.GetRequiredService<AppIdentityDbContext>();
-                //await ProjectDbContextSeed.SeedAsync(dataContext, identityContext);
+                var syncTables = services.GetRequiredService<ISyncTables>();
+                await syncTables.UsersAsync();
+                syncTables.AddEventHandler();
+
+                await ProjectDbContextSeed.SeedAsync(dataContext, syncTables);
 
                 var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
                 var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();

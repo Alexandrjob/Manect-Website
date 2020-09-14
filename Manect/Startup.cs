@@ -33,7 +33,7 @@ namespace Manect
                 config.LoginPath = "/Admin/Login";
             });
             services.AddScoped<IDataRepository, DataRepository>();
-            services.AddTransient<ISyncTables, SyncTables>();
+            services.AddScoped<ISyncTables, SyncTables>();
 
             services.AddAuthorization();;
             services.AddControllersWithViews();

@@ -12,9 +12,9 @@ namespace Manect.Data.Entities
         /// Комментарий.
         /// </summary>
         public string Comment { get; set; }
+
         // Внешний ключ
         [ForeignKey("Project")]
-
         public int ProjectId { get; set; }
 
         public Stage() { }

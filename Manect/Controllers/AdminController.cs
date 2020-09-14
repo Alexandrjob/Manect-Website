@@ -55,10 +55,9 @@ namespace Manect.Controllers
                 return Redirect("/Error/Index");
             }
             var result = await _signInManager.PasswordSignInAsync(user, model.Password, false, false);
+            
             if (result.Succeeded)
             {
-                ///TODO: Поменять на добавление одного юзера, и конено внутри проверка: а вдруг он уже существует?
-                await _syncTables.UsersAsync();
                 return Redirect(model.ReturnUrl);
             }
             return View(model);
@@ -71,11 +70,14 @@ namespace Manect.Controllers
         }
 
         //[HttpPost]
-        public async void AddProject()
+        public async Task<IActionResult> AddProject()
         {
             var name = HttpContext.User.Identity.Name;
             var currentUser = await _dataRepository.FindUserByNameOrDefaultAsync(name);
+            //var project = _dataRepository.ToListProjectsAsync(currentUser.Name).Result.FirstOrDefault();
+            //await _dataRepository.AddStageAsync(currentUser, project);
             await _dataRepository.AddProjectDefaultAsync(currentUser);
+            return Redirect("/Admin/Index");
         }
     }
 }

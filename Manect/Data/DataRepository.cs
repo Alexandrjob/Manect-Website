@@ -37,14 +37,14 @@ namespace Manect.Data
 
         public async Task AddStageAsync(ExecutorUser user, Project project)
         {
-            //TODO: может получше можно придумать?
             var stage = new Stage("", user)
             {
                 ProjectId = project.Id
             };
-            
-            DataContext.Entry(stage).State = EntityState.Added;
-            await DataContext.SaveChangesAsync();
+
+            var dataContext = DataContext;
+            dataContext.Entry(stage).State = EntityState.Added;
+            await dataContext.SaveChangesAsync();
 
         }
 
@@ -63,9 +63,10 @@ namespace Manect.Data
                         new Stage("Монтаж", user),
                         new Stage("Сдача объекта", user)
                 });
-            //DataContext.Entry(project).State = EntityState.Added;
-            await DataContext.FurnitureProjects.AddAsync(project);
-            await DataContext.SaveChangesAsync();
+
+            var dataContext = DataContext;
+            dataContext.Entry(project).State = EntityState.Added;
+            await dataContext.SaveChangesAsync();
         }
 
         public async Task<List<Project>> ToListProjectsAsync(string userName)

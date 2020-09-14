@@ -33,7 +33,7 @@ namespace Manect.Data.Entities
         /// <param name="isDone"> Завершен проект или нет. </param>
         public Project(string name, int price, ExecutorUser executor, List<Stage> stages)
         {
-           Name = name;
+            Name = name;
             Price = price;
             Executor = executor;
             Stages = stages;

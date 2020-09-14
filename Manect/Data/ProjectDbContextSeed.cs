@@ -1,6 +1,5 @@
 ﻿using Manect.Data.Entities;
-using Manect.Identity;
-using Manect.Services;
+using Manect.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using System.Collections.Generic;
@@ -11,7 +10,7 @@ namespace Manect.Data
 {
     public class ProjectDbContextSeed
     {
-        public static async Task SeedAsync(ProjectDbContext dataContext, AppIdentityDbContext identityContext)
+        public static async Task SeedAsync(ProjectDbContext dataContext, ISyncTables syncTables)
         {
 
             //dataContext.FurnitureProjects.RemoveRange(dataContext.FurnitureProjects);
@@ -20,19 +19,20 @@ namespace Manect.Data
 
             if (!dataContext.ExecutorUsers.Any())
             {
-                var syncTables = new SyncTables(dataContext, identityContext);
                 await syncTables.UsersAsync();
             }
 
             if (!dataContext.FurnitureProjects.Any())
             {
-                var userK = await dataContext.ExecutorUsers.FirstOrDefaultAsync(user => user.Id == 1);
-                var userS = await dataContext.ExecutorUsers.FirstOrDefaultAsync(user => user.Id == 2);
+                var userK = await dataContext.ExecutorUsers.FirstOrDefaultAsync(user => user.Name == "Kostya");
+                var userS = await dataContext.ExecutorUsers.FirstOrDefaultAsync(user => user.Name == "Sasha");
+                if (userK != null & userS != null)
+                {
+                    await dataContext.FurnitureProjects.AddRangeAsync(
+                        GetPreconfiguredProjects(userK, userS));
 
-                await dataContext.FurnitureProjects.AddRangeAsync(
-                    GetPreconfiguredProjects(userK, userS));
-               
-                dataContext.SaveChanges();
+                    dataContext.SaveChanges();
+                }
             }
         }
 
