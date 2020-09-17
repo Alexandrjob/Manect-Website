@@ -48,6 +48,13 @@ namespace Manect.Data
 
         }
 
+        public async Task DeleteStageAsync(Stage stage)
+        {
+            var dataContext = DataContext;
+            dataContext.Stages.Remove(stage);
+            await dataContext.SaveChangesAsync();
+        }
+
         //TODO: сделать метод универсальным (получать значение по которому можно понять какой проект(шаблоны будут записаны в новой таблице) нужно создать)
         public async Task AddProjectDefaultAsync(ExecutorUser user)
         {

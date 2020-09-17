@@ -32,7 +32,6 @@
 
   <ItemGroup>
     <Folder Include="Data\MigrationsProject\" />
-    <Folder Include="Migrations\" />
   </ItemGroup>
 
   <ItemGroup>

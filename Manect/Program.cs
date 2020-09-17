@@ -20,7 +20,7 @@ namespace Manect
 
                 var dataContext = services.GetRequiredService<ProjectDbContext>();
                 var syncTables = services.GetRequiredService<ISyncTables>();
-                await syncTables.UsersAsync();
+                //await syncTables.UsersAsync();
                 syncTables.AddEventHandler();
 
                 await ProjectDbContextSeed.SeedAsync(dataContext, syncTables);

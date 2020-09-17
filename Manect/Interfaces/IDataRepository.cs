@@ -11,6 +11,7 @@ namespace Manect.Interfaces
         Task<ExecutorUser> FindUserByNameOrDefaultAsync(string name);
         Task<ExecutorUser> FindUserByEmailAsync(string email);
         Task AddStageAsync(ExecutorUser user, Project project);
+        Task DeleteStageAsync(Stage stage);
         Task AddProjectDefaultAsync(ExecutorUser user);
         //TODO: Это не очень хорошо - делать проверку по имени, в будущем при необходимости переделать
         Task<List<Project>> ToListProjectsAsync(string userName);

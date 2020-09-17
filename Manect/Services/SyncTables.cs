@@ -39,20 +39,20 @@ namespace Manect.Services
 
         public async Task UsersAsync()
         {
-            var dataContext = DataContext;
-            List<ExecutorUser> dataUsers = dataContext.ExecutorUsers
-                .Select(c => new
-                {
-                    c.Name,
-                    c.Email
-                })
-                .AsEnumerable()
-                .Select(an => new ExecutorUser
-                {
-                    Name = an.Name,
-                    Email = an.Email
-                })
-                .ToList();
+            //var dataContext = DataContext;
+            //List<ExecutorUser> dataUsers = dataContext.ExecutorUsers
+            //    .Select(c => new
+            //    {
+            //        c.Name,
+            //        c.Email
+            //    })
+            //    .AsEnumerable()
+            //    .Select(an => new ExecutorUser
+            //    {
+            //        Name = an.Name,
+            //        Email = an.Email
+            //    })
+            //    .ToList();
 
             List<ExecutorUser> identityUsers = IdentityContext.Users
                 .Select(c => new
@@ -69,9 +69,9 @@ namespace Manect.Services
                 .ToList();
 
             //TODO: Не работает как надо(всегда будет 2 пользователя)
-            List<ExecutorUser> newUsers = identityUsers.Except(dataUsers).ToList();
-
-            await dataContext.ExecutorUsers.AddRangeAsync(newUsers);
+            //List<ExecutorUser> newUsers = identityUsers.Except(dataUsers).ToList();
+            var dataContext = DataContext;
+            await dataContext.ExecutorUsers.AddRangeAsync(identityUsers);
             await dataContext.SaveChangesAsync();
         }
 

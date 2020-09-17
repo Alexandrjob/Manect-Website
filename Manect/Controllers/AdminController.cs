@@ -58,7 +58,8 @@ namespace Manect.Controllers
             
             if (result.Succeeded)
             {
-                return Redirect(model.ReturnUrl);
+                //TODO: В будущем поменять на адаптивным метод, чтобы исключение не выкидывал а перекидывал на index
+                return LocalRedirect(model.ReturnUrl);
             }
             return View(model);
         }
@@ -74,9 +75,8 @@ namespace Manect.Controllers
         {
             var name = HttpContext.User.Identity.Name;
             var currentUser = await _dataRepository.FindUserByNameOrDefaultAsync(name);
-            //var project = _dataRepository.ToListProjectsAsync(currentUser.Name).Result.FirstOrDefault();
-            //await _dataRepository.AddStageAsync(currentUser, project);
             await _dataRepository.AddProjectDefaultAsync(currentUser);
+            //TODO: нужно чтобы страница просто обновлялась.
             return Redirect("/Admin/Index");
         }
     }
