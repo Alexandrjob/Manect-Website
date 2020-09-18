@@ -1,4 +1,5 @@
 using Manect.Data;
+using Manect.HistoryLogger;
 using Manect.Identity;
 using Manect.Interfaces;
 using Manect.Services;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Manect
 {
@@ -32,6 +34,7 @@ namespace Manect
             {
                 config.LoginPath = "/Admin/Login";
             });
+
             services.AddScoped<IDataRepository, DataRepository>();
             services.AddScoped<ISyncTables, SyncTables>();
 
@@ -39,11 +42,13 @@ namespace Manect
             services.AddControllersWithViews();
         }
 
-        public void Configure(IApplicationBuilder app)
+        public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
         {
             app.UseDeveloperExceptionPage();
             app.UseStaticFiles();
             app.UseRouting();
+
+            loggerFactory.AddDataBase("logger.txt");
 
             app.UseAuthentication();
             app.UseAuthorization();

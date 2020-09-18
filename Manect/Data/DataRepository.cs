@@ -2,6 +2,7 @@
 using Manect.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,6 +12,8 @@ namespace Manect.Data
     public class DataRepository : IDataRepository
     {
         private readonly IServiceScopeFactory _serviceScopeFactory;
+        private readonly ILogger _logger;
+
         private ProjectDbContext DataContext 
         {
             get
@@ -20,9 +23,10 @@ namespace Manect.Data
             }
         }
 
-        public DataRepository(IServiceScopeFactory serviceScopeFactory)
+        public DataRepository(IServiceScopeFactory serviceScopeFactory, ILogger<DataRepository> logger)
         {
             _serviceScopeFactory = serviceScopeFactory;
+            _logger = logger;
         }
 
         public async Task<ExecutorUser> FindUserByNameOrDefaultAsync(string name)
