@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace Manect.Controllers
 {
@@ -30,7 +31,7 @@ namespace Manect.Controllers
         public async Task<IActionResult> IndexAsync() 
         { 
             var name = HttpContext.User.Identity.Name;
-            return View(await _dataRepository.ToListProjectsAsync(name));
+            return View(await _dataRepository.ToListProjectOrDefaultAsync(name));
         }
 
         [AllowAnonymous]
