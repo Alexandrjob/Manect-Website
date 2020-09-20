@@ -83,7 +83,6 @@ namespace Manect.Data
         public async Task DeleteProjectAsync(Project project)
         {
             _logger.LogInformation("Время: {0}. Пользователь {1}, удалил проект: {2}", DateTime.Now, "Имя пользователя"/*project.Executor.Name*/, project.Name);
-
             var dataContext = DataContext;
             dataContext.FurnitureProjects.Remove(project);
             await dataContext.SaveChangesAsync();
@@ -109,15 +108,15 @@ namespace Manect.Data
                         new Stage("Монтаж", user),
                         new Stage("Сдача объекта", user)
                 });
-
-            _logger.LogInformation("Время: {0}. Пользователь {1}, добавил новый проект: {2}", DateTime.Now, user.Name, project.Name);
+            
+            _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorName}, добавил новый проект: {ProjectName}", DateTime.Now, user.Name, project.Name);
 
             var dataContext = DataContext;
             dataContext.Entry(project).State = EntityState.Added;
             await dataContext.SaveChangesAsync();
             if (dataContext.FurnitureProjects.FirstOrDefaultAsync(p => p.Id == p.Id) == null)
             {
-                _logger.LogInformation("Время: {0}. ПРОИЗОШЛА ОШИБКА, когда Пользователь {1}, ДОБАВИЛ проект {2}", DateTime.Now, user.Name, project.Name);
+                _logger.LogInformation("Время: {TimeAction}. ПРОИЗОШЛА ОШИБКА, когда Пользователь {ExecutorName}, ДОБАВИЛ проект {ProjectName}", DateTime.Now, user.Name, project.Name);
             }
 
             return project;

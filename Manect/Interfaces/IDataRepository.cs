@@ -13,7 +13,7 @@ namespace Manect.Interfaces
         Task DeleteStageAsync(Stage stage);
         Task DeleteProjectAsync(Project project);
         Task<Project> AddProjectDefaultAsync(ExecutorUser user);
-        //TODO: Это не очень хорошо - делать выборку по имени, в будущем при необходимости переделать
+        //TODO: В будущем при необходимости переделать это не очень хорошо - делать выборку по имени.
         Task<List<Project>> ToListProjectOrDefaultAsync(string userName);
     }
 }

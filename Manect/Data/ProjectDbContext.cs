@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Manect.Data.Entities;
+using Manect.DataBaseLogger;
 
 namespace Manect.Data
 {
@@ -13,5 +14,6 @@ namespace Manect.Data
         public DbSet<Stage> Stages { get; set; }
         public DbSet<Project> FurnitureProjects { get; set; }
         public DbSet<ExecutorUser> ExecutorUsers { get; set; }
+        public DbSet<HistoryItem> LogUserActivity { get; set; }
     }
 }

@@ -1,5 +1,5 @@
 using Manect.Data;
-using Manect.HistoryLogger;
+using Manect.DataBaseLogger;
 using Manect.Identity;
 using Manect.Interfaces;
 using Manect.Services;
@@ -42,13 +42,13 @@ namespace Manect
             services.AddControllersWithViews();
         }
 
-        public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory, IServiceScopeFactory serviceScopeFactory)
         {
             app.UseDeveloperExceptionPage();
             app.UseStaticFiles();
             app.UseRouting();
 
-            loggerFactory.AddDataBase("logger.txt");
+            loggerFactory.AddDataBase("logger.txt", serviceScopeFactory);
 
             app.UseAuthentication();
             app.UseAuthorization();

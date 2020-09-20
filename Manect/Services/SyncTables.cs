@@ -39,21 +39,6 @@ namespace Manect.Services
 
         public async Task UsersAsync()
         {
-            //var dataContext = DataContext;
-            //List<ExecutorUser> dataUsers = dataContext.ExecutorUsers
-            //    .Select(c => new
-            //    {
-            //        c.Name,
-            //        c.Email
-            //    })
-            //    .AsEnumerable()
-            //    .Select(an => new ExecutorUser
-            //    {
-            //        Name = an.Name,
-            //        Email = an.Email
-            //    })
-            //    .ToList();
-
             List<ExecutorUser> identityUsers = IdentityContext.Users
                 .Select(c => new
                 {
@@ -68,8 +53,6 @@ namespace Manect.Services
                 })
                 .ToList();
 
-            //TODO: Не работает как надо(всегда будет 2 пользователя)
-            //List<ExecutorUser> newUsers = identityUsers.Except(dataUsers).ToList();
             var dataContext = DataContext;
             await dataContext.ExecutorUsers.AddRangeAsync(identityUsers);
             await dataContext.SaveChangesAsync();
@@ -84,7 +67,7 @@ namespace Manect.Services
                     {
                         await AddUsersAsync(args.NewItems);
                     }
-                    //TODO: Реализовать алгоритм, про котором, когда удаляется пользователь, удалялось и все связанное с ним.
+                    //TODO: В будущем реализовать алгоритм, про котором, когда удаляется пользователь, удалялось и все связанное с ним.
                     if (args.OldItems != null)
                     {
                         foreach (ApplicationUser c in args.OldItems)

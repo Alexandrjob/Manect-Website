@@ -1,99 +1,44 @@
+
+20.09.2020 14:04:20
+Kostya
+Стандартный шаблон проекта
+System.Collections.Generic.List`1[System.Object]
+System.Collections.Generic.List`1[System.Object]
+System.Collections.Generic.List`1[System.Object]
+System.Collections.Generic.List`1[System.Object]
+System.Collections.Generic.List`1[System.Object]
+System.Collections.Generic.List`1[System.Object]
+System.Collections.Generic.List`1[System.Object]
+System.Collections.Generic.List`1[System.Object]
+System.Collections.Generic.List`1[System.Object]
+System.Collections.Generic.List`1[System.Object]
+Manect.HistoryLogger.HistoryItem
+Manect.HistoryLogger.HistoryItem
+Manect.HistoryLogger.HistoryItem
+Manect.HistoryLogger.HistoryItem
+Manect.HistoryLogger.HistoryItem
+Manect.HistoryLogger.HistoryItem
+Manect.HistoryLogger.HistoryItem
+Manect.HistoryLogger.HistoryItem
+Manect.HistoryLogger.HistoryItem
+Manect.HistoryLogger.HistoryItem
+Manect.HistoryLogger.HistoryItem
+Manect.HistoryLogger.HistoryItem
+Manect.HistoryLogger.HistoryItem
+Manect.HistoryLogger.HistoryItem
+Manect.HistoryLogger.HistoryItem
+Manect.HistoryLogger.HistoryItem
+Hosting environment: Development
+Application started. Press Ctrl+C to shut down.
+Now listening on: http://localhost:5000
 Now listening on: https://localhost:5001
+Content root path: D:\ProgrammingSourse\Manect\Manect
+Время: 09/20/2020 17:37:25. Пользователь Kostya, добавил новый проект: Стандартный шаблон проекта
+Hosting environment: Development
 Now listening on: http://localhost:5000
 Application started. Press Ctrl+C to shut down.
-Hosting environment: Development
-Content root path: D:\ProgrammingSourse\Manect\Manect
-Время: 09/18/2020 16:48:30. Пользователь Kostya, добавил новый проект: Стандартный шаблон проекта
-Время: 09/18/2020 16:48:50. Пользователь Kostya, добавил в проект Стандартный шаблон проекта новый этап: 
-Время: 09/18/2020 16:49:29. Пользователь Kostya, удалил этап: 
-Время: 09/18/2020 16:49:29. ПРОИЗОШЛА ОШИБКА, когда Пользователь Kostya,УДАЛИЛ в проекте 233 ЭТАП: 
-Application is shutting down...
 Now listening on: https://localhost:5001
-Now listening on: http://localhost:5000
-Application started. Press Ctrl+C to shut down.
-Hosting environment: Development
 Content root path: D:\ProgrammingSourse\Manect\Manect
-Время: 09/18/2020 16:51:58. Пользователь Kostya, добавил новый проект: Стандартный шаблон проекта
-Время: 09/18/2020 16:51:59. Пользователь Kostya, добавил в проект Стандартный шаблон проекта новый этап: 
-Время: 09/18/2020 16:51:59. Пользователь Kostya, удалил этап: 
-Now listening on: https://localhost:5001
-Now listening on: http://localhost:5000
-Application started. Press Ctrl+C to shut down.
-Hosting environment: Development
-Content root path: D:\ProgrammingSourse\Manect\Manect
-Время: 09/18/2020 16:54:37. Пользователь Kostya, добавил новый проект: Стандартный шаблон проекта
-Время: 09/18/2020 16:54:38. Пользователь Kostya, добавил в проект Стандартный шаблон проекта новый этап: 
-Время: 09/18/2020 16:54:38. Пользователь Kostya, удалил этап: 
-Now listening on: https://localhost:5001
-Now listening on: http://localhost:5000
-Application started. Press Ctrl+C to shut down.
-Hosting environment: Development
-Content root path: D:\ProgrammingSourse\Manect\Manect
-Время: 09/18/2020 16:56:52. Пользователь Kostya, добавил новый проект: Стандартный шаблон проекта
-Время: 09/18/2020 16:56:53. Пользователь Kostya, добавил в проект Стандартный шаблон проекта новый этап: 
-Время: 09/18/2020 16:56:53. Пользователь Kostya, удалил этап: 
-Now listening on: https://localhost:5001
-Now listening on: http://localhost:5000
-Application started. Press Ctrl+C to shut down.
-Hosting environment: Development
-Content root path: D:\ProgrammingSourse\Manect\Manect
-Время: 09/18/2020 16:58:06. Пользователь Kostya, добавил новый проект: Стандартный шаблон проекта
-Время: 09/18/2020 16:58:06. Пользователь Kostya, добавил в проект Стандартный шаблон проекта новый этап: 
-Время: 09/18/2020 16:58:07. Пользователь Kostya, удалил этап: 
-Now listening on: https://localhost:5001
-Now listening on: http://localhost:5000
-Application started. Press Ctrl+C to shut down.
-Hosting environment: Development
-Content root path: D:\ProgrammingSourse\Manect\Manect
-Время: 09/18/2020 16:59:00. Пользователь Kostya, добавил новый проект: Стандартный шаблон проекта
-Время: 09/18/2020 16:59:01. Пользователь Kostya, добавил в проект Стандартный шаблон проекта новый этап: Новый этап
-Время: 09/18/2020 16:59:01. Пользователь Kostya, удалил этап: Новый этап
-Application is shutting down...
-Now listening on: https://localhost:5001
-Now listening on: http://localhost:5000
-Application started. Press Ctrl+C to shut down.
-Hosting environment: Development
-Content root path: D:\ProgrammingSourse\Manect\Manect
-Время: 09/18/2020 20:35:07. Пользователь Kostya, добавил новый проект: Стандартный шаблон проекта
-Now listening on: https://localhost:5001
-Now listening on: http://localhost:5000
-Application started. Press Ctrl+C to shut down.
-Hosting environment: Development
-Content root path: D:\ProgrammingSourse\Manect\Manect
-Время: 09/18/2020 20:37:15. Пользователь Kostya, добавил новый проект: Стандартный шаблон проекта
-Now listening on: https://localhost:5001
-Now listening on: http://localhost:5000
-Application started. Press Ctrl+C to shut down.
-Hosting environment: Development
-Content root path: D:\ProgrammingSourse\Manect\Manect
-Время: 09/18/2020 20:38:52. Пользователь Kostya, добавил новый проект: Стандартный шаблон проекта
-Время: 09/18/2020 20:38:59. Пользователь кпьмщзку, удалил проект: Кухня
-Application is shutting down...
-Now listening on: https://localhost:5001
-Now listening on: http://localhost:5000
-Application started. Press Ctrl+C to shut down.
-Hosting environment: Development
-Content root path: D:\ProgrammingSourse\Manect\Manect
-Время: 09/18/2020 20:46:08. Пользователь Имя пользователя, удалил проект: Туалет
-Время: 09/18/2020 20:46:10. Пользователь Имя пользователя, удалил проект: Шкаф
-Время: 09/18/2020 20:46:10. Пользователь Имя пользователя, удалил проект: Стандартный шаблон проекта
-Время: 09/18/2020 20:46:11. Пользователь Имя пользователя, удалил проект: Стандартный шаблон проекта
-Время: 09/18/2020 20:46:12. Пользователь Имя пользователя, удалил проект: Стандартный шаблон проекта
-Время: 09/18/2020 20:46:15. Пользователь Имя пользователя, удалил проект: Стандартный шаблон проекта
-Время: 09/18/2020 20:46:16. Пользователь Имя пользователя, удалил проект: Стандартный шаблон проекта
-Время: 09/18/2020 20:46:19. Пользователь Имя пользователя, удалил проект: Стандартный шаблон проекта
-Время: 09/18/2020 20:46:19. Пользователь Имя пользователя, удалил проект: Стандартный шаблон проекта
-Время: 09/18/2020 20:46:20. Пользователь Имя пользователя, удалил проект: Стандартный шаблон проекта
-Время: 09/18/2020 20:46:21. Пользователь Имя пользователя, удалил проект: Стандартный шаблон проекта
-An unhandled exception has occurred while executing the request.
-Now listening on: https://localhost:5001
-Now listening on: http://localhost:5000
-Application started. Press Ctrl+C to shut down.
-Hosting environment: Development
-Content root path: D:\ProgrammingSourse\Manect\Manect
-Now listening on: https://localhost:5001
-Now listening on: http://localhost:5000
-Application started. Press Ctrl+C to shut down.
-Hosting environment: Development
-Content root path: D:\ProgrammingSourse\Manect\Manect
-Application is shutting down...
+Время: 09/20/2020 18:27:36. Пользователь Kostya, добавил новый проект: Стандартный шаблон проекта
+Время: 09/20/2020 18:27:38. Пользователь Kostya, добавил новый проект: Стандартный шаблон проекта
+Время: 09/20/2020 18:27:45. Пользователь Kostya, добавил новый проект: Стандартный шаблон проекта
