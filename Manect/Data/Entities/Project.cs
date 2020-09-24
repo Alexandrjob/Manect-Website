@@ -40,7 +40,7 @@ namespace Manect.Data.Entities
 
             CreationDate = DateTime.Now;
             ExpirationDate = CreationDate.AddDays(30);
-            IsDone = false;
+            Status = Status.Created;
         }
     }
 }

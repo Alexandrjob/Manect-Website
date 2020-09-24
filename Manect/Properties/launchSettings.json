@@ -3,7 +3,7 @@
     "Manect": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "Admin/Index",
+      "launchUrl": "Manager/Index",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

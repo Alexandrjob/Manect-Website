@@ -31,9 +31,6 @@ namespace Manect.Data.Entities
         /// <summary>
         /// Возвращает true, если проект или этап выполнен, иначе false.
         /// </summary>
-        public bool IsDone { get; set; }
-
-        
-        
+        public Status Status { get; set; }
     }
 }

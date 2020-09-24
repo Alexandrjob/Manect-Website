@@ -65,7 +65,34 @@ namespace Manect.Data
 
             return stage;
         }
+        //TODO: сделать метод универсальным (получать значение по которому можно понять какой проект(шаблоны будут записаны в новой таблице) нужно создать)
+        public async Task<Project> AddProjectDefaultAsync(ExecutorUser user)
+        {
+            Project project = new Project("Стандартный шаблон проекта", 0, user,
+                new List<Stage>()
+                {
+                        new Stage("Обсуждение пожеланий клиента, предварительный эскиз", user),
+                        new Stage("Замер обьекта", user),
+                        new Stage("Окончательный эскиз ", user),
+                        new Stage("Просчёт ", user),
+                        new Stage("Дополнительные комплектующие и нюансы", user),
+                        new Stage("Производство", user),
+                        new Stage("Монтаж", user),
+                        new Stage("Сдача объекта", user)
+                });
 
+            _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorName}, добавил новый проект: {ProjectName}", DateTime.Now, user.Name, project.Name);
+
+            var dataContext = DataContext;
+            dataContext.Entry(project).State = EntityState.Added;
+            await dataContext.SaveChangesAsync();
+            if (dataContext.FurnitureProjects.FirstOrDefaultAsync(p => p.Id == p.Id) == null)
+            {
+                _logger.LogInformation("Время: {TimeAction}. ПРОИЗОШЛА ОШИБКА, когда Пользователь {ExecutorName}, ДОБАВИЛ проект {ProjectName}", DateTime.Now, user.Name, project.Name);
+            }
+
+            return project;
+        }
         public async Task DeleteStageAsync(Stage stage)
         {
             _logger.LogInformation("Время: {0}. Пользователь {1}, удалил этап: {2}", DateTime.Now, stage.Executor.Name, stage.Name);
@@ -93,33 +120,9 @@ namespace Manect.Data
             }
         }
 
-        //TODO: сделать метод универсальным (получать значение по которому можно понять какой проект(шаблоны будут записаны в новой таблице) нужно создать)
-        public async Task<Project> AddProjectDefaultAsync(ExecutorUser user)
+        public Task SetFlagValue(Status status)
         {
-            Project project = new Project("Стандартный шаблон проекта", 0, user,
-                new List<Stage>()
-                {
-                        new Stage("Обсуждение пожеланий клиента, предварительный эскиз", user),
-                        new Stage("Замер обьекта", user),
-                        new Stage("Окончательный эскиз ", user),
-                        new Stage("Просчёт ", user),
-                        new Stage("Дополнительные комплектующие и нюансы", user),
-                        new Stage("Производство", user),
-                        new Stage("Монтаж", user),
-                        new Stage("Сдача объекта", user)
-                });
-            
-            _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorName}, добавил новый проект: {ProjectName}", DateTime.Now, user.Name, project.Name);
-
-            var dataContext = DataContext;
-            dataContext.Entry(project).State = EntityState.Added;
-            await dataContext.SaveChangesAsync();
-            if (dataContext.FurnitureProjects.FirstOrDefaultAsync(p => p.Id == p.Id) == null)
-            {
-                _logger.LogInformation("Время: {TimeAction}. ПРОИЗОШЛА ОШИБКА, когда Пользователь {ExecutorName}, ДОБАВИЛ проект {ProjectName}", DateTime.Now, user.Name, project.Name);
-            }
-
-            return project;
+            throw new NotImplementedException();
         }
 
         public async Task<List<Project>> ToListProjectOrDefaultAsync(string userName)

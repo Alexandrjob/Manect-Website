@@ -3,33 +3,30 @@ using Manect.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Manect.Controllers
 {
     [Authorize]
-    public class AdminController : Controller
+    public class ManagerController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IDataRepository _dataRepository;
-        private readonly ISyncTables _syncTables;
 
-        public AdminController(
+        public ManagerController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            IDataRepository dataRepository,
-            ISyncTables syncTables)
+            IDataRepository dataRepository)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _dataRepository = dataRepository;
-            _syncTables = syncTables;
         }
 
         public async Task<IActionResult> IndexAsync() 
-        { 
+        {
             var name = HttpContext.User.Identity.Name;
             return View(await _dataRepository.ToListProjectOrDefaultAsync(name));
         }
@@ -68,7 +65,7 @@ namespace Manect.Controllers
         public async Task<IActionResult> LogOffAsync()
         {
             await _signInManager.SignOutAsync();
-            return Redirect("/Admin/Index");
+            return Redirect("/Manager/Index");
         }
 
         //[HttpPost]
@@ -78,7 +75,7 @@ namespace Manect.Controllers
             var currentUser = await _dataRepository.FindUserByNameOrDefaultAsync(name);
             await _dataRepository.AddProjectDefaultAsync(currentUser);
             //TODO: нужно чтобы страница просто обновлялась.
-            return Redirect("/Admin/Index");
+            return Redirect("/Manager/Index");
         }
     }
 }

@@ -32,7 +32,7 @@ namespace Manect
 
             services.ConfigureApplicationCookie(config =>
             {
-                config.LoginPath = "/Admin/Login";
+                config.LoginPath = "/Manager/Login";
             });
 
             services.AddScoped<IDataRepository, DataRepository>();
