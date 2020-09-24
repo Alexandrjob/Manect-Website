@@ -53,14 +53,14 @@ namespace Manect.Data
                 ProjectId = project.Id
             };
 
-            _logger.LogInformation("Время: {0}. Пользователь {1}, добавил в проект {2} новый этап: {3}", DateTime.Now, user.Name, project.Name, stage.Name);
+            _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorName}, {Status} в Проект {ProjectName} новый Этап: {StageName}", DateTime.Now, user.Name, Status.Created, project.Name, stage.Name);
 
             var dataContext = DataContext;
             dataContext.Entry(stage).State = EntityState.Added;
             await dataContext.SaveChangesAsync();
             if (dataContext.Stages.FirstOrDefaultAsync(s => s.Id == stage.Id) == null)
             {
-                _logger.LogInformation("Время: {0}. ПРОИЗОШЛА ОШИБКА, когда Пользователь {1}, ДОБАВИЛ в проект {2} новый ЭТАП: {3}", DateTime.Now, user.Name, project.Name, stage.Name);
+                _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorName}, НЕ СМОГ {Status} в Проект {ProjectName} новый Этап: {StageName}", DateTime.Now, user.Name, Status.Created, project.Name, stage.Name);
             }
 
             return stage;
@@ -68,6 +68,10 @@ namespace Manect.Data
         //TODO: сделать метод универсальным (получать значение по которому можно понять какой проект(шаблоны будут записаны в новой таблице) нужно создать)
         public async Task<Project> AddProjectDefaultAsync(ExecutorUser user)
         {
+
+            var myStopwatch = new System.Diagnostics.Stopwatch();
+            myStopwatch.Start();
+            
             Project project = new Project("Стандартный шаблон проекта", 0, user,
                 new List<Stage>()
                 {
@@ -81,21 +85,23 @@ namespace Manect.Data
                         new Stage("Сдача объекта", user)
                 });
 
-            _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorName}, добавил новый проект: {ProjectName}", DateTime.Now, user.Name, project.Name);
+            _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorName}, {Status} новый Проект: {ProjectName}", DateTime.Now, user.Name, Status.Created, project.Name);
 
             var dataContext = DataContext;
             dataContext.Entry(project).State = EntityState.Added;
             await dataContext.SaveChangesAsync();
             if (dataContext.FurnitureProjects.FirstOrDefaultAsync(p => p.Id == p.Id) == null)
             {
-                _logger.LogInformation("Время: {TimeAction}. ПРОИЗОШЛА ОШИБКА, когда Пользователь {ExecutorName}, ДОБАВИЛ проект {ProjectName}", DateTime.Now, user.Name, project.Name);
+                _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorName}, {Status} новый Проект: {ProjectName}", DateTime.Now, user.Name, Status.Created, project.Name);
             }
 
+            myStopwatch.Stop();
+            _logger.LogInformation(myStopwatch.ElapsedMilliseconds.ToString());
             return project;
         }
         public async Task DeleteStageAsync(Stage stage)
         {
-            _logger.LogInformation("Время: {0}. Пользователь {1}, удалил этап: {2}", DateTime.Now, stage.Executor.Name, stage.Name);
+            _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorName}, {Status} в Проекте {ProjectName} Этап: {StageName}", DateTime.Now, stage.Executor.Name, Status.Deleted, stage.Name);
 
             var dataContext = DataContext;
             dataContext.Stages.Remove(stage);
@@ -103,26 +109,30 @@ namespace Manect.Data
 
             if (dataContext.Stages.FirstOrDefaultAsync(s => s.Id == stage.Id).Result != null)
             {
-                _logger.LogInformation("Время: {0}. ПРОИЗОШЛА ОШИБКА, когда Пользователь {1},УДАЛИЛ в проекте {2} ЭТАП: {3}", DateTime.Now, stage.Executor.Name, stage.ProjectId, stage.Name);
+                _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorName}, НЕ СМОГ {Status} в Проекте {ProjectName} Этап: {StageName}", DateTime.Now, stage.Executor.Name, Status.Deleted, stage.ProjectId, stage.Name);
             }
         }
 
         public async Task DeleteProjectAsync(Project project)
         {
-            _logger.LogInformation("Время: {0}. Пользователь {1}, удалил проект: {2}", DateTime.Now, "Имя пользователя"/*project.Executor.Name*/, project.Name);
+            _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorName}, {Status} Проект: {ProjectName}", DateTime.Now, "Имя пользователя"/*project.Executor.Name*/, Status.Deleted, project.Name);
             var dataContext = DataContext;
-            dataContext.FurnitureProjects.Remove(project);
+            dataContext.Entry(project).State = EntityState.Deleted;
             await dataContext.SaveChangesAsync();
 
             if (dataContext.FurnitureProjects.FirstOrDefaultAsync(s => s.Id == project.Id).Result != null)
             {
-                _logger.LogInformation("Время: {0}. ПРОИЗОШЛА ОШИБКА, когда Пользователь {1},УДАЛИЛ в проект {2}", DateTime.Now, project.Executor.Name, project.Name);
+                _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorName}, НЕ СМОГ {Status} Проект: {ProjectName}", DateTime.Now, "Имя пользователя"/*project.Executor.Name*/, Status.Deleted, project.Name);
             }
         }
 
-        public Task SetFlagValue(Status status)
+        //TODO: Залогировать.
+        public async Task SetFlagValueAsync(Stage stage, Status status)
         {
-            throw new NotImplementedException();
+            stage.Status = status;
+            var dataContext = DataContext;
+            dataContext.Entry(stage).State = EntityState.Modified;
+            await dataContext.SaveChangesAsync();
         }
 
         public async Task<List<Project>> ToListProjectOrDefaultAsync(string userName)

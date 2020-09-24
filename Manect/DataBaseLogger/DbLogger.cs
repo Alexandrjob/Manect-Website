@@ -49,28 +49,28 @@ namespace Manect.DataBaseLogger
             {
                 if (state is IEnumerable<KeyValuePair<string, object>> Properties)
                 {
-                    var logItem = new HistoryItem();
+                    var logItem = new LogItem();
 
-                    Type HistoryItemType = typeof(HistoryItem);
-                    PropertyInfo[] HistoryItemField = HistoryItemType.GetProperties();
+                    Type LogItemType = typeof(LogItem);
+                    PropertyInfo[] LogItemProperty = LogItemType.GetProperties();
 
                     foreach (KeyValuePair<string, object> item in Properties)
                     {
-                        for (int i = 0; i < HistoryItemField.Length; i++)
+                        for (int i = 0; i < LogItemProperty.Length; i++)
                         {
                             //Записать в свойство переменной logItem значение item.Value, если без учета регистра название item.Key равно имени свойства HistoryItem.
-                            if (item.Key.ToLower() == HistoryItemField[i].Name.ToLower())
+                            if (item.Key.ToLower() == LogItemProperty[i].Name.ToLower())
                             {
                                 //Запись в logItem.
-                                HistoryItemField[i].SetValue(logItem, item.Value);
+                                LogItemProperty[i].SetValue(logItem, item.Value);
                                 //Типа оптимизирую(Создаю новый массив без элемента которое больше не понадобится).
-                                HistoryItemField = HistoryItemField.Where(e => HistoryItemField.ElementAt(i) != e).ToArray();
+                                LogItemProperty = LogItemProperty.Where(e => LogItemProperty.ElementAt(i) != e).ToArray();
                                 break;
                             }
                         }
                     }
                     //TODO: Сделать адекватную проверку
-                    if (logItem != null)
+                    if (logItem.ExecutorName != null)
                     {
                         var dataContext = DataContext;
                         await dataContext.AddAsync(logItem);

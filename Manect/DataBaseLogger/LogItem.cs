@@ -1,14 +1,15 @@
-﻿using System;
+﻿using Manect.Data.Entities;
+using System;
 
 namespace Manect.DataBaseLogger
 {
-    public class HistoryItem
+    public class LogItem
     {
         public int Id { get; set; }
         public string ExecutorName { get; set; }
         public string ProjectName { get; set; }
         public string StageName { get; set; }
         public DateTime TimeAction { get; set; }
-        //TODO: Считаю нужно добавить поле которое будет указывать на тип дйствия пользователя с обьектом при помощи перечисления
+        public Status Status { get; set; }
     }
 }

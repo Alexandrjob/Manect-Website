@@ -14,6 +14,6 @@ namespace Manect.Data
         public DbSet<Stage> Stages { get; set; }
         public DbSet<Project> FurnitureProjects { get; set; }
         public DbSet<ExecutorUser> ExecutorUsers { get; set; }
-        public DbSet<HistoryItem> LogUserActivity { get; set; }
+        public DbSet<LogItem> LogUserActivity { get; set; }
     }
 }
