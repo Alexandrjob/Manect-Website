@@ -5,7 +5,5 @@ namespace Manect.Interfaces
     public interface ISyncTables
     {
         Task UsersAsync();
-
-        void AddEventHandler();
     }
 }

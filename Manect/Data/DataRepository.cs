@@ -58,6 +58,7 @@ namespace Manect.Data
             var dataContext = DataContext;
             dataContext.Entry(stage).State = EntityState.Added;
             await dataContext.SaveChangesAsync();
+
             if (dataContext.Stages.FirstOrDefaultAsync(s => s.Id == stage.Id) == null)
             {
                 _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorName}, НЕ СМОГ {Status} в Проект {ProjectName} новый Этап: {StageName}", DateTime.Now, user.Name, Status.Created, project.Name, stage.Name);
@@ -65,13 +66,10 @@ namespace Manect.Data
 
             return stage;
         }
+
         //TODO: сделать метод универсальным (получать значение по которому можно понять какой проект(шаблоны будут записаны в новой таблице) нужно создать)
         public async Task<Project> AddProjectDefaultAsync(ExecutorUser user)
         {
-
-            var myStopwatch = new System.Diagnostics.Stopwatch();
-            myStopwatch.Start();
-            
             Project project = new Project("Стандартный шаблон проекта", 0, user,
                 new List<Stage>()
                 {
@@ -84,19 +82,19 @@ namespace Manect.Data
                         new Stage("Монтаж", user),
                         new Stage("Сдача объекта", user)
                 });
-
-            _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorName}, {Status} новый Проект: {ProjectName}", DateTime.Now, user.Name, Status.Created, project.Name);
-
+                       
             var dataContext = DataContext;
             dataContext.Entry(project).State = EntityState.Added;
             await dataContext.SaveChangesAsync();
-            if (dataContext.FurnitureProjects.FirstOrDefaultAsync(p => p.Id == p.Id) == null)
+            //TODO: Сделать так во всех методах.
+            _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} новый Проект: {ProjectId}", DateTime.Now, user.Id, Status.Created, project.Id);
+
+            var result = await dataContext.FurnitureProjects.FirstOrDefaultAsync(p => p.Id == project.Id);
+            if (result == null)
             {
-                _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorName}, {Status} новый Проект: {ProjectName}", DateTime.Now, user.Name, Status.Created, project.Name);
+                _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} новый Проект: {ProjectId}", DateTime.Now, user.Id, Status.NotAdded, project.Id);
             }
 
-            myStopwatch.Stop();
-            _logger.LogInformation(myStopwatch.ElapsedMilliseconds.ToString());
             return project;
         }
         public async Task DeleteStageAsync(Stage stage)
@@ -107,9 +105,10 @@ namespace Manect.Data
             dataContext.Stages.Remove(stage);
             await dataContext.SaveChangesAsync();
 
-            if (dataContext.Stages.FirstOrDefaultAsync(s => s.Id == stage.Id).Result != null)
+            var result = await dataContext.Stages.FirstOrDefaultAsync(s => s.Id == stage.Id);
+            if (result != null)
             {
-                _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorName}, НЕ СМОГ {Status} в Проекте {ProjectName} Этап: {StageName}", DateTime.Now, stage.Executor.Name, Status.Deleted, stage.ProjectId, stage.Name);
+                _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorName}, НЕ СМОГ {Status} в Проекте {ProjectName} Этап: {StageName}", DateTime.Now, stage.Executor.Name, Status.NotDeleted, stage.ProjectId, stage.Name);
             }
         }
 

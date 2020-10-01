@@ -4,7 +4,8 @@
     {
         Created,
         Deleted,
-        Сhanged,
+        NotAdded,
+        NotDeleted,
         Completed
     }
 }

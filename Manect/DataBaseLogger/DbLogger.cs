@@ -58,19 +58,15 @@ namespace Manect.DataBaseLogger
                     {
                         for (int i = 0; i < LogItemProperty.Length; i++)
                         {
-                            //Записать в свойство переменной logItem значение item.Value, если без учета регистра название item.Key равно имени свойства HistoryItem.
                             if (item.Key.ToLower() == LogItemProperty[i].Name.ToLower())
                             {
-                                //Запись в logItem.
                                 LogItemProperty[i].SetValue(logItem, item.Value);
-                                //Типа оптимизирую(Создаю новый массив без элемента которое больше не понадобится).
                                 LogItemProperty = LogItemProperty.Where(e => LogItemProperty.ElementAt(i) != e).ToArray();
                                 break;
                             }
                         }
                     }
-                    //TODO: Сделать адекватную проверку
-                    if (logItem.ExecutorName != null)
+                    if (logItem.ExecutorId != default)
                     {
                         var dataContext = DataContext;
                         await dataContext.AddAsync(logItem);
