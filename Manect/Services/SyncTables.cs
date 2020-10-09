@@ -3,7 +3,6 @@ using Manect.Data.Entities;
 using Manect.Identity;
 using Manect.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

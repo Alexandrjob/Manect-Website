@@ -38,7 +38,7 @@ namespace Manect
             services.AddScoped<IDataRepository, DataRepository>();
             services.AddScoped<ISyncTables, SyncTables>();
 
-            services.AddAuthorization();;
+            services.AddAuthorization();
             services.AddControllersWithViews();
         }
 

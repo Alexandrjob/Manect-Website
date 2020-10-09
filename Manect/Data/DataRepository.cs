@@ -82,7 +82,7 @@ namespace Manect.Data
                         new Stage("Монтаж", user),
                         new Stage("Сдача объекта", user)
                 });
-                       
+
             var dataContext = DataContext;
             dataContext.Entry(project).State = EntityState.Added;
 

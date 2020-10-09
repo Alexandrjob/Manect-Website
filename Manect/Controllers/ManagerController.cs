@@ -24,7 +24,7 @@ namespace Manect.Controllers
             _dataRepository = dataRepository;
         }
 
-        public async Task<IActionResult> IndexAsync() 
+        public async Task<IActionResult> IndexAsync()
         {
             var name = HttpContext.User.Identity.Name;
             return View(await _dataRepository.ToListProjectOrDefaultAsync(name));
@@ -52,7 +52,7 @@ namespace Manect.Controllers
                 return Redirect("/Error/Index");
             }
             var result = await _signInManager.PasswordSignInAsync(user, model.Password, false, false);
-            
+
             if (result.Succeeded)
             {
                 //TODO: В будущем поменять на адаптивным метод, чтобы исключение не выкидывал а перекидывал на index
@@ -67,7 +67,7 @@ namespace Manect.Controllers
             return Redirect("/Manager/Index");
         }
 
-        //[HttpPost]
+        [HttpPost]
         public async Task<IActionResult> AddProject()
         {
             var name = HttpContext.User.Identity.Name;

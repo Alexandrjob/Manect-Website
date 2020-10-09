@@ -30,7 +30,7 @@ namespace Manect.Data.Entities
             Name = name;
             Executor = executor;
             Comment = comment;
-            
+
             CreationDate = DateTime.Now;
             ExpirationDate = CreationDate.AddDays(30);
             Status = Status.Created;

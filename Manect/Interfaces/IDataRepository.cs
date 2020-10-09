@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Manect.Interfaces
 {
-    public interface IDataRepository 
+    public interface IDataRepository
     {
         Task<ExecutorUser> FindUserByNameOrDefaultAsync(string name);
         Task<ExecutorUser> FindUserByEmailOrDefaultAsync(string email);

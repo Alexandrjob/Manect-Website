@@ -18,7 +18,7 @@ namespace Manect.Data.Entities
         /// </summary>
         public ICollection<Stage> Stages { get; set; }
 
-        public Project() 
+        public Project()
         {
             Stages = new List<Stage>();
         }

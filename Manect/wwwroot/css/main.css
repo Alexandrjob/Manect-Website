@@ -104,32 +104,32 @@ button {
 
 @font-face {
     font-family: TT Travels;
-    src: url(/assets/font/TTTravels/TTTravels-Regular.eot);
-    src: local("TT Travels Regular"),local("TTTravels-Regular"),url(/assets/font/TTTravels/TTTravels-Regular.eot?#iefix) format("embedded-opentype"),url(/assets/font/TTTravels/TTTravels-Regular.woff2) format("woff2"),url(/assets/font/TTTravels/TTTravels-Regular.woff) format("woff"),url(/assets/font/TTTravels/TTTravels-Regular.ttf) format("truetype");
+    src: url(/font/TTTravels/TTTravels-Regular.eot);
+    src: local("TT Travels Regular"),local("TTTravels-Regular"),url(/font/TTTravels/TTTravels-Regular.eot) format("embedded-opentype"),url(/font/TTTravels/TTTravels-Regular.woff2) format("woff2"),url(/font/TTTravels/TTTravels-Regular.woff) format("woff"),url(font/TTTravels/TTTravels-Regular.ttf) format("truetype");
     font-weight: 400;
     font-style: normal
 }
 
 @font-face {
     font-family: TT Travels;
-    src: url(/assets/font/TTTravels/TTTravels-Bold.eot);
-    src: local("TT Travels Bold"),local("TTTravels-Bold"),url(/assets/font/TTTravels/TTTravels-Bold.eot?#iefix) format("embedded-opentype"),url(/assets/font/TTTravels/TTTravels-Bold.woff2) format("woff2"),url(/assets/font/TTTravels/TTTravels-Bold.woff) format("woff"),url(/assets/font/TTTravels/TTTravels-Bold.ttf) format("truetype");
+    src: url(/font/TTTravels/TTTravels-Bold.eot);
+    src: local("TT Travels Bold"),local("TTTravels-Bold"),url(/font/TTTravels/TTTravels-Bold.eot?#iefix) format("embedded-opentype"),url(/font/TTTravels/TTTravels-Bold.woff2) format("woff2"),url(/font/TTTravels/TTTravels-Bold.woff) format("woff"),url(/font/TTTravels/TTTravels-Bold.ttf) format("truetype");
     font-weight: 700;
     font-style: normal
 }
 
 @font-face {
     font-family: TT Travels;
-    src: url(/assets/font/TTTravels/TTTravels-Medium.eot);
-    src: local("TT Travels Medium"),local("TTTravels-Medium"),url(/assets/font/TTTravels/TTTravels-Medium.eot?#iefix) format("embedded-opentype"),url(/assets/font/TTTravels/TTTravels-Medium.woff2) format("woff2"),url(/assets/font/TTTravels/TTTravels-Medium.woff) format("woff"),url(/assets/font/TTTravels/TTTravels-Medium.ttf) format("truetype");
+    src: url(/font/TTTravels/TTTravels-Medium.eot);
+    src: local("TT Travels Medium"),local("TTTravels-Medium"),url(/font/TTTravels/TTTravels-Medium.eot?#iefix) format("embedded-opentype"),url(/font/TTTravels/TTTravels-Medium.woff2) format("woff2"),url(/font/TTTravels/TTTravels-Medium.woff) format("woff"),url(/font/TTTravels/TTTravels-Medium.ttf) format("truetype");
     font-weight: 500;
     font-style: normal
 }
 
 @font-face {
     font-family: TT Travels;
-    src: url(/assets/font/TTTravels/TTTravels-DemiBold.eot);
-    src: local("TT Travels DemiBold"),local("TTTravels-DemiBold"),url(/assets/font/TTTravels/TTTravels-DemiBold.eot?#iefix) format("embedded-opentype"),url(/assets/font/TTTravels/TTTravels-DemiBold.woff2) format("woff2"),url(/assets/font/TTTravels/TTTravels-DemiBold.woff) format("woff"),url(/assets/font/TTTravels/TTTravels-DemiBold.ttf) format("truetype");
+    src: url(/font/TTTravels/TTTravels-DemiBold.eot);
+    src: local("TT Travels DemiBold"),local("TTTravels-DemiBold"),url(/font/TTTravels/TTTravels-DemiBold.eot?#iefix) format("embedded-opentype"),url(/font/TTTravels/TTTravels-DemiBold.woff2) format("woff2"),url(/font/TTTravels/TTTravels-DemiBold.woff) format("woff"),url(/font/TTTravels/TTTravels-DemiBold.ttf) format("truetype");
     font-weight: 600;
     font-style: normal
 }

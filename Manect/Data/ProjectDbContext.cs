@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Manect.Data.Entities;
+﻿using Manect.Data.Entities;
 using Manect.DataBaseLogger;
+using Microsoft.EntityFrameworkCore;
 
 namespace Manect.Data
 {
