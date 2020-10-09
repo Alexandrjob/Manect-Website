@@ -85,7 +85,11 @@ namespace Manect.Data
                        
             var dataContext = DataContext;
             dataContext.Entry(project).State = EntityState.Added;
+
+            foreach (Stage stage in project.Stages)
+                dataContext.Entry(stage).State = EntityState.Added;
             await dataContext.SaveChangesAsync();
+
             //TODO: Сделать так во всех методах.
             _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} новый Проект: {ProjectId}", DateTime.Now, user.Id, Status.Created, project.Id);
 

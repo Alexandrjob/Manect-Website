@@ -22,15 +22,14 @@ namespace Manect.Data.Entities
         {
             Stages = new List<Stage>();
         }
-        
+
         /// <summary>
         /// Создание проекта.
         /// </summary>
         /// <param name="name"> Название проекта. </param>
-        /// <param name="expirationDate"> Дата завершения проекта. </param>
         /// <param name="price"> Цена проекта. </param>
+        /// <param name="executor"> Исполнитель проекта. </param>
         /// <param name="stages"> Этапы проекта. </param>
-        /// <param name="isDone"> Завершен проект или нет. </param>
         public Project(string name, int price, ExecutorUser executor, List<Stage> stages)
         {
             Name = name;
