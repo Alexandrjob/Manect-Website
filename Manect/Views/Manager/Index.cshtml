@@ -1,4 +1,4 @@
-@using Manect.Data.Entities;
+﻿@using Manect.Data.Entities;
 @model IEnumerable<Project>
 @{
     Layout = null;
@@ -31,7 +31,7 @@
                             <a class="select-box" href="#" title="Новый проект"><img src="~/image/icon/plus.svg" alt="icon">Новый проект</a>
                             <div class="select-options">
                                 <form asp-controller="Manager" asp-action="AddProject" method="post">
-                                    <div class="option" data-id="1"><img src="~/image/icon/plus.svg" alt="icon"><button>Стандартный шаблон</button></div>
+                                    <div class="option" data-id="4"><img src="~/image/icon/plus.svg" alt="icon"><button>Стандартный шаблон</button></div>
                                 </form>
 
                                 <div class="option" data-id="1"><img src="~/image/icon/plus.svg" alt="icon"><span>Стандартный шаблон</span></div>
@@ -48,15 +48,20 @@
                 <div class="container">
                     <div class="content">
                         <h1>Актуальные проекты</h1>
-                        <ul class="project-list">
-                            @foreach (Project project in Model)
-                            {
-                                if (project.Status != Status.Completed)
+                        <form asp-controller="Manager" asp-action="OpenProject">
+                            <ul class="project-list">
+                                @foreach (Project project in Model)
                                 {
-                                    <li><a href="project.html" title="@project.Name @project.CreationDate"><img src="~/image/project.jpg" alt="image"><span>@project.Name @project.CreationDate</span></a></li>
+                                    if (project.Status != Status.Completed)
+                                    {
+                                        <li>
+                                            <input hidden asp-for=@project.Id name="projectId"/>
+                                            <button><img src="~/image/project.jpg" alt="image"><span>@project.Name @project.CreationDate.ToString("dd.MM.yyyy")</span></button>
+                                        </li>
+                                    }
                                 }
-                            }
-                        </ul>
+                            </ul>
+                        </form>
                     </div>
                 </div>
             </section>

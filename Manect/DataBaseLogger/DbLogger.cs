@@ -42,7 +42,6 @@ namespace Manect.DataBaseLogger
             return logLevel == LogLevel.Information;
         }
 
-        //TODO: Переименовать переменные для большей читабельости.
         public async void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {
             if (formatter != null & IsEnabled(logLevel))
@@ -74,7 +73,6 @@ namespace Manect.DataBaseLogger
 
                         lock (_lock)
                         {
-                            //TODO: Реализовать запись в бд.
                             File.AppendAllText(filePath, formatter(state, exception) + Environment.NewLine);
                         }
                     }

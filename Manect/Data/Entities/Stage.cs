@@ -32,7 +32,7 @@ namespace Manect.Data.Entities
             Comment = comment;
 
             CreationDate = DateTime.Now;
-            ExpirationDate = CreationDate.AddDays(30);
+            ExpirationDate = CreationDate.AddDays(2);
             Status = Status.Created;
         }
     }

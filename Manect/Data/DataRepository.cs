@@ -148,5 +148,14 @@ namespace Manect.Data
 
             return new List<Project>();
         }
+
+        public async Task<Project> GetAllProjectDataAsync(int projectId)
+        {
+            var project = await DataContext.FurnitureProjects.Include(p => p.Stages)
+                                                             .Include(p => p.Executor)
+                                                             .Where(p => p.Id == projectId)
+                                                             .FirstOrDefaultAsync();
+            return project;
+        }
     }
 }

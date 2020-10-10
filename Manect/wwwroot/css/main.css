@@ -229,7 +229,8 @@ a {
 }
 
 input {
-    font: normal 18px/22px TT Travels
+    font: normal 18px/22px TT Travels;
+    width: 400px
 }
 
 .checkbox {
@@ -491,7 +492,7 @@ main {
     }
 
 #my .container .project-steps__info, #project .container .project-steps__info {
-    width: 440px
+    width: 500px
 }
 
 #my .container .project-steps__deadline, #project .container .project-steps__deadline {
@@ -518,7 +519,7 @@ main {
 }
 
 #my .container .project-steps__date, #project .container .project-steps__date {
-    width: 100px;
+    /*width: 100px;*/
     font-weight: 600;
     font-size: 12px;
     line-height: 14px
@@ -531,7 +532,8 @@ main {
 
 #my .container .project-steps__users, #project .container .project-steps__users {
     position: relative;
-    max-width: 200px
+    max-width: 200px;
+    margin-left: 100px
 }
 
     #my .container .project-steps__users img, #project .container .project-steps__users img {

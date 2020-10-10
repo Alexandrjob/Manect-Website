@@ -14,6 +14,7 @@ namespace Manect.Interfaces
         Task DeleteStageAsync(Stage stage);
         Task DeleteProjectAsync(Project project);
         Task SetFlagValueAsync(Stage stage, Status status);
+        Task<Project> GetAllProjectDataAsync(int projectId);
         //TODO: В будущем при необходимости переделать это не очень хорошо - делать выборку по имени.
         Task<List<Project>> ToListProjectOrDefaultAsync(string userName);
     }

@@ -1,0 +1,109 @@
+﻿@using Manect.Data.Entities;
+@model Manect.Data.Entities.Project
+@{
+        Layout = null;
+    int count = 0;
+}
+
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Manect-Редактирование проекта</title>
+    <!-- meta-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <!-- icon & css-->
+    <link href="favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="~/css/main.css" rel="stylesheet">
+</head>
+<body class="project-page">
+    <div id="app">
+        <header>
+            <div class="container">
+                <div class="header-menu"><a class="open-menu" href="#menu" title="Открыть меню"><img src="/image/icon/menu_bar.svg" alt="icon"></a></div>
+                <div class="header">
+                    <div class="header-title">
+                        @Model.Name
+                        <div class="button button_invert">
+                            <a href="#" title="Добавить этап">
+                                <svg viewBox="0 0 17 17" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M8.77975 7.86082L8.77974 0.650683C8.77974 0.396834 8.57395 0.19105 8.32012 0.191067C8.06629 0.191083 7.86049 0.39685 7.8605 0.650683L7.86051 7.86083L0.65037 7.86082C0.39652 7.86082 0.190737 8.0666 0.190753 8.32043C0.190769 8.57427 0.396537 8.78007 0.65037 8.78005L7.86049 8.78005L7.86051 15.9902C7.86051 16.244 8.06629 16.4498 8.32012 16.4498C8.44703 16.4498 8.56193 16.3983 8.64511 16.3152C8.72829 16.232 8.77974 16.1171 8.77976 15.9902L8.77974 8.78007L15.9899 8.78007C16.1168 8.78007 16.2317 8.72861 16.3148 8.64543C16.398 8.56224 16.4495 8.44736 16.4495 8.32044C16.4495 8.06659 16.2437 7.8608 15.9899 7.86082L8.77975 7.86082Z"></path>
+                                </svg>Добавить этап
+                            </a>
+                        </div>
+                    </div>
+                    <div class="header-button">
+                        <div class="button"><a href="#" title="Отмена">Отмена</a></div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main>
+            <section id="project">
+                <div class="container">
+                    <div class="content">
+                        <ul class="project-steps">
+                            @foreach (Stage stage in Model.Stages)
+                            {
+                                count++;
+                                <li>
+                                    <div class="project-steps__info">
+                                        <div class="project-steps__title">
+                                            <div class="checkbox">
+                                                <input id="step-@count" type="checkbox" name="step-@count" value="@count">
+                                                <label for="step-@count"></label>
+                                                <div class="checkbox__text">Этап:<span>@stage.Name</span></div>
+                                            </div>
+                                        </div>
+                                        <div class="project-steps__deadline">Дедлайн:<span>@stage.ExpirationDate.ToString("dd.MM.yyyy")</span></div>
+                                        <div class="project-steps__comments">
+                                            <input id="comment-1" type="text" name="comment-1" placeholder="Комментарии" value="@stage.Comment">
+                                        </div>
+                                    </div>
+                                    <div class="project-steps__date">Дата:<span>@stage.CreationDate.ToString("dd.MM.yyyy")</span></div>
+                                    <div class="project-steps__users">
+                                        <div class="select">
+                                            <a class="select-box" href="#" title="Добавить исполнителя"><img src="/image/icon/add_user.svg" alt="icon"><span></span></a>
+                                            <div class="select-options">
+                                                <div class="option" data-id="1"><span class="icon">Л</span><span class="name">Лиза</span></div>
+                                                <div class="option" data-id="2"><span class="icon">П</span><span class="name">Павел</span></div>
+                                                <div class="option" data-id="3"><span class="icon">К</span><span class="name">Катя</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="project-steps__trash"><a href="#" title="Удалить этап"><img src="/image/icon/trash.svg" alt="icon"></a></div>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <!-- menu-->
+        <div class="menu">
+            <div class="overlay">
+                <!-- меню-->
+                <div class="module" id="menu">
+                    <a class="close-menu" href="#" title="Закрыть меню"><img src="/image/icon/close.svg" alt="icon"></a>
+                    <nav class="sidebar-menu">
+                        <ul>
+                            <li class="active"><a href="/index.html" title="Мои проекты">Мои проекты</a></li>
+                            <li><a href="/calendar.html" title="Календарь">Календарь</a></li>
+                            <li><a href="/my.html" title="Теперь моё">Теперь моё</a></li>
+                            <li><a href="/history.html" title="История">История</a></li>
+                            <li><a href="/projects.html" title="Проекты моих исполнителей">Проекты моих исполнителей</a></li>
+                        </ul>
+                    </nav>
+                    <div class="sidebar-copyright">&copy; 2020 Dома мебель</div>
+                </div>
+            </div>
+        </div>
+        <!-- menu end-->
+    </div>
+    <!-- js-->
+    <script src="/js/vendors.js"></script>
+    <script src="/js/main.js"></script>
+</body>
+</html>

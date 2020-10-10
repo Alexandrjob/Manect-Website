@@ -76,5 +76,10 @@ namespace Manect.Controllers
             //TODO: нужно чтобы страница просто обновлялась.
             return Redirect("/Manager/Index");
         }
+
+        public IActionResult OpenProject(int projectId)
+        {
+            return RedirectToAction("Index", "Project", new { projectId });
+        }
     }
 }
