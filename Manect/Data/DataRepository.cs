@@ -46,14 +46,14 @@ namespace Manect.Data
             throw new NotImplementedException();
         }
 
-        public async Task<Stage> AddStageAsync(ExecutorUser user, Project project)
+        public async Task<Stage> AddStageAsync(ExecutorUser user, int projectId)
         {
             var stage = new Stage("Новый этап", user)
             {
-                ProjectId = project.Id
+                ProjectId = projectId
             };
 
-            _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorName}, {Status} в Проект {ProjectName} новый Этап: {StageName}", DateTime.Now, user.Name, Status.Created, project.Name, stage.Name);
+            _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorName}, {Status} в Проект {ProjectName} новый Этап: {StageName}", DateTime.Now, user.Name, Status.Created, projectId, stage.Name);
 
             var dataContext = DataContext;
             dataContext.Entry(stage).State = EntityState.Added;
@@ -61,7 +61,7 @@ namespace Manect.Data
 
             if (dataContext.Stages.FirstOrDefaultAsync(s => s.Id == stage.Id) == null)
             {
-                _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorName}, НЕ СМОГ {Status} в Проект {ProjectName} новый Этап: {StageName}", DateTime.Now, user.Name, Status.Created, project.Name, stage.Name);
+                _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorName}, НЕ СМОГ {Status} в Проект {ProjectName} новый Этап: {StageName}", DateTime.Now, user.Name, Status.Created, projectId, stage.Name);
             }
 
             return stage;

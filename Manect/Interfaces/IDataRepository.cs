@@ -9,7 +9,7 @@ namespace Manect.Interfaces
         Task<ExecutorUser> FindUserByNameOrDefaultAsync(string name);
         Task<ExecutorUser> FindUserByEmailOrDefaultAsync(string email);
         Task<Project> FindProjectAsync(string name);
-        Task<Stage> AddStageAsync(ExecutorUser user, Project project);
+        Task<Stage> AddStageAsync(ExecutorUser user, int projectId);
         Task<Project> AddProjectDefaultAsync(ExecutorUser user);
         Task DeleteStageAsync(Stage stage);
         Task DeleteProjectAsync(Project project);
