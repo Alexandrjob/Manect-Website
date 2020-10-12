@@ -28,8 +28,7 @@ body {
 }
 
 footer, form, header, main, section {
-    position: relative;
-    width: 100%
+    position: relative
 }
 
 article, aside, img, nav, section {
@@ -91,7 +90,8 @@ button, input, select, textarea {
     font: inherit;
     -webkit-appearance: none;
     -moz-appearance: none;
-    appearance: none
+    appearance: none;
+    background: hsla(0,0%,0%,.0)
 }
 
     button:active, button:focus, input:active, input:focus, select:active, select:focus, textarea:active, textarea:focus {

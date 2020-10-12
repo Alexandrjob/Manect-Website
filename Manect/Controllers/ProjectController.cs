@@ -19,6 +19,10 @@ namespace Manect.Controllers
         public async Task<IActionResult> IndexAsync(int projectId)
         {
             var project = await _dataRepository.GetAllProjectDataAsync(projectId);
+            if(project == null)
+            {
+                return Redirect("/Error/Index");
+            }
             return View(project);
         }
 
@@ -27,6 +31,14 @@ namespace Manect.Controllers
             var name = HttpContext.User.Identity.Name;
             var currentUser = await _dataRepository.FindUserByNameOrDefaultAsync(name);
             await _dataRepository.AddStageAsync(currentUser, projectId);
+
+            var project = await _dataRepository.GetAllProjectDataAsync(projectId);
+            return View("Index", project);
+        }
+
+        public async Task<IActionResult> DeleteStageAsync(int stageId, int projectId)
+        {
+            await _dataRepository.DeleteStageAsync(stageId);
 
             var project = await _dataRepository.GetAllProjectDataAsync(projectId);
             return View("Index", project);

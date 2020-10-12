@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Content Remove="Views\Manager\Project.cshtml" />
+    <Content Remove="wwwroot\css\Header.css" />
   </ItemGroup>
 
   <ItemGroup>

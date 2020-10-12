@@ -1,22 +1,12 @@
 ﻿@using Manect.Data.Entities;
 @model Manect.Data.Entities.Project
 @{
-        Layout = null;
     int count = 0;
 }
 
 <html lang="ru">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Manect-Редактирование проекта</title>
-    <!-- meta-->
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="keywords" content="">
-    <!-- icon & css-->
-    <link href="favicon.ico" rel="shortcut icon" type="image/x-icon">
-    <link href="~/css/main.css" rel="stylesheet">
 </head>
 <body class="project-page">
     <div id="app">
@@ -53,59 +43,45 @@
                             @foreach (Stage stage in Model.Stages)
                             {
                                 count++;
-                                <li>
-                                    <div class="project-steps__info">
-                                        <div class="project-steps__title">
-                                            <div class="checkbox">
-                                                <input id="step-@count" type="checkbox" name="step-@count" value="@count">
-                                                <label for="step-@count"></label>
-                                                <div class="checkbox__text">Этап:<span>@stage.Name</span></div>
-                                            </div>
-                                        </div>
-                                        <div class="project-steps__deadline">Дедлайн:<span>@stage.ExpirationDate.ToString("dd.MM.yyyy")</span></div>
-                                        <div class="project-steps__comments">
-                                            <input id="comment-1" type="text" name="comment-1" placeholder="Комментарии" value="@stage.Comment">
+                            <li>
+                                <div class="project-steps__info">
+                                    <div class="project-steps__title">
+                                        <div class="checkbox">
+                                            <input id="step-@count" type="checkbox" name="step-@count" value="@count">
+                                            <label for="step-@count"></label>
+                                            <div class="checkbox__text">Этап:<span>@stage.Name</span></div>
                                         </div>
                                     </div>
-                                    <div class="project-steps__date">Дата:<span>@stage.CreationDate.ToString("dd.MM.yyyy")</span></div>
-                                    <div class="project-steps__users">
-                                        <div class="select">
-                                            <a class="select-box" href="#" title="Добавить исполнителя"><img src="/image/icon/add_user.svg" alt="icon"><span></span></a>
-                                            <div class="select-options">
-                                                <div class="option" data-id="1"><span class="icon">Л</span><span class="name">Лиза</span></div>
-                                                <div class="option" data-id="2"><span class="icon">П</span><span class="name">Павел</span></div>
-                                                <div class="option" data-id="3"><span class="icon">К</span><span class="name">Катя</span></div>
-                                            </div>
+                                    <div class="project-steps__deadline">Дедлайн:<span>@stage.ExpirationDate.ToString("dd.MM.yyyy")</span></div>
+                                    <div class="project-steps__comments">
+                                        <input id="comment-1" type="text" name="comment-1" placeholder="Комментарии" value="@stage.Comment">
+                                    </div>
+                                </div>
+                                <div class="project-steps__date">Дата:<span>@stage.CreationDate.ToString("dd.MM.yyyy")</span></div>
+                                <div class="project-steps__users">
+                                    <div class="select">
+                                        <a class="select-box" href="#" title="Добавить исполнителя"><img src="/image/icon/add_user.svg" alt="icon"><span></span></a>
+                                        <div class="select-options">
+                                            <div class="option" data-id="1"><span class="icon">Л</span><span class="name">Лиза</span></div>
+                                            <div class="option" data-id="2"><span class="icon">П</span><span class="name">Павел</span></div>
+                                            <div class="option" data-id="3"><span class="icon">К</span><span class="name">Катя</span></div>
                                         </div>
                                     </div>
-                                    <div class="project-steps__trash"><a href="#" title="Удалить этап"><img src="/image/icon/trash.svg" alt="icon"></a></div>
-                                </li>
+                                </div>
+                                <form asp-controller="Project" asp-action="DeleteStage">
+                                    <input hidden asp-for=@stage.Id name="stageId" />
+                                    <input hidden asp-for=@stage.ProjectId name="projectId" />
+                                    <button>
+                                        <div class="project-steps__trash" title="Удалить этап"><img src="/image/icon/trash.svg" alt="icon"></div>
+                                    </button>
+                                </form>
+                            </li>
                             }
                         </ul>
                     </div>
                 </div>
             </section>
         </main>
-        <!-- menu-->
-        <div class="menu">
-            <div class="overlay">
-                <!-- меню-->
-                <div class="module" id="menu">
-                    <a class="close-menu" href="#" title="Закрыть меню"><img src="/image/icon/close.svg" alt="icon"></a>
-                    <nav class="sidebar-menu">
-                        <ul>
-                            <li class="active"><a href="/index.html" title="Мои проекты">Мои проекты</a></li>
-                            <li><a href="/calendar.html" title="Календарь">Календарь</a></li>
-                            <li><a href="/my.html" title="Теперь моё">Теперь моё</a></li>
-                            <li><a href="/history.html" title="История">История</a></li>
-                            <li><a href="/projects.html" title="Проекты моих исполнителей">Проекты моих исполнителей</a></li>
-                        </ul>
-                    </nav>
-                    <div class="sidebar-copyright">&copy; 2020 Dома мебель</div>
-                </div>
-            </div>
-        </div>
-        <!-- menu end-->
     </div>
     <!-- js-->
     <script src="/js/vendors.js"></script>

@@ -1,24 +1,11 @@
 ﻿@using Manect.Data.Entities;
 @model IEnumerable<Project>
-@{
-    Layout = null;
-}
+
 
 <html lang="ru">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Мои проекты</title>
-    <!-- meta-->
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="keywords" content="">
-    <!-- meta end-->
-    <!-- icon & css-->
-    <link href="favicon.ico" rel="shortcut icon" type="image/x-icon">
-    <link href="~/css/main.css" rel="stylesheet">
+    <title>Manect-Мои проекты</title>
 </head>
-<!-- icon & css end-->
 <body class="index-page">
     <div id="app">
         <header>
@@ -48,45 +35,24 @@
                 <div class="container">
                     <div class="content">
                         <h1>Актуальные проекты</h1>
-                        <form asp-controller="Manager" asp-action="OpenProject">
-                            <ul class="project-list">
-                                @foreach (Project project in Model)
+                        <ul class="project-list">
+                            @foreach (Project project in Model)
+                            {
+                                if (project.Status != Status.Completed)
                                 {
-                                    if (project.Status != Status.Completed)
-                                    {
-                                        <li>
-                                            <input hidden asp-for=@project.Id name="projectId"/>
+                                    <li>
+                                        <form asp-controller="Manager" asp-action="OpenProject">
+                                            <input hidden asp-for=@project.Id name="projectId" />
                                             <button><img src="~/image/project.jpg" alt="image"><span>@project.Name @project.CreationDate.ToString("dd.MM.yyyy")</span></button>
-                                        </li>
-                                    }
+                                        </form>
+                                    </li>
                                 }
-                            </ul>
-                        </form>
+                            }
+                        </ul>
                     </div>
                 </div>
             </section>
         </main>
-        <!-- menu-->
-        <div class="menu">
-            <div class="overlay">
-                <!-- меню-->
-                <div class="module" id="menu">
-                    <a class="close-menu" href="#" title="Закрыть меню"><img src="~/image/icon/close.svg" alt="icon"></a>
-                    <nav class="sidebar-menu">
-                        <ul>
-                            <li class="active"><a href="index.html" title="Мои проекты">Мои проекты</a></li>
-                            <li><a href="calendar.html" title="Календарь">Календарь</a></li>
-                            <li><a href="my.html" title="Теперь моё">Теперь моё</a></li>
-                            <li><a href="history.html" title="История">История</a></li>
-                            <li><a href="projects.html" title="Проекты моих исполнителей">Проекты моих исполнителей</a></li>
-                            <li><a asp-controller="Manager" asp-action="LogOff">LogOff</a></li>
-                        </ul>
-                    </nav>
-                    <div class="sidebar-copyright">&copy; 2020 Dома мебель</div>
-                </div>
-            </div>
-        </div>
-        <!-- menu end-->
     </div>
     <!-- js-->
     <script src="~/js/vendors.js"></script>

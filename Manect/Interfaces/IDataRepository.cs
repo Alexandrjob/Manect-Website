@@ -11,7 +11,7 @@ namespace Manect.Interfaces
         Task<Project> FindProjectAsync(string name);
         Task<Stage> AddStageAsync(ExecutorUser user, int projectId);
         Task<Project> AddProjectDefaultAsync(ExecutorUser user);
-        Task DeleteStageAsync(Stage stage);
+        Task DeleteStageAsync(int stageId);
         Task DeleteProjectAsync(Project project);
         Task SetFlagValueAsync(Stage stage, Status status);
         Task<Project> GetAllProjectDataAsync(int projectId);

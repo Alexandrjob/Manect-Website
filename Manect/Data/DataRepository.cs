@@ -53,15 +53,15 @@ namespace Manect.Data
                 ProjectId = projectId
             };
 
-            _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorName}, {Status} в Проект {ProjectName} новый Этап: {StageName}", DateTime.Now, user.Name, Status.Created, projectId, stage.Name);
-
             var dataContext = DataContext;
             dataContext.Entry(stage).State = EntityState.Added;
             await dataContext.SaveChangesAsync();
 
+            _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} в Проект {ProjectId} новый Этап: {StageId}", DateTime.Now, user.Id, Status.Created, projectId, stage.Id);
+
             if (dataContext.Stages.FirstOrDefaultAsync(s => s.Id == stage.Id) == null)
             {
-                _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorName}, НЕ СМОГ {Status} в Проект {ProjectName} новый Этап: {StageName}", DateTime.Now, user.Name, Status.Created, projectId, stage.Name);
+                _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} в Проект {ProjectId} новый Этап: {StageId}", DateTime.Now, user.Id, Status.NotAdded, projectId, stage.Id);
             }
 
             return stage;
@@ -101,31 +101,37 @@ namespace Manect.Data
 
             return project;
         }
-        public async Task DeleteStageAsync(Stage stage)
+        public async Task DeleteStageAsync(int stageId)
         {
-            _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorName}, {Status} в Проекте {ProjectName} Этап: {StageName}", DateTime.Now, stage.Executor.Name, Status.Deleted, stage.Name);
+            var stage = new Stage
+            {
+                Id = stageId,
+            };
+            _logger.LogInformation("Время: {TimeAction}. {Status} Этап: {StageId}", DateTime.Now, Status.Deleted, stage.Id);
 
             var dataContext = DataContext;
+
+            dataContext.Stages.Attach(stage);
             dataContext.Stages.Remove(stage);
             await dataContext.SaveChangesAsync();
 
             var result = await dataContext.Stages.FirstOrDefaultAsync(s => s.Id == stage.Id);
             if (result != null)
             {
-                _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorName}, НЕ СМОГ {Status} в Проекте {ProjectName} Этап: {StageName}", DateTime.Now, stage.Executor.Name, Status.NotDeleted, stage.ProjectId, stage.Name);
+                _logger.LogInformation("Время: {TimeAction}. {Status} Этап: {StageId}", DateTime.Now, Status.NotDeleted, stage.Id);
             }
         }
 
         public async Task DeleteProjectAsync(Project project)
         {
-            _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorName}, {Status} Проект: {ProjectName}", DateTime.Now, "Имя пользователя"/*project.Executor.Name*/, Status.Deleted, project.Name);
+            _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} Проект: {ProjectId}", DateTime.Now, "Имя пользователя"/*project.Executor.Name*/, Status.Deleted, project.Id);
             var dataContext = DataContext;
             dataContext.Entry(project).State = EntityState.Deleted;
             await dataContext.SaveChangesAsync();
 
             if (dataContext.FurnitureProjects.FirstOrDefaultAsync(s => s.Id == project.Id).Result != null)
             {
-                _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorName}, НЕ СМОГ {Status} Проект: {ProjectName}", DateTime.Now, "Имя пользователя"/*project.Executor.Name*/, Status.Deleted, project.Name);
+                _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorName}, НЕ СМОГ {Status} Проект: {ProjectName}", DateTime.Now, "Имя пользователя"/*project.Executor.Name*/, Status.Deleted, project.Id);
             }
         }
 
