@@ -38,14 +38,14 @@ namespace Manect.Services
 
         public async Task UsersAsync()
         {
-            List<ExecutorUser> identityUsers = IdentityContext.Users
+            List<Executor> identityUsers = IdentityContext.Users
                 .Select(c => new
                 {
                     c.UserName,
                     c.Email
                 })
                 .AsEnumerable()
-                .Select(an => new ExecutorUser
+                .Select(an => new Executor
                 {
                     Name = an.UserName,
                     Email = an.Email

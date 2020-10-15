@@ -28,13 +28,13 @@ namespace Manect.Data.Entities
         /// </summary>
         /// <param name="name"> Название проекта. </param>
         /// <param name="price"> Цена проекта. </param>
-        /// <param name="executor"> Исполнитель проекта. </param>
+        /// <param name="executorId"> Исполнитель проекта. </param>
         /// <param name="stages"> Этапы проекта. </param>
-        public Project(string name, int price, ExecutorUser executor, List<Stage> stages)
+        public Project(string name, int price, int executorId, List<Stage> stages)
         {
             Name = name;
             Price = price;
-            Executor = executor;
+            ExecutorId = executorId;
             Stages = stages;
 
             CreationDate = DateTime.Now;

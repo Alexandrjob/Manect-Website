@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Manect.Data.Entities
 {
@@ -8,15 +9,17 @@ namespace Manect.Data.Entities
     public class BaseEntity
     {
         public int Id { get; set; }
+
         /// <summary>
         /// Название проекта или этапа(в зависимости от класса реализующий данный класс).
         /// </summary>
         public string Name { get; set; }
 
+        [ForeignKey("Executor")]
         /// <summary>
         /// Исполнитель проекта или этапа(в зависимости от класса реализующий данный класс).
         /// </summary>  
-        public ExecutorUser Executor { get; set; }
+        public int ExecutorId { get; set; }
 
         /// <summary>
         /// Дата создания проекта или этапа(в зависимости от класса реализующий данный класс).

@@ -12,11 +12,6 @@ namespace Manect.Data
     {
         public static async Task SeedAsync(ProjectDbContext dataContext, ISyncTables syncTables)
         {
-
-            //dataContext.FurnitureProjects.RemoveRange(dataContext.FurnitureProjects);
-            //dataContext.Stages.RemoveRange(dataContext.Stages);
-            //dataContext.SaveChanges();
-
             if (!dataContext.ExecutorUsers.Any())
             {
                 await syncTables.UsersAsync();
@@ -24,51 +19,51 @@ namespace Manect.Data
 
             if (!dataContext.FurnitureProjects.Any())
             {
-                var userK = await dataContext.ExecutorUsers.FirstOrDefaultAsync(user => user.Name == "Kostya");
-                var userS = await dataContext.ExecutorUsers.FirstOrDefaultAsync(user => user.Name == "Sasha");
-                if (userK != null & userS != null)
+                var userKostyaId = await dataContext.ExecutorUsers.Where(user => user.Name == "Kostya").Select(u => u.Id).FirstOrDefaultAsync();
+                var userSashaId = await dataContext.ExecutorUsers.Where(user => user.Name == "Sasha").Select(u=>u.Id).FirstOrDefaultAsync();
+                if (userKostyaId != default & userSashaId != default)
                 {
                     await dataContext.FurnitureProjects.AddRangeAsync(
-                        GetPreconfiguredProjects(userK, userS));
+                        GetPreconfiguredProjects(userKostyaId, userSashaId));
 
                     dataContext.SaveChanges();
                 }
             }
         }
 
-        static IEnumerable<Project> GetPreconfiguredProjects(ExecutorUser userK, ExecutorUser userS)
+        static IEnumerable<Project> GetPreconfiguredProjects(int userKostyaId, int userSashaId)
         {
             return new List<Project>()
             {
-                new Project("Кухня", 160000, userK,
+                new Project("Кухня", 160000, userKostyaId,
                         new List<Stage>()
                         {
-                            new Stage("Обсуждение пожеланий клиента, предварительный эскиз ",userK, comment: "Обосрался по жесткой."),
-                            new Stage(" Замер помещения",userS,comment: "Срочно!"),
-                            new Stage("Окончательный эскиз", userK, comment: "Что то не получается, спрошу у Кости."),
-                            new Stage("Просчёт", userK),
-                            new Stage("Дополнительные комплектующие и нюансы", userK),
-                            new Stage("Производство", userK),
-                            new Stage("Монтаж",userS),
-                            new Stage("Сдача объекта", userK)
+                            new Stage("Обсуждение пожеланий клиента, предварительный эскиз ",userKostyaId, comment: "Обосрался по жесткой."),
+                            new Stage(" Замер помещения", userSashaId,comment: "Срочно!"),
+                            new Stage("Окончательный эскиз", userKostyaId, comment: "Что то не получается, спрошу у Кости."),
+                            new Stage("Просчёт", userKostyaId),
+                            new Stage("Дополнительные комплектующие и нюансы", userKostyaId),
+                            new Stage("Производство", userKostyaId),
+                            new Stage("Монтаж",userSashaId),
+                            new Stage("Сдача объекта", userKostyaId)
                         }),
 
-                new Project("Туалет", 260000, userK,
+                new Project("Туалет", 260000, userKostyaId,
                         new List<Stage>()
                         {
-                            new Stage("макет", userK)
+                            new Stage("макет", userKostyaId)
                         }),
 
 
-                new Project("Шкаф", 50000, userK,
+                new Project("Шкаф", 50000, userKostyaId,
                         new List<Stage>()
                         {
-                            new Stage("Встреча с клиентом", userK)
+                            new Stage("Встреча с клиентом", userKostyaId)
                         }),
-                new Project("Спальня", 50000, userS,
+                new Project("Спальня", 50000, userSashaId,
                         new List<Stage>()
                         {
-                            new Stage("Редактирование договора", userS)
+                            new Stage("Редактирование договора", userSashaId)
                         })
             };
         }

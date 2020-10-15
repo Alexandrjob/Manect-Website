@@ -30,12 +30,12 @@ namespace Manect.Data
             _logger = logger;
         }
 
-        public async Task<ExecutorUser> FindUserByNameOrDefaultAsync(string name)
+        public async Task<int> FindUserIdByNameOrDefaultAsync(string name)
         {
-            return await DataContext.ExecutorUsers.FirstOrDefaultAsync(user => user.Name == name);
+            return await DataContext.ExecutorUsers.Where(user => user.Name == name).Select(u => u.Id).FirstOrDefaultAsync();
         }
 
-        public async Task<ExecutorUser> FindUserByEmailOrDefaultAsync(string email)
+        public async Task<Executor> FindUserByEmailOrDefaultAsync(string email)
         {
             return await DataContext.ExecutorUsers.FirstOrDefaultAsync(user => user.Email == email);
         }
@@ -46,9 +46,9 @@ namespace Manect.Data
             throw new NotImplementedException();
         }
 
-        public async Task<Stage> AddStageAsync(ExecutorUser user, int projectId)
+        public async Task<Stage> AddStageAsync(int userId, int projectId)
         {
-            var stage = new Stage("Новый этап", user)
+            var stage = new Stage("Новый этап", userId)
             {
                 ProjectId = projectId
             };
@@ -57,30 +57,30 @@ namespace Manect.Data
             dataContext.Entry(stage).State = EntityState.Added;
             await dataContext.SaveChangesAsync();
 
-            _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} в Проект {ProjectId} новый Этап: {StageId}", DateTime.Now, user.Id, Status.Created, projectId, stage.Id);
+            _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} в Проекте {ProjectId} Этап: {StageId}", DateTime.Now, userId, Status.Created, projectId, stage.Id);
 
-            if (dataContext.Stages.FirstOrDefaultAsync(s => s.Id == stage.Id) == null)
-            {
-                _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} в Проект {ProjectId} новый Этап: {StageId}", DateTime.Now, user.Id, Status.NotAdded, projectId, stage.Id);
-            }
+            //if (dataContext.Stages.FirstOrDefaultAsync(s => s.Id == stage.Id) == null)
+            //{
+            //    _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} в Проект {ProjectId} новый Этап: {StageId}", DateTime.Now, user.Id, Status.NotAdded, projectId, stage.Id);
+            //}
 
             return stage;
         }
 
         //TODO: сделать метод универсальным (получать значение по которому можно понять какой проект(шаблоны будут записаны в новой таблице) нужно создать)
-        public async Task<Project> AddProjectDefaultAsync(ExecutorUser user)
+        public async Task<Project> AddProjectDefaultAsync(int userId)
         {
-            Project project = new Project("Стандартный шаблон проекта", 0, user,
+            Project project = new Project("Стандартный шаблон проекта", 0, userId,
                 new List<Stage>()
                 {
-                        new Stage("Обсуждение пожеланий клиента, предварительный эскиз", user),
-                        new Stage("Замер обьекта", user),
-                        new Stage("Окончательный эскиз ", user),
-                        new Stage("Просчёт ", user),
-                        new Stage("Дополнительные комплектующие и нюансы", user),
-                        new Stage("Производство", user),
-                        new Stage("Монтаж", user),
-                        new Stage("Сдача объекта", user)
+                        new Stage("Обсуждение пожеланий клиента, предварительный эскиз", userId),
+                        new Stage("Замер обьекта", userId),
+                        new Stage("Окончательный эскиз ", userId),
+                        new Stage("Просчёт ", userId),
+                        new Stage("Дополнительные комплектующие и нюансы", userId),
+                        new Stage("Производство", userId),
+                        new Stage("Монтаж", userId),
+                        new Stage("Сдача объекта", userId)
                 });
 
             var dataContext = DataContext;
@@ -91,23 +91,23 @@ namespace Manect.Data
             await dataContext.SaveChangesAsync();
 
             //TODO: Сделать так во всех методах.
-            _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} новый Проект: {ProjectId}", DateTime.Now, user.Id, Status.Created, project.Id);
+            _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} Проекте: {ProjectId}", DateTime.Now, userId, Status.Created, project.Id);
 
-            var result = await dataContext.FurnitureProjects.FirstOrDefaultAsync(p => p.Id == project.Id);
-            if (result == null)
-            {
-                _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} новый Проект: {ProjectId}", DateTime.Now, user.Id, Status.NotAdded, project.Id);
-            }
+            //var result = await dataContext.FurnitureProjects.FirstOrDefaultAsync(p => p.Id == project.Id);
+            //if (result == null)
+            //{
+            //    _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} новый Проект: {ProjectId}", DateTime.Now, user.Id, Status.NotAdded, project.Id);
+            //}
 
             return project;
         }
-        public async Task DeleteStageAsync(int stageId)
+        public async Task DeleteStageAsync(int userId, int projectId, int stageId)
         {
             var stage = new Stage
             {
                 Id = stageId,
             };
-            _logger.LogInformation("Время: {TimeAction}. {Status} Этап: {StageId}", DateTime.Now, Status.Deleted, stage.Id);
+            _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} в Проекте {ProjectId} Этап: {StageId}", DateTime.Now, userId, Status.Deleted, projectId, stage.Id);
 
             var dataContext = DataContext;
 
@@ -115,38 +115,55 @@ namespace Manect.Data
             dataContext.Stages.Remove(stage);
             await dataContext.SaveChangesAsync();
 
-            var result = await dataContext.Stages.FirstOrDefaultAsync(s => s.Id == stage.Id);
-            if (result != null)
-            {
-                _logger.LogInformation("Время: {TimeAction}. {Status} Этап: {StageId}", DateTime.Now, Status.NotDeleted, stage.Id);
-            }
+            //var result = await dataContext.Stages.FirstOrDefaultAsync(s => s.Id == stage.Id);
+            //if (result != null)
+            //{
+            //    _logger.LogInformation("Время: {TimeAction}. {Status} Этап: {StageId}", DateTime.Now, Status.NotDeleted, stage.Id);
+            //}
         }
 
-        public async Task DeleteProjectAsync(Project project)
+        public async Task DeleteProjectAsync(int userId, int projectId)
         {
-            _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} Проект: {ProjectId}", DateTime.Now, "Имя пользователя"/*project.Executor.Name*/, Status.Deleted, project.Id);
+            var project = new Project
+            {
+                Id = projectId
+            };
+
+            _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} Проект: {ProjectId}", DateTime.Now, 99999, Status.Deleted, project.Id);
+            
             var dataContext = DataContext;
+            dataContext.FurnitureProjects.Attach(project);
             dataContext.Entry(project).State = EntityState.Deleted;
             await dataContext.SaveChangesAsync();
 
-            if (dataContext.FurnitureProjects.FirstOrDefaultAsync(s => s.Id == project.Id).Result != null)
-            {
-                _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorName}, НЕ СМОГ {Status} Проект: {ProjectName}", DateTime.Now, "Имя пользователя"/*project.Executor.Name*/, Status.Deleted, project.Id);
-            }
+            //if (dataContext.FurnitureProjects.FirstOrDefaultAsync(s => s.Id == project.Id).Result != null)
+            //{
+            //    _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorName}, НЕ СМОГ {Status} Проект: {ProjectName}", DateTime.Now, "Имя пользователя"/*project.Executor.Name*/, Status.Deleted, project.Id);
+            //}
         }
 
         //TODO: Залогировать.
-        public async Task SetFlagValueAsync(Stage stage, Status status)
-        {
-            stage.Status = status;
+        public async Task SetFlagValueAsync(int userId, int projectId, int stageId, Status status)
+        {   
             var dataContext = DataContext;
+
+            _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} в Проекте {ProjectId} Этап: {StageId}", DateTime.Now, userId, Status.Created, projectId, stageId);
+
+            Stage stage = new Stage
+            {
+                Id = stageId
+            };
+            dataContext.Stages.Attach(stage);
+
+            stage.Status = status;
+
             dataContext.Entry(stage).State = EntityState.Modified;
             await dataContext.SaveChangesAsync();
         }
 
-        public async Task<List<Project>> ToListProjectOrDefaultAsync(string userName)
+        public async Task<List<Project>> ToListProjectOrDefaultAsync(int userId)
         {
-            var projects = await DataContext.FurnitureProjects.Where(p => p.Executor.Name == userName).ToListAsync();
+            var projects = await DataContext.FurnitureProjects.Where(p => p.ExecutorId == userId).ToListAsync();
             if (projects != null)
             {
                 return projects;
@@ -158,7 +175,6 @@ namespace Manect.Data
         public async Task<Project> GetAllProjectDataAsync(int projectId)
         {
             var project = await DataContext.FurnitureProjects.Include(p => p.Stages)
-                                                             .Include(p => p.Executor)
                                                              .Where(p => p.Id == projectId)
                                                              .FirstOrDefaultAsync();
             return project;

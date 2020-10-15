@@ -30,7 +30,14 @@
                         </div>
                     </div>
                     <div class="header-button">
-                        <div class="button"><a href="#" title="Отмена">Отмена</a></div>
+                        <div class="button">
+                            <form asp-controller="Project" asp-action="DeleteProject">
+                                <input hidden asp-for=@Model.Id name="projectId" />
+                                <button><a>Удалить проект</a></button>
+                            </form>
+                        </div>
+                        
+                        <div class="button"><a href="#">Отмена</a></div>
                     </div>
                 </div>
             </div>
@@ -43,7 +50,7 @@
                             @foreach (Stage stage in Model.Stages)
                             {
                                 count++;
-                            <li>
+                                <li>
                                 <div class="project-steps__info">
                                     <div class="project-steps__title">
                                         <div class="checkbox">
@@ -62,6 +69,7 @@
                                     <div class="select">
                                         <a class="select-box" href="#" title="Добавить исполнителя"><img src="/image/icon/add_user.svg" alt="icon"><span></span></a>
                                         <div class="select-options">
+                                            <div class="option" data-id="1"><span class="icon">X</span><span class="name">Без исполнителя</span></div>
                                             <div class="option" data-id="1"><span class="icon">Л</span><span class="name">Лиза</span></div>
                                             <div class="option" data-id="2"><span class="icon">П</span><span class="name">Павел</span></div>
                                             <div class="option" data-id="3"><span class="icon">К</span><span class="name">Катя</span></div>
@@ -75,7 +83,7 @@
                                         <div class="project-steps__trash" title="Удалить этап"><img src="/image/icon/trash.svg" alt="icon"></div>
                                     </button>
                                 </form>
-                            </li>
+                                </li>
                             }
                         </ul>
                     </div>

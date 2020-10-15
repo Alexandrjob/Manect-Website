@@ -2,7 +2,7 @@
 
 namespace Manect.Data.Entities
 {
-    public class ExecutorUser
+    public class Executor
     {
         /// <summary>
         /// Id исполнителя.
@@ -13,6 +13,11 @@ namespace Manect.Data.Entities
         /// Имя исполнителя.
         /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// Фамилия исполнителя.
+        /// </summary>
+        public string SurName { get; set; }
 
         /// <summary>
         /// Email исполнителя.
@@ -29,7 +34,7 @@ namespace Manect.Data.Entities
         /// </summary>
         public ICollection<Stage> Stages { get; set; }
 
-        public ExecutorUser()
+        public Executor()
         {
 
         }
