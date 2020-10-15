@@ -17,5 +17,7 @@ namespace Manect.Interfaces
         Task<Project> GetAllProjectDataAsync(int projectId);
         //TODO: В будущем при необходимости переделать это не очень хорошо - делать выборку по имени.
         Task<List<Project>> ToListProjectOrDefaultAsync(int userId);
+        List<Executor> GetExecutors();
+        Task ChengeExecutorAsync(int executorId, int stageId);
     }
 }

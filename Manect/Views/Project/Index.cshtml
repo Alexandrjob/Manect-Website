@@ -2,6 +2,7 @@
 @model Manect.Data.Entities.Project
 @{
     int count = 0;
+    int count1 = 0;
 }
 
 <html lang="ru">
@@ -69,10 +70,16 @@
                                     <div class="select">
                                         <a class="select-box" href="#" title="Добавить исполнителя"><img src="/image/icon/add_user.svg" alt="icon"><span></span></a>
                                         <div class="select-options">
-                                            <div class="option" data-id="1"><span class="icon">X</span><span class="name">Без исполнителя</span></div>
-                                            <div class="option" data-id="1"><span class="icon">Л</span><span class="name">Лиза</span></div>
-                                            <div class="option" data-id="2"><span class="icon">П</span><span class="name">Павел</span></div>
-                                            <div class="option" data-id="3"><span class="icon">К</span><span class="name">Катя</span></div>
+                                            <div class="option" data-id="@count1"><span class="icon">X</span><span class="name">Без исполнителя</span></div>
+                                            @foreach (Executor executor in ViewBag.Executors)
+                                            {
+                                                count1++;
+                                                <form asp-controller="Project" asp-action="ChengeExecutor">
+                                                    <input hidden asp-for=@executor.Id name="executorId"/>
+                                                    <input hidden asp-for=@stage.Id name="stageId"/>
+                                                    <button><div class="option" data-id="@count1"><span class="icon"></span><span class="name">@executor.Name</span></div></button>
+                                                </form>
+                                            }
                                         </div>
                                     </div>
                                 </div>

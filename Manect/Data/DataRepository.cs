@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Manect.Data
 {
-    public class DataRepository : IDataRepository
+    public class DataRepository: IDataRepository
     {
         private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly ILogger _logger;
@@ -130,7 +130,7 @@ namespace Manect.Data
             };
 
             _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} Проект: {ProjectId}", DateTime.Now, 99999, Status.Deleted, project.Id);
-            
+
             var dataContext = DataContext;
             dataContext.FurnitureProjects.Attach(project);
             dataContext.Entry(project).State = EntityState.Deleted;
@@ -144,7 +144,7 @@ namespace Manect.Data
 
         //TODO: Залогировать.
         public async Task SetFlagValueAsync(int userId, int projectId, int stageId, Status status)
-        {   
+        {
             var dataContext = DataContext;
 
             _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} в Проекте {ProjectId} Этап: {StageId}", DateTime.Now, userId, Status.Created, projectId, stageId);
@@ -163,7 +163,10 @@ namespace Manect.Data
 
         public async Task<List<Project>> ToListProjectOrDefaultAsync(int userId)
         {
-            var projects = await DataContext.FurnitureProjects.Where(p => p.ExecutorId == userId).ToListAsync();
+            var projects = await DataContext.FurnitureProjects
+                .AsNoTracking()
+                .Where(p => p.ExecutorId == userId)
+                .ToListAsync();
             if (projects != null)
             {
                 return projects;
@@ -174,10 +177,53 @@ namespace Manect.Data
 
         public async Task<Project> GetAllProjectDataAsync(int projectId)
         {
-            var project = await DataContext.FurnitureProjects.Include(p => p.Stages)
-                                                             .Where(p => p.Id == projectId)
-                                                             .FirstOrDefaultAsync();
+            var project = await DataContext.FurnitureProjects
+                .AsNoTracking()
+                .Include(p => p.Stages)
+                .Where(p => p.Id == projectId)
+                .FirstOrDefaultAsync();
+
             return project;
+        }
+
+        public List<Executor> GetExecutors()
+        {
+            var dataContext = DataContext;
+            List<Executor> executors = dataContext.ExecutorUsers
+                .AsNoTracking()
+                .Select(u => new
+                {
+                    u.Id,
+                    u.Name,
+                    u.SurName
+                })
+                .AsEnumerable()
+                .Select(un => new Executor
+                {
+                    Id = un.Id,
+                    Name = un.Name,
+                    SurName = un.SurName
+                })
+                .ToList();
+
+            return executors;
+        }
+
+        //Залогировать.
+        public async Task ChengeExecutorAsync(int executorId, int stageId)
+        {
+            Stage stage = new Stage
+            {
+                Id = stageId
+            };
+
+            var dataContext = DataContext;
+            //Из-за того, что я создаю новый обьект и сопоставляю его с существующем,
+            //а потом указываю что он изменен все поля которые не записаны считаются новыми значениями.
+            dataContext.Stages.Attach(stage);
+            //stage.ExecutorId = executorId;
+            dataContext.Entry(stage).State = EntityState.Modified;
+            await dataContext.SaveChangesAsync();
         }
     }
 }

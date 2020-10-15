@@ -27,6 +27,8 @@ namespace Manect.Controllers
             {
                 return Redirect("/Error/Index");
             }
+
+             ViewBag.Executors = _dataRepository.GetExecutors();
             return View(project);
         }
 
@@ -70,5 +72,12 @@ namespace Manect.Controllers
             await _dataRepository.SetFlagValueAsync(currentUserId, projectId, stageId, status);
             return Ok();
         }
+
+        public async Task<IActionResult> ChengeExecutorAsync(int executorId, int stageId)
+        {
+            await _dataRepository.ChengeExecutorAsync(executorId, stageId);
+            return Ok();
+        }
+
     }
 }
