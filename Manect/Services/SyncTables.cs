@@ -53,7 +53,7 @@ namespace Manect.Services
                 .ToList();
 
             var dataContext = DataContext;
-            await dataContext.ExecutorUsers.AddRangeAsync(identityUsers);
+            await dataContext.Executors.AddRangeAsync(identityUsers);
             await dataContext.SaveChangesAsync();
         }
 

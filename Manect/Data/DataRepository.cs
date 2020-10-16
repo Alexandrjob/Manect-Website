@@ -32,7 +32,7 @@ namespace Manect.Data
 
         public async Task<Executor> FindUserIdByNameOrDefaultAsync(string name)
         {
-            return await DataContext.ExecutorUsers
+            return await DataContext.Executors
                 .AsNoTracking()
                 .Where(user => user.Name == name)
                 .Select(u => new
@@ -49,7 +49,7 @@ namespace Manect.Data
 
         public async Task<Executor> FindUserByEmailOrDefaultAsync(string email)
         {
-            return await DataContext.ExecutorUsers.FirstOrDefaultAsync(user => user.Email == email);
+            return await DataContext.Executors.FirstOrDefaultAsync(user => user.Email == email);
         }
 
         //TODO: Вытаскивать проект с именем пользователя.
@@ -208,7 +208,7 @@ namespace Manect.Data
         public async Task<List<Executor>> GetExecutorsToListExceptAsync(int executorId)
         {
             var dataContext = DataContext;
-            List<Executor> executors = await dataContext.ExecutorUsers
+            List<Executor> executors = await dataContext.Executors
                 .AsNoTracking()
                 .Where(e => e.Id != executorId)
                 .Select(u => new
@@ -242,7 +242,7 @@ namespace Manect.Data
                 Id = executorId
             };
 
-            dataContext.ExecutorUsers.Attach(NewExecutor);
+            dataContext.Executors.Attach(NewExecutor);
             stage.Executor = NewExecutor;
             dataContext.Entry(stage).State = EntityState.Modified;
             await dataContext.SaveChangesAsync();

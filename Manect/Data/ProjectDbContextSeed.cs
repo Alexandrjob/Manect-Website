@@ -12,15 +12,15 @@ namespace Manect.Data
     {
         public static async Task SeedAsync(ProjectDbContext dataContext, ISyncTables syncTables)
         {
-            if (!dataContext.ExecutorUsers.Any())
+            if (!dataContext.Executors.Any())
             {
                 await syncTables.UsersAsync();
             }
 
             if (!dataContext.FurnitureProjects.Any())
             {
-                var userKostya = await dataContext.ExecutorUsers.Where(user => user.Name == "Kostya").FirstOrDefaultAsync();
-                var userSasha = await dataContext.ExecutorUsers.Where(user => user.Name == "Sasha").FirstOrDefaultAsync();
+                var userKostya = await dataContext.Executors.Where(user => user.Name == "Kostya").FirstOrDefaultAsync();
+                var userSasha = await dataContext.Executors.Where(user => user.Name == "Sasha").FirstOrDefaultAsync();
                 if (userKostya != default & userSasha != default)
                 {
                     await dataContext.FurnitureProjects.AddRangeAsync(
