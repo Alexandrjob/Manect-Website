@@ -34,7 +34,7 @@ namespace Manect.Data
         {
             return await DataContext.Executors
                 .AsNoTracking()
-                .Where(user => user.Name == name)
+                .Where(user => user.UserName == name)
                 .Select(u => new
                 {
                     u.Id
@@ -214,15 +214,15 @@ namespace Manect.Data
                 .Select(u => new
                 {
                     u.Id,
-                    u.Name,
-                    u.SurName
+                    u.FirstName,
+                    u.LastName
                 })
                 .AsQueryable()
                 .Select(un => new Executor
                 {
                     Id = un.Id,
-                    Name = un.Name,
-                    SurName = un.SurName
+                    FirstName = un.FirstName,
+                    LastName = un.LastName
                 })
                 .ToListAsync();
 

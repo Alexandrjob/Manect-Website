@@ -10,14 +10,19 @@ namespace Manect.Data.Entities
         public int Id { get; set; }
 
         /// <summary>
+        /// Имя исполнителя на английском(для идентификации).
+        /// </summary>
+        public string UserName { get; set; }
+
+        /// <summary>
         /// Имя исполнителя.
         /// </summary>
-        public string Name { get; set; }
+        public string FirstName { get; set; }
 
         /// <summary>
         /// Фамилия исполнителя.
         /// </summary>
-        public string SurName { get; set; }
+        public string LastName { get; set; }
 
         /// <summary>
         /// Email исполнителя.

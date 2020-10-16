@@ -42,12 +42,16 @@ namespace Manect.Services
                 .Select(c => new
                 {
                     c.UserName,
+                    c.FirstName,
+                    c.LastName,
                     c.Email
                 })
                 .AsEnumerable()
                 .Select(an => new Executor
                 {
-                    Name = an.UserName,
+                    UserName = an.UserName,
+                    FirstName = an.FirstName,
+                    LastName = an.LastName,
                     Email = an.Email
                 })
                 .ToList();

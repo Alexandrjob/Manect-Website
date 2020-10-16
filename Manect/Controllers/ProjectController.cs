@@ -72,13 +72,22 @@ namespace Manect.Controllers
             var currentUser = await _dataRepository.FindUserIdByNameOrDefaultAsync(name);
 
             await _dataRepository.SetFlagValueAsync(currentUser.Id, projectId, stageId, status);
-            return Ok();
+
+            var project = await _dataRepository.GetAllProjectDataAsync(projectId);
+            ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(currentUser.Id);
+            return View("Index", project);
         }
 
-        public async Task<IActionResult> ChengeExecutorAsync(int executorId, int stageId)
+        public async Task<IActionResult> ChengeExecutorAsync(int executorId, int projectId, int stageId)
         {
             await _dataRepository.ChengeExecutorAsync(executorId, stageId);
-            return Ok();
+
+            var name = HttpContext.User.Identity.Name;
+            var currentUser = await _dataRepository.FindUserIdByNameOrDefaultAsync(name);
+
+            var project = await _dataRepository.GetAllProjectDataAsync(projectId);
+            ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(currentUser.Id);
+            return View("Index", project);
         }
 
     }

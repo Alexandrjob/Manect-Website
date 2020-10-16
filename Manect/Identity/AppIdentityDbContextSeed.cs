@@ -10,11 +10,52 @@ namespace Manect.Identity
         {
             if (!userManager.Users.Any())
             {
-                var SashatUser = new ApplicationUser { UserName = "Sasha", Email = "Sasha@gmail.com" };
-                var KostyatUser = new ApplicationUser { UserName = "Kostya", Email = "Kostya@gmail.com" };
+                var SashaUser = new ApplicationUser 
+                { 
+                    UserName = "Sasha",
+                    FirstName = "Саша",
+                    LastName = "Поползин",
+                    Email = "Sasha@gmail.com" 
+                };
 
-                await userManager.CreateAsync(SashatUser, "325DR_qwer");
-                await userManager.CreateAsync(KostyatUser, "325DR_qwer");
+                var KostyaUser = new ApplicationUser
+                {
+                    UserName = "Kostya",
+                    FirstName = "Костя",
+                    LastName = "Кузнецов",
+                    Email = "Kostya@gmail.com"
+                };
+
+                var KatyaUser = new ApplicationUser
+                {
+                    UserName = "Katya",
+                    FirstName = "Катя",
+                    LastName = "Кузнецова",
+                    Email = "Katya@gmail.com"
+                }; 
+
+                var AnyaUser = new ApplicationUser
+                {
+                    UserName = "Anya",
+                    FirstName = "Аня",
+                    LastName = "Анова",
+                    Email = "Anya@gmail.com"
+                };
+
+                var LizaUser = new ApplicationUser
+                {
+                    
+                    UserName = "Liza",
+                    FirstName = "Лиза",
+                    LastName = "Лизова",
+                    Email = "Liza@gmail.com"
+                };
+                
+                await userManager.CreateAsync(SashaUser, "325DR_qwer");
+                await userManager.CreateAsync(KostyaUser, "325DR_qwer");
+                await userManager.CreateAsync(KatyaUser, "325DR_qwer");
+                await userManager.CreateAsync(AnyaUser, "325DR_qwer");
+                await userManager.CreateAsync(LizaUser, "325DR_qwer");
             }
         }
     }

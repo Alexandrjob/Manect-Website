@@ -19,8 +19,8 @@ namespace Manect.Data
 
             if (!dataContext.FurnitureProjects.Any())
             {
-                var userKostya = await dataContext.Executors.Where(user => user.Name == "Kostya").FirstOrDefaultAsync();
-                var userSasha = await dataContext.Executors.Where(user => user.Name == "Sasha").FirstOrDefaultAsync();
+                var userKostya = await dataContext.Executors.Where(user => user.UserName == "Kostya").FirstOrDefaultAsync();
+                var userSasha = await dataContext.Executors.Where(user => user.UserName == "Sasha").FirstOrDefaultAsync();
                 if (userKostya != default & userSasha != default)
                 {
                     await dataContext.FurnitureProjects.AddRangeAsync(
