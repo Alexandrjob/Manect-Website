@@ -19,51 +19,51 @@ namespace Manect.Data
 
             if (!dataContext.FurnitureProjects.Any())
             {
-                var userKostyaId = await dataContext.ExecutorUsers.Where(user => user.Name == "Kostya").Select(u => u.Id).FirstOrDefaultAsync();
-                var userSashaId = await dataContext.ExecutorUsers.Where(user => user.Name == "Sasha").Select(u=>u.Id).FirstOrDefaultAsync();
-                if (userKostyaId != default & userSashaId != default)
+                var userKostya = await dataContext.ExecutorUsers.Where(user => user.Name == "Kostya").FirstOrDefaultAsync();
+                var userSasha = await dataContext.ExecutorUsers.Where(user => user.Name == "Sasha").FirstOrDefaultAsync();
+                if (userKostya != default & userSasha != default)
                 {
                     await dataContext.FurnitureProjects.AddRangeAsync(
-                        GetPreconfiguredProjects(userKostyaId, userSashaId));
+                        GetPreconfiguredProjects(userKostya, userSasha));
 
                     dataContext.SaveChanges();
                 }
             }
         }
 
-        static IEnumerable<Project> GetPreconfiguredProjects(int userKostyaId, int userSashaId)
+        static IEnumerable<Project> GetPreconfiguredProjects(Executor userKostya, Executor userSasha)
         {
             return new List<Project>()
             {
-                new Project("Кухня", 160000, userKostyaId,
+                new Project("Кухня", 160000, userKostya,
                         new List<Stage>()
                         {
-                            new Stage("Обсуждение пожеланий клиента, предварительный эскиз ",userKostyaId, comment: "Обосрался по жесткой."),
-                            new Stage(" Замер помещения", userSashaId,comment: "Срочно!"),
-                            new Stage("Окончательный эскиз", userKostyaId, comment: "Что то не получается, спрошу у Кости."),
-                            new Stage("Просчёт", userKostyaId),
-                            new Stage("Дополнительные комплектующие и нюансы", userKostyaId),
-                            new Stage("Производство", userKostyaId),
-                            new Stage("Монтаж",userSashaId),
-                            new Stage("Сдача объекта", userKostyaId)
+                            new Stage("Обсуждение пожеланий клиента, предварительный эскиз ",userKostya, comment: "Обосрался по жесткой."),
+                            new Stage(" Замер помещения", userSasha,comment: "Срочно!"),
+                            new Stage("Окончательный эскиз", userKostya, comment: "Что то не получается, спрошу у Кости."),
+                            new Stage("Просчёт", userKostya),
+                            new Stage("Дополнительные комплектующие и нюансы", userKostya),
+                            new Stage("Производство", userKostya),
+                            new Stage("Монтаж",userSasha),
+                            new Stage("Сдача объекта", userKostya)
                         }),
 
-                new Project("Туалет", 260000, userKostyaId,
+                new Project("Туалет", 260000, userKostya,
                         new List<Stage>()
                         {
-                            new Stage("макет", userKostyaId)
+                            new Stage("макет", userKostya)
                         }),
 
 
-                new Project("Шкаф", 50000, userKostyaId,
+                new Project("Шкаф", 50000, userKostya,
                         new List<Stage>()
                         {
-                            new Stage("Встреча с клиентом", userKostyaId)
+                            new Stage("Встреча с клиентом", userKostya)
                         }),
-                new Project("Спальня", 50000, userSashaId,
+                new Project("Спальня", 50000, userSasha,
                         new List<Stage>()
                         {
-                            new Stage("Редактирование договора", userSashaId)
+                            new Stage("Редактирование договора", userSasha)
                         })
             };
         }

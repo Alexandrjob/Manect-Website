@@ -27,9 +27,9 @@ namespace Manect.Controllers
         public async Task<IActionResult> IndexAsync()
         {
             var name = HttpContext.User.Identity.Name;
-           var currentUserId = await _dataRepository.FindUserIdByNameOrDefaultAsync(name);
+           var currentUser = await _dataRepository.FindUserIdByNameOrDefaultAsync(name);
 
-            return View(await _dataRepository.ToListProjectOrDefaultAsync(currentUserId));
+            return View(await _dataRepository.GetProjectOrDefaultToListAsync(currentUser.Id));
         }
 
         [AllowAnonymous]
@@ -73,9 +73,9 @@ namespace Manect.Controllers
         public async Task<IActionResult> AddProject()
         {
             var name = HttpContext.User.Identity.Name;
-            var currentUserId = await _dataRepository.FindUserIdByNameOrDefaultAsync(name);
+            var currentUser = await _dataRepository.FindUserIdByNameOrDefaultAsync(name);
 
-            await _dataRepository.AddProjectDefaultAsync(currentUserId);
+            await _dataRepository.AddProjectDefaultAsync(currentUser);
             //TODO: нужно чтобы страница просто обновлялась.
             return Redirect("/Manager/Index");
         }

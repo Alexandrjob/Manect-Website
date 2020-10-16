@@ -15,11 +15,10 @@ namespace Manect.Data.Entities
         /// </summary>
         public string Name { get; set; }
 
-        [ForeignKey("Executor")]
         /// <summary>
         /// Исполнитель проекта или этапа(в зависимости от класса реализующий данный класс).
         /// </summary>  
-        public int ExecutorId { get; set; }
+        public Executor Executor { get; set; }
 
         /// <summary>
         /// Дата создания проекта или этапа(в зависимости от класса реализующий данный класс).

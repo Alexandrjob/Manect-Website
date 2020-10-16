@@ -23,12 +23,12 @@ namespace Manect.Data.Entities
         /// Создание этапа.
         /// </summary>
         /// <param name="name"> Имя этапа. </param>
-        /// <param name="executorId"> Исполнитель этапа. </param>
+        /// <param name="executor"> Исполнитель этапа. </param>
         /// <param name="comment"> Комментарий этапа. </param>
-        public Stage(string name, int executorId, string comment = "")
+        public Stage(string name, Executor executor, string comment = "")
         {
             Name = name;
-            ExecutorId = executorId;
+            Executor = executor;
             Comment = comment;
 
             CreationDate = DateTime.Now;

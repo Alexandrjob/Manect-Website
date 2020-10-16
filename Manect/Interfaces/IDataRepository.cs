@@ -6,18 +6,18 @@ namespace Manect.Interfaces
 {
     public interface IDataRepository
     {
-        Task<int> FindUserIdByNameOrDefaultAsync(string name);
+        Task<Executor> FindUserIdByNameOrDefaultAsync(string name);
         Task<Executor> FindUserByEmailOrDefaultAsync(string email);
         Task<Project> FindProjectAsync(string name);
-        Task<Stage> AddStageAsync(int userId, int projectId);
-        Task<Project> AddProjectDefaultAsync(int userId);
+        Task<Stage> AddStageAsync(Executor user, int projectId);
+        Task<Project> AddProjectDefaultAsync(Executor user);
         Task DeleteStageAsync(int userId, int projectId, int stageId);
         Task DeleteProjectAsync(int userId, int projectId);
         Task SetFlagValueAsync(int userId, int projectId, int stageId, Status status);
         Task<Project> GetAllProjectDataAsync(int projectId);
         //TODO: В будущем при необходимости переделать это не очень хорошо - делать выборку по имени.
-        Task<List<Project>> ToListProjectOrDefaultAsync(int userId);
-        List<Executor> GetExecutors();
+        Task<List<Project>> GetProjectOrDefaultToListAsync(int userId);
+        Task<List<Executor>> GetExecutorsToListExceptAsync(int executorId);
         Task ChengeExecutorAsync(int executorId, int stageId);
     }
 }

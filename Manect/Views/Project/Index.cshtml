@@ -68,19 +68,30 @@
                                 <div class="project-steps__date">Дата:<span>@stage.CreationDate.ToString("dd.MM.yyyy")</span></div>
                                 <div class="project-steps__users">
                                     <div class="select">
-                                        <a class="select-box" href="#" title="Добавить исполнителя"><img src="/image/icon/add_user.svg" alt="icon"><span></span></a>
-                                        <div class="select-options">
-                                            <div class="option" data-id="@count1"><span class="icon">X</span><span class="name">Без исполнителя</span></div>
+                                        @if (Model.Executor.Id != stage.Executor.Id)
+                                        {
+                                            <a class="select-box" href="#" title="Добавить исполнителя"><img src="/image/icon/add_user.svg" alt="icon"><span>@stage.Executor.Name @stage.Executor.SurName</span></a>
+                                        }
+                                        else
+                                        {
+                                            <a class="select-box" href="#" title="Добавить исполнителя"><img src="/image/icon/add_user.svg" alt="icon"><span></span></a>
+                                        }
+
+                                    <div class="select-options">
+                                        <form asp-controller="Project" asp-action="ChengeExecutor">
+                                            <input hidden asp-for=@Model.Id name="executorId" />
+                                            <button><div class="option" data-id="@count1"><span class="name">Без исполнителя</span></div></button>
+                                        </form>
                                             @foreach (Executor executor in ViewBag.Executors)
                                             {
                                                 count1++;
                                                 <form asp-controller="Project" asp-action="ChengeExecutor">
-                                                    <input hidden asp-for=@executor.Id name="executorId"/>
-                                                    <input hidden asp-for=@stage.Id name="stageId"/>
+                                                    <input hidden asp-for=@executor.Id name="executorId" />
+                                                    <input hidden asp-for=@stage.Id name="stageId" />
                                                     <button><div class="option" data-id="@count1"><span class="icon"></span><span class="name">@executor.Name</span></div></button>
                                                 </form>
                                             }
-                                        </div>
+                                    </div>
                                     </div>
                                 </div>
                                 <form asp-controller="Project" asp-action="DeleteStage">

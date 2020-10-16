@@ -30,9 +30,21 @@ namespace Manect.Data
             _logger = logger;
         }
 
-        public async Task<int> FindUserIdByNameOrDefaultAsync(string name)
+        public async Task<Executor> FindUserIdByNameOrDefaultAsync(string name)
         {
-            return await DataContext.ExecutorUsers.Where(user => user.Name == name).Select(u => u.Id).FirstOrDefaultAsync();
+            return await DataContext.ExecutorUsers
+                .AsNoTracking()
+                .Where(user => user.Name == name)
+                .Select(u => new
+                {
+                    u.Id
+                })
+                .AsQueryable()
+                .Select(un => new Executor
+                {
+                    Id = un.Id
+                })
+                .FirstOrDefaultAsync();
         }
 
         public async Task<Executor> FindUserByEmailOrDefaultAsync(string email)
@@ -46,9 +58,9 @@ namespace Manect.Data
             throw new NotImplementedException();
         }
 
-        public async Task<Stage> AddStageAsync(int userId, int projectId)
+        public async Task<Stage> AddStageAsync(Executor user, int projectId)
         {
-            var stage = new Stage("Новый этап", userId)
+            var stage = new Stage("Новый этап", user)
             {
                 ProjectId = projectId
             };
@@ -57,7 +69,7 @@ namespace Manect.Data
             dataContext.Entry(stage).State = EntityState.Added;
             await dataContext.SaveChangesAsync();
 
-            _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} в Проекте {ProjectId} Этап: {StageId}", DateTime.Now, userId, Status.Created, projectId, stage.Id);
+            _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} в Проекте {ProjectId} Этап: {StageId}", DateTime.Now, user.Id, Status.Created, projectId, stage.Id);
 
             //if (dataContext.Stages.FirstOrDefaultAsync(s => s.Id == stage.Id) == null)
             //{
@@ -68,19 +80,19 @@ namespace Manect.Data
         }
 
         //TODO: сделать метод универсальным (получать значение по которому можно понять какой проект(шаблоны будут записаны в новой таблице) нужно создать)
-        public async Task<Project> AddProjectDefaultAsync(int userId)
+        public async Task<Project> AddProjectDefaultAsync(Executor user)
         {
-            Project project = new Project("Стандартный шаблон проекта", 0, userId,
+            Project project = new Project("Стандартный шаблон проекта", 0, user,
                 new List<Stage>()
                 {
-                        new Stage("Обсуждение пожеланий клиента, предварительный эскиз", userId),
-                        new Stage("Замер обьекта", userId),
-                        new Stage("Окончательный эскиз ", userId),
-                        new Stage("Просчёт ", userId),
-                        new Stage("Дополнительные комплектующие и нюансы", userId),
-                        new Stage("Производство", userId),
-                        new Stage("Монтаж", userId),
-                        new Stage("Сдача объекта", userId)
+                        new Stage("Обсуждение пожеланий клиента, предварительный эскиз", user),
+                        new Stage("Замер обьекта", user),
+                        new Stage("Окончательный эскиз ", user),
+                        new Stage("Просчёт ", user),
+                        new Stage("Дополнительные комплектующие и нюансы", user),
+                        new Stage("Производство", user),
+                        new Stage("Монтаж", user),
+                        new Stage("Сдача объекта", user)
                 });
 
             var dataContext = DataContext;
@@ -91,7 +103,7 @@ namespace Manect.Data
             await dataContext.SaveChangesAsync();
 
             //TODO: Сделать так во всех методах.
-            _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} Проекте: {ProjectId}", DateTime.Now, userId, Status.Created, project.Id);
+            _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} Проекте: {ProjectId}", DateTime.Now, user, Status.Created, project.Id);
 
             //var result = await dataContext.FurnitureProjects.FirstOrDefaultAsync(p => p.Id == project.Id);
             //if (result == null)
@@ -161,11 +173,11 @@ namespace Manect.Data
             await dataContext.SaveChangesAsync();
         }
 
-        public async Task<List<Project>> ToListProjectOrDefaultAsync(int userId)
+        public async Task<List<Project>> GetProjectOrDefaultToListAsync(int userId)
         {
             var projects = await DataContext.FurnitureProjects
                 .AsNoTracking()
-                .Where(p => p.ExecutorId == userId)
+                .Where(p => p.Executor.Id == userId)
                 .ToListAsync();
             if (projects != null)
             {
@@ -179,49 +191,59 @@ namespace Manect.Data
         {
             var project = await DataContext.FurnitureProjects
                 .AsNoTracking()
-                .Include(p => p.Stages)
                 .Where(p => p.Id == projectId)
+                .Include(p => p.Executor)
                 .FirstOrDefaultAsync();
 
+            var stages = await DataContext.Stages
+                .AsNoTracking()
+                .Where(s => s.ProjectId == project.Id)
+                .Include(s => s.Executor)
+                .ToListAsync();
+
+            project.Stages = stages;
             return project;
         }
 
-        public List<Executor> GetExecutors()
+        public async Task<List<Executor>> GetExecutorsToListExceptAsync(int executorId)
         {
             var dataContext = DataContext;
-            List<Executor> executors = dataContext.ExecutorUsers
+            List<Executor> executors = await dataContext.ExecutorUsers
                 .AsNoTracking()
+                .Where(e => e.Id != executorId)
                 .Select(u => new
                 {
                     u.Id,
                     u.Name,
                     u.SurName
                 })
-                .AsEnumerable()
+                .AsQueryable()
                 .Select(un => new Executor
                 {
                     Id = un.Id,
                     Name = un.Name,
                     SurName = un.SurName
                 })
-                .ToList();
+                .ToListAsync();
 
             return executors;
         }
 
-        //Залогировать.
+        //TODO: Залогировать.
         public async Task ChengeExecutorAsync(int executorId, int stageId)
         {
-            Stage stage = new Stage
+            var dataContext = DataContext;
+
+            var stage = await dataContext.Stages
+                .FirstOrDefaultAsync(s => s.Id == stageId);
+
+            var NewExecutor = new Executor
             {
-                Id = stageId
+                Id = executorId
             };
 
-            var dataContext = DataContext;
-            //Из-за того, что я создаю новый обьект и сопоставляю его с существующем,
-            //а потом указываю что он изменен все поля которые не записаны считаются новыми значениями.
-            dataContext.Stages.Attach(stage);
-            //stage.ExecutorId = executorId;
+            dataContext.ExecutorUsers.Attach(NewExecutor);
+            stage.Executor = NewExecutor;
             dataContext.Entry(stage).State = EntityState.Modified;
             await dataContext.SaveChangesAsync();
         }
