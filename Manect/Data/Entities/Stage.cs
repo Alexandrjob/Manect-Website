@@ -13,6 +13,9 @@ namespace Manect.Data.Entities
         /// </summary>
         public string Comment { get; set; }
 
+        [ForeignKey("Executor")]
+        public int ExecutorId { get; set; }
+
         // Внешний ключ
         [ForeignKey("Project")]
         public int ProjectId { get; set; }

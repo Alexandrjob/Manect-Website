@@ -103,7 +103,7 @@ namespace Manect.Data
             await dataContext.SaveChangesAsync();
 
             //TODO: Сделать так во всех методах.
-            _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} Проекте: {ProjectId}", DateTime.Now, user, Status.Created, project.Id);
+            _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} Проекте: {ProjectId}", DateTime.Now, user.Id, Status.Created, project.Id);
 
             //var result = await dataContext.FurnitureProjects.FirstOrDefaultAsync(p => p.Id == project.Id);
             //if (result == null)
@@ -189,16 +189,18 @@ namespace Manect.Data
 
         public async Task<Project> GetAllProjectDataAsync(int projectId)
         {
-            var project = await DataContext.FurnitureProjects
+            var dataContext = DataContext;
+
+            var project = await dataContext.FurnitureProjects
                 .AsNoTracking()
                 .Where(p => p.Id == projectId)
                 .Include(p => p.Executor)
                 .FirstOrDefaultAsync();
 
-            var stages = await DataContext.Stages
+            var stages = await dataContext.Stages
                 .AsNoTracking()
                 .Where(s => s.ProjectId == project.Id)
-                .Include(s => s.Executor)
+                .Include(s=>s.Executor)
                 .ToListAsync();
 
             project.Stages = stages;
@@ -230,20 +232,15 @@ namespace Manect.Data
         }
 
         //TODO: Залогировать.
-        public async Task ChengeExecutorAsync(int executorId, int stageId)
+        public async Task ChengeExecutorAsync(int executorId, int projectId, int stageId)
         {
             var dataContext = DataContext;
 
             var stage = await dataContext.Stages
                 .FirstOrDefaultAsync(s => s.Id == stageId);
+            
 
-            var NewExecutor = new Executor
-            {
-                Id = executorId
-            };
-
-            dataContext.Executors.Attach(NewExecutor);
-            stage.Executor = NewExecutor;
+            stage.ExecutorId = executorId;
             dataContext.Entry(stage).State = EntityState.Modified;
             await dataContext.SaveChangesAsync();
         }

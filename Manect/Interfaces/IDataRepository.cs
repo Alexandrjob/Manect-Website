@@ -18,6 +18,6 @@ namespace Manect.Interfaces
         //TODO: В будущем при необходимости переделать это не очень хорошо - делать выборку по имени.
         Task<List<Project>> GetProjectOrDefaultToListAsync(int userId);
         Task<List<Executor>> GetExecutorsToListExceptAsync(int executorId);
-        Task ChengeExecutorAsync(int executorId, int stageId);
+        Task ChengeExecutorAsync(int executorId, int projectId, int stageId);
     }
 }

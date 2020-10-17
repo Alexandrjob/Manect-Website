@@ -80,7 +80,7 @@ namespace Manect.Controllers
 
         public async Task<IActionResult> ChengeExecutorAsync(int executorId, int projectId, int stageId)
         {
-            await _dataRepository.ChengeExecutorAsync(executorId, stageId);
+            await _dataRepository.ChengeExecutorAsync(executorId, projectId, stageId);
 
             var name = HttpContext.User.Identity.Name;
             var currentUser = await _dataRepository.FindUserIdByNameOrDefaultAsync(name);
