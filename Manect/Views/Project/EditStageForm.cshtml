@@ -1,0 +1,70 @@
+﻿@using Manect.Data.Entities;
+@model Manect.Data.Entities.Project
+@{ 
+    Stage stage = Model.Stages.FirstOrDefault();
+}
+<section id="project">
+    <div class="container">
+        <div class="content">
+            <ul class="project-steps">
+                <li class="stage-9999">
+                    <div class="project-steps__info">
+                        <div class="project-steps__title">
+                            <div class="checkbox">
+                                <input id="step-9999" type="checkbox" name="step-9999" value="9999">
+                                <label for="step-9999"></label>
+                                <div class="checkbox__text">Этап:<span>@stage.Name</span></div>
+                            </div>
+                        </div>
+                        <div class="project-steps__deadline">Дедлайн:<span>@stage.ExpirationDate.ToString("dd.MM.yyyy")</span></div>
+                        <div class="project-steps__comments">
+                            <input id="comment-1" type="text" name="comment-1" placeholder="Комментарии" value="@stage.Comment">
+                        </div>
+                    </div>
+                    <div class="project-steps__edit"><button onclick="return ClickSaveStageButton(@stage.Id);"><img src="~/image/icon/edit.png" title="Редактировать" /></button></div>
+                    <div class="project-steps__date">Дата:<span>@stage.CreationDate.ToString("dd.MM.yyyy")</span></div>
+                    <div class="project-steps__users">
+                        <div class="select">
+                            @if (Model.Executor.Id != stage.ExecutorId)
+                            {
+                                <a class="select-box" href="#" title="Изменить исполнителя"><img src="/image/icon/add_user.svg" alt="icon"><span>@stage.Executor.FirstName @stage.Executor.LastName</span></a>
+                            }
+                            else
+                            {
+                                <a class="select-box" href="#" title="Изменить исполнителя"><img src="/image/icon/add_user.svg" alt="icon"><span></span></a>
+                            }
+
+                            <div class="select-options">
+                                <form asp-controller="Project" asp-action="ChengeExecutor">
+                                    <input hidden asp-for=@Model.Executor.Id name="executorId" />
+                                    <input hidden asp-for=@Model.Id name="projectId" />
+                                    <input hidden asp-for=@stage.Id name="stageId" />
+                                    <button><div class="option" data-id="9999"><span class="name">Без доп. исполнителя</span></div></button>
+                                </form>
+                                @foreach (Executor executor in ViewBag.Executors)
+                                {
+                                    <form asp-controller="Project" asp-action="ChengeExecutor">
+                                        <input hidden asp-for=@executor.Id name="executorId" />
+                                        <input hidden asp-for=@Model.Id name="projectId" />
+                                        <input hidden asp-for=@stage.Id name="stageId" />
+                                        <button><div class="option" data-id="9999"><span class="icon"></span><span class="name">@executor.FirstName @executor.LastName</span></div></button>
+                                    </form>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="project-steps__trash" title="Удалить этап">
+                        <form asp-controller="Project" asp-action="DeleteStage">
+                            <input hidden asp-for=@stage.Id name="stageId" />
+                            <input hidden asp-for=@stage.ProjectId name="projectId" />
+                            <button>
+                                <img src="/image/icon/trash.svg" alt="icon">
+                            </button>
+                        </form>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>

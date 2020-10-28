@@ -10,7 +10,6 @@ namespace Manect.Controllers
     public class ProjectController: Controller
     {
         private readonly IDataRepository _dataRepository;
-
         public ProjectController(IDataRepository dataRepository)
         {
             _dataRepository = dataRepository;
@@ -90,5 +89,15 @@ namespace Manect.Controllers
             return View("Index", project);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> GetStageAsync([FromForm] Stage stage)
+        {
+            int projectId = 1;
+            int currentUserId = 1;
+            var project = await _dataRepository.GetAllProjectDataAsync(projectId);
+            ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(currentUserId);
+
+            return PartialView("EditStageForm", project);
+        }
     }
 }

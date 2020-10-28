@@ -201,6 +201,7 @@ namespace Manect.Data
                 .AsNoTracking()
                 .Where(s => s.ProjectId == project.Id)
                 .Include(s=>s.Executor)
+                .OrderBy(s => s.CreationDate)
                 .ToListAsync();
 
             project.Stages = stages;

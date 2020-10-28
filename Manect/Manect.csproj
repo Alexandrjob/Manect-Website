@@ -38,6 +38,7 @@
     <None Include="wwwroot\image\icon\add_user.svg" />
     <None Include="wwwroot\image\icon\check.svg" />
     <None Include="wwwroot\image\icon\close.svg" />
+    <None Include="wwwroot\image\icon\edit.png" />
     <None Include="wwwroot\image\icon\line.svg" />
     <None Include="wwwroot\image\icon\menu_bar.svg" />
     <None Include="wwwroot\image\icon\plus.svg" />

@@ -1,0 +1,44 @@
+﻿<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- meta-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <!-- icon & css-->
+    <link href="favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="~/css/main.css" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <div class="menu">
+                <div class="overlay">
+                    <!-- меню-->
+                    <div class="module" id="menu">
+                        <a class="close-menu" href="#" title="Закрыть меню"><img src="~/image/icon/close.svg" alt="icon"></a>
+                        <nav class="sidebar-menu">
+                            <ul>
+                                <li class="active"><a asp-controller="Manager" asp-action="Index">Мои проекты</a></li>
+                                <li><a href="calendar.html" title="Календарь">Календарь</a></li>
+                                <li><a href="my.html" title="Теперь моё">Теперь моё</a></li>
+                                <li><a href="history.html" title="История">История</a></li>
+                                <li><a href="projects.html" title="Проекты моих исполнителей">Проекты моих исполнителей</a></li>
+                                <li><a asp-controller="Manager" asp-action="LogOff">LogOff</a></li>
+                            </ul>
+                        </nav>
+                        <div class="sidebar-copyright">&copy; 2020 Dома мебель</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        @RenderBody()
+    </div>
+
+    <!-- js-->
+    @*<script src="/js/vendors.js"></script>*@
+    <script src="/js/main.js"></script>
+    <script src="/js/jqueryMin.js"></script>
+</body>
+</html>

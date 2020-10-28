@@ -1,3 +1,44 @@
+function ClickStageButton(Element, StageId) {
+    var stage = {
+        Id: Number(StageId)
+    }
+    SendStage(stage);
+
+    var top = $('.' + Element).offset().top;
+    //var left = $('.stage-1').offset().left;
+    $('#editStageForm').offset({ top: top });
+    $('#foreground').toggle();
+}
+
+function ClickSaveStageButton(StageId) {
+    var stage = {
+        Id: Number(StageId)
+    }
+    SendStage(stage);
+
+    $('#editStageForm').offset({ top: 0 });
+    $('#foreground').toggle();
+    $("#editStageForm").empty();
+}
+
+function SendStage(stage) {
+    $.ajax({
+        url: '/Project/GetStage',
+        type: 'POST',
+        cache: false,
+        async: true,
+        dataType: "html",
+        data: { stage: stage },
+        success: function (result) {
+            $('#editStageForm').html(result);
+            flag = true;
+        },
+        error: function () {
+            alert("Что-то пошло не так...");
+        }
+    });
+}
+
 !function (t) {
     function e(e) {
         for (var o, u, l = e[0], r = e[1], s = e[2], a = 0, f = []; a < l.length; a++)
