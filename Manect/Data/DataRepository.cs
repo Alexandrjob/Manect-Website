@@ -52,24 +52,25 @@ namespace Manect.Data
             return await DataContext.Executors.FirstOrDefaultAsync(user => user.Email == email);
         }
 
-        //TODO: Вытаскивать проект с именем пользователя.
-        public Task<Project> FindProjectAsync(string name)
+        public async Task<Stage> AddStageAsync(int userId, int projectId)
         {
-            throw new NotImplementedException();
-        }
+            var user = new Executor
+            {
+                Id = userId
+            };
 
-        public async Task<Stage> AddStageAsync(Executor user, int projectId)
-        {
+            var dataContext = DataContext;
+            dataContext.Executors.Attach(user);
+
             var stage = new Stage("Новый этап", user)
             {
                 ProjectId = projectId
             };
 
-            var dataContext = DataContext;
             dataContext.Entry(stage).State = EntityState.Added;
             await dataContext.SaveChangesAsync();
 
-            _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} в Проекте {ProjectId} Этап: {StageId}", DateTime.Now, user.Id, Status.Created, projectId, stage.Id);
+            //_logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} в Проекте {ProjectId} Этап: {StageId}", DateTime.Now, userId, Status.Created, projectId, stage.Id);
 
             //if (dataContext.Stages.FirstOrDefaultAsync(s => s.Id == stage.Id) == null)
             //{
@@ -187,22 +188,38 @@ namespace Manect.Data
             return new List<Project>();
         }
 
-        public async Task<Project> GetAllProjectDataAsync(int projectId)
+        public async Task<Project> GetAllProjectDataAsync(int projectId, int stageId = default)
         {
             var dataContext = DataContext;
-
+            //TODO:В будущем оптимизировать.
             var project = await dataContext.FurnitureProjects
                 .AsNoTracking()
                 .Where(p => p.Id == projectId)
                 .Include(p => p.Executor)
                 .FirstOrDefaultAsync();
 
-            var stages = await dataContext.Stages
+            List<Stage> stages = new List<Stage>();
+            if (stageId == default)
+            {
+                stages = await dataContext.Stages
                 .AsNoTracking()
                 .Where(s => s.ProjectId == project.Id)
-                .Include(s=>s.Executor)
+                .Include(s => s.Executor)
                 .OrderBy(s => s.CreationDate)
                 .ToListAsync();
+            }
+            else
+            {
+                
+                var stage = await dataContext.Stages
+                .AsNoTracking()
+                .Where(s => s.ProjectId == project.Id)
+                .Include(s => s.Executor)
+                .FirstOrDefaultAsync(s => s.Id == stageId);
+
+                stages.Add(stage);
+            }
+            
 
             project.Stages = stages;
             return project;

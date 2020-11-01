@@ -1,13 +1,20 @@
 function ClickStageButton(Element, StageId) {
-    var stage = {
-        Id: Number(StageId)
+    if ($('#foreground').is(':visible')) {
+        HideForm();  
     }
-    SendStage(stage);
+    else {
+        var stage = {
+            Id: Number(StageId)
+        }
+        SendStage(stage);
 
-    var top = $('.' + Element).offset().top;
-    //var left = $('.stage-1').offset().left;
-    $('#editStageForm').offset({ top: top });
-    $('#foreground').toggle();
+        var top = $('.' + Element).offset().top;
+        var left = $('.' + Element).offset().left;
+
+        $('#editStageForm').offset({ top: top });
+        $('#project-step').css('marginLeft', left);
+        $('#foreground').show();
+    }
 }
 
 function ClickSaveStageButton(StageId) {
@@ -15,10 +22,14 @@ function ClickSaveStageButton(StageId) {
         Id: Number(StageId)
     }
     SendStage(stage);
+    HideForm();  
+}
 
+function HideForm() {
     $('#editStageForm').offset({ top: 0 });
-    $('#foreground').toggle();
-    $("#editStageForm").empty();
+    //$('#foreground').css('opacity', 0);
+    $('#foreground').hide();
+    $("#project-step").empty();
 }
 
 function SendStage(stage) {
@@ -30,14 +41,18 @@ function SendStage(stage) {
         dataType: "html",
         data: { stage: stage },
         success: function (result) {
-            $('#editStageForm').html(result);
-            flag = true;
+            $('#project-step').html(result);
+
         },
         error: function () {
-            alert("Что-то пошло не так...");
+            alert("AAAAAAAAAAAAAAAAAAAAAAAAAAAA...");
+            $('#editStageForm').css('box-shadow', '');
         }
     });
 }
+
+
+
 
 !function (t) {
     function e(e) {

@@ -20,7 +20,6 @@
                             @Model.Name
                             <div class="button button_invert">
                                 <form asp-controller="Project" asp-action="AddStage">
-                                    <input hidden asp-for=@Model.Id name="projectId" />
                                     <button>
                                         <a title="Добавить этап">
                                             <svg viewBox="0 0 17 17" xmlns="http://www.w3.org/2000/svg">
@@ -34,7 +33,6 @@
                         <div class="header-button">
                             <div class="button">
                                 <form asp-controller="Project" asp-action="DeleteProject">
-                                    <input hidden asp-for=@Model.Id name="projectId" />
                                     <button><a>Удалить проект</a></button>
                                 </form>
                             </div>
@@ -78,39 +76,36 @@
                                                 {
                                                     <a class="select-box" href="#" title="Изменить исполнителя"><img src="/image/icon/add_user.svg" alt="icon"><span></span></a>
                                                 }
-
                                                 <div class="select-options">
                                                     <form asp-controller="Project" asp-action="ChengeExecutor">
                                                         <input hidden asp-for=@Model.Executor.Id name="executorId" />
-                                                        <input hidden asp-for=@Model.Id name="projectId" />
                                                         <input hidden asp-for=@stage.Id name="stageId" />
                                                         <button><div class="option" data-id="@count1"><span class="name">Без доп. исполнителя</span></div></button>
                                                     </form>
                                                     @foreach (Executor executor in ViewBag.Executors)
-                                                    {
+                                                    {    
                                                         count1++;
                                                         <form asp-controller="Project" asp-action="ChengeExecutor">
-                                                            <input hidden asp-for=@executor.Id name="executorId" />
-                                                            <input hidden asp-for=@Model.Id name="projectId" />
-                                                            <input hidden asp-for=@stage.Id name="stageId" />
-                                                            <button><div class="option" data-id="@count1"><span class="icon"></span><span class="name">@executor.FirstName @executor.LastName</span></div></button>
+                                                            <input hidden asp-for=@executor.Id name="executorId"/>
+                                                            <input hidden asp-for=@stage.Id name="stageId"/>
+                                                            <button>
+                                                                <div class="option" data-id="@count1">
+                                                                    <span class="icon"></span><span class="name">@executor.FirstName @executor.LastName</span>
+                                                                </div>
+                                                            </button>
                                                         </form>
                                                     }
                                                 </div>
                                             </div>
                                         </div>
-
                                         <div class="project-steps__trash" title="Удалить этап">
                                             <form asp-controller="Project" asp-action="DeleteStage">
-                                                <input hidden asp-for=@stage.Id name="stageId" />
-                                                <input hidden asp-for=@stage.ProjectId name="projectId" />
+                                                <input hidden asp-for=@stage.Id name="stageId"/>
                                                 <button>
                                                     <img src="/image/icon/trash.svg" alt="icon">
                                                 </button>
                                             </form>
                                         </div>
-
-
                                     </li>
                                 }
                             </ul>
@@ -120,7 +115,9 @@
             </main>
         </div>
         <div id="foreground" hidden>
-            <div id="editStageForm"></div>
+            <div id="editStageForm">
+                <div id="project-step"></div>
+            </div>
         </div>
     </div>
 </body>

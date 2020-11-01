@@ -2,6 +2,7 @@
 using Manect.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace Manect.Controllers
@@ -10,6 +11,10 @@ namespace Manect.Controllers
     public class ProjectController: Controller
     {
         private readonly IDataRepository _dataRepository;
+
+        private int currentUserId;
+        private int currentProjectId;
+
         public ProjectController(IDataRepository dataRepository)
         {
             _dataRepository = dataRepository;
@@ -17,9 +22,11 @@ namespace Manect.Controllers
 
         public async Task<IActionResult> IndexAsync(int projectId)
         {
-            //TODO: Как не копировать по триста раз эту хрень?
             var name = HttpContext.User.Identity.Name;
             var currentUser = await _dataRepository.FindUserIdByNameOrDefaultAsync(name);
+
+            HttpContext.Response.Cookies.Append("UserId", currentUser.Id.ToString());
+            HttpContext.Response.Cookies.Append("projectId", projectId.ToString());
 
             var project = await _dataRepository.GetAllProjectDataAsync(projectId);
             if(project == null)
@@ -31,73 +38,95 @@ namespace Manect.Controllers
             return View(project);
         }
 
-        public async Task<IActionResult> AddStageAsync(int projectId)
+        [HttpPost]
+        public async Task<IActionResult> AddStageAsync()
         {
-            var name = HttpContext.User.Identity.Name;
-            var currentUser = await _dataRepository.FindUserIdByNameOrDefaultAsync(name);
+            GetInformation();
 
-            await _dataRepository.AddStageAsync(currentUser, projectId);
+            await _dataRepository.AddStageAsync(currentUserId, currentProjectId);
 
-            var project = await _dataRepository.GetAllProjectDataAsync(projectId);
-            ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(currentUser.Id);
+            var project = await _dataRepository.GetAllProjectDataAsync(currentProjectId);
+            ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(currentUserId);
             return View("Index", project);
         }
 
-        public async Task<IActionResult> DeleteStageAsync(int stageId, int projectId)
+        [HttpPost]
+        public async Task<IActionResult> DeleteStageAsync(int stageId)
         {
-            var name = HttpContext.User.Identity.Name;
-            var currentUser = await _dataRepository.FindUserIdByNameOrDefaultAsync(name);
+            GetInformation();
 
-            await _dataRepository.DeleteStageAsync(currentUser.Id, projectId, stageId);
+            await _dataRepository.DeleteStageAsync(currentUserId, currentProjectId, stageId);
 
-            var project = await _dataRepository.GetAllProjectDataAsync(projectId);
-            ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(currentUser.Id);
+            var project = await _dataRepository.GetAllProjectDataAsync(currentProjectId);
+            ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(currentUserId);
             return View("Index", project);
         }
 
-        public async Task<IActionResult> DeleteProjectAsync(int projectId)
+        [HttpPost]
+        public async Task<IActionResult> DeleteProjectAsync()
         {
-            var name = HttpContext.User.Identity.Name;
-            var currentUser = await _dataRepository.FindUserIdByNameOrDefaultAsync(name);
+            GetInformation();
 
-            await _dataRepository.DeleteProjectAsync(currentUser.Id, projectId);
+            await _dataRepository.DeleteProjectAsync(currentUserId, currentProjectId);
 
             return RedirectToAction("Index", "Manager");
         }
 
-        public async Task<IActionResult> SetFlagValueAsync(Status status, int projectId, int stageId)
+        [HttpPost]
+        public async Task<IActionResult> SetFlagValueAsync(Status status, int stageId)
         {
-            var name = HttpContext.User.Identity.Name;
-            var currentUser = await _dataRepository.FindUserIdByNameOrDefaultAsync(name);
+            GetInformation();
 
-            await _dataRepository.SetFlagValueAsync(currentUser.Id, projectId, stageId, status);
+            await _dataRepository.SetFlagValueAsync(currentUserId, currentProjectId, stageId, status);
 
-            var project = await _dataRepository.GetAllProjectDataAsync(projectId);
-            ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(currentUser.Id);
+            var project = await _dataRepository.GetAllProjectDataAsync(currentProjectId);
+            ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(currentUserId);
             return View("Index", project);
         }
 
-        public async Task<IActionResult> ChengeExecutorAsync(int executorId, int projectId, int stageId)
+        [HttpPost]
+        public async Task<IActionResult> ChengeExecutorAsync(int executorId, int stageId)
         {
-            await _dataRepository.ChengeExecutorAsync(executorId, projectId, stageId);
+            GetInformation();
 
-            var name = HttpContext.User.Identity.Name;
-            var currentUser = await _dataRepository.FindUserIdByNameOrDefaultAsync(name);
+            await _dataRepository.ChengeExecutorAsync(executorId, currentProjectId, stageId);
 
-            var project = await _dataRepository.GetAllProjectDataAsync(projectId);
-            ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(currentUser.Id);
+            var project = await _dataRepository.GetAllProjectDataAsync(currentProjectId);
+            ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(currentUserId);
             return View("Index", project);
         }
 
         [HttpPost]
         public async Task<IActionResult> GetStageAsync([FromForm] Stage stage)
         {
-            int projectId = 1;
-            int currentUserId = 1;
-            var project = await _dataRepository.GetAllProjectDataAsync(projectId);
+            GetInformation();
+
+            var project = await _dataRepository.GetAllProjectDataAsync(currentProjectId, stage.Id);
             ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(currentUserId);
 
             return PartialView("EditStageForm", project);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SaveStageAsync([FromForm] Stage stage)
+        {
+            GetInformation();
+
+            var project = await _dataRepository.GetAllProjectDataAsync(currentProjectId, stage.Id);
+            ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(currentUserId);
+
+            return PartialView("EditStageForm", project);
+        }
+
+        private void GetInformation()
+        {
+            if (HttpContext.Request.Cookies.ContainsKey("UserId") &
+                            HttpContext.Request.Cookies.ContainsKey("projectId"))
+            {
+                currentUserId = Convert.ToInt32(HttpContext.Request.Cookies["UserId"]);
+                currentProjectId = Convert.ToInt32(HttpContext.Request.Cookies["projectId"]);
+                //return Ok();
+            }
         }
     }
 }

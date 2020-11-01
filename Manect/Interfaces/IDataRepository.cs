@@ -8,13 +8,12 @@ namespace Manect.Interfaces
     {
         Task<Executor> FindUserIdByNameOrDefaultAsync(string name);
         Task<Executor> FindUserByEmailOrDefaultAsync(string email);
-        Task<Project> FindProjectAsync(string name);
-        Task<Stage> AddStageAsync(Executor user, int projectId);
+        Task<Stage> AddStageAsync(int userId, int projectId);
         Task<Project> AddProjectDefaultAsync(Executor user);
         Task DeleteStageAsync(int userId, int projectId, int stageId);
         Task DeleteProjectAsync(int userId, int projectId);
         Task SetFlagValueAsync(int userId, int projectId, int stageId, Status status);
-        Task<Project> GetAllProjectDataAsync(int projectId);
+        Task<Project> GetAllProjectDataAsync(int projectId, int stageId = default);
         //TODO: В будущем при необходимости переделать это не очень хорошо - делать выборку по имени.
         Task<List<Project>> GetProjectOrDefaultToListAsync(int userId);
         Task<List<Executor>> GetExecutorsToListExceptAsync(int executorId);
