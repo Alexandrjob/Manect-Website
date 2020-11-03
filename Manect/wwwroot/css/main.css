@@ -48,6 +48,14 @@
     }
 }
 
+form{
+    display:flex
+}
+
+textarea{
+    resize:none
+}
+
 .project-step {
     position: relative;
     }
@@ -288,8 +296,7 @@ input {
 }
 
 .checkbox {
-    display: flex;
-    align-items: center
+    display: flex
 }
 
     .checkbox label {

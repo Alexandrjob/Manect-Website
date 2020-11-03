@@ -6,46 +6,46 @@
 
 <ul class="project-step">
     <li class="stage-9999">
-        <div class="project-steps__info">
-            <div class="project-steps__title">
-                <div class="checkbox">
-                    <input id="step-9999" type="checkbox" name="step-9999" value="9999">
-                    <label for="step-9999"></label>
-                    <div class="checkbox__text">Этап:<span>@stage.Name</span></div>
+        <form class="project-step" asp-controller="Project" asp-action="SaveStage">
+            <div class="project-steps__info" width:  style = "width: 524px;">
+                <div class="project-steps__title">
+                    <div class="checkbox">
+                        <input id="step-9999" type="checkbox" name="step-9999" value="9999">
+                        <label for="step-9999"></label>
+                        <textarea class="checkbox__text" name="nameStage" cols="60" rows="1" maxlength="55">@stage.Name</textarea>
+                    </div>
+                </div>
+                <div class="project-steps__deadline">Дедлайн:<input value="@stage.ExpirationDate.ToString("dd.MM.yyyy")" />@*<span>@stage.ExpirationDate.ToString("dd.MM.yyyy")</span>*@</div>
+                <div class="project-steps__comments">
+                    <input id="comment-1" type="text" name="comment-1" placeholder="Комментарии" value="@stage.Comment">
                 </div>
             </div>
-            <div class="project-steps__deadline">Дедлайн:<span>@stage.ExpirationDate.ToString("dd.MM.yyyy")</span></div>
-            <div class="project-steps__comments">
-                <input id="comment-1" type="text" name="comment-1" placeholder="Комментарии" value="@stage.Comment">
-            </div>
-        </div>
-        <div class="project-steps__save"><button onclick="return ClickSaveStageButton('stage-9999', @stage.Id);"><img src="~/image/icon/save.png" title="Сохранить изменения" /></button></div>
-        <div class="project-steps__cancel"><button onclick="return HideForm();"><img src="~/image/icon/cancel.png" title="Отмена" /></button></div>
 
-        <div class="project-steps__date">Дата:<span>@stage.CreationDate.ToString("dd.MM.yyyy")</span></div>
-        <div class="project-steps__users">
-            <div class="select">
-                @if (Model.Executor.Id != stage.ExecutorId)
-                {
-                    <a class="select-box"  title="Изменить исполнителя"><img src="/image/icon/add_user.svg" alt="icon"><span>@stage.Executor.FirstName @stage.Executor.LastName</span></a>
-                }
-                else
-                {
-                    <a class="select-box"  title="Изменить исполнителя"><img src="/image/icon/add_user.svg" alt="icon"><span></span></a>
-                }
-
-                <div class="select-options">
-                    <input hidden asp-for=@Model.Executor.Id name="executorId" />
-                    <button><div class="option" data-id="9999"><span class="name">Без доп. исполнителя</span></div></button>
-                    @foreach (Executor executor in ViewBag.Executors)
+            <div class="project-steps__date">Дата:<span>@stage.CreationDate.ToString("dd.MM.yyyy")</span></div>
+            <div class="project-steps__users" style="margin-left: 100px;">
+                <div class="select">
+                    @if (Model.Executor.Id != stage.ExecutorId)
                     {
-                        <input hidden asp-for=@executor.Id name="executorId" />
-                        <button><div class="option" data-id="9999"><span class="icon"></span><span class="name">@executor.FirstName @executor.LastName</span></div></button>
+                        <a class="select-box" title="Изменить исполнителя"><img src="/image/icon/add_user.svg" alt="icon"><span>@stage.Executor.FirstName @stage.Executor.LastName</span></a>
                     }
+                    else
+                    {
+                        <a class="select-box" title="Изменить исполнителя"><img src="/image/icon/add_user.svg" alt="icon"><span></span></a>
+                    }
+
+                    <div class="select-options">
+                        <input hidden asp-for=@Model.Executor.Id name="executorId" />
+                        <button><div class="option" data-id="9999"><span class="name">Без доп. исполнителя</span></div></button>
+                        @foreach (Executor executor in ViewBag.Executors)
+                        {
+                            <input hidden asp-for=@executor.Id name="executorId" />
+                            <button><div class="option" data-id="9999"><span class="icon"></span><span class="name">@executor.FirstName @executor.LastName</span></div></button>
+                        }
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="project-steps__trash" title="Удалить этап">
+        </form>
+        <div class="project-steps__trash" style="margin-left: 20px;" title="Удалить этап">
             <form asp-controller="Project" asp-action="DeleteStage">
                 <input hidden asp-for=@stage.Id name="stageId" />
                 <input hidden asp-for=@stage.ProjectId name="projectId" />
@@ -54,5 +54,7 @@
                 </button>
             </form>
         </div>
+        <div class="project-steps__cancel" style="margin-left: 40px;"><button onclick="return HideForm();"><img src="~/image/icon/cancel.png" title="Отмена" /></button></div>
+        <div class="project-steps__save"><button onclick="return ClickSaveStageButton('stage-9999', @stage.Id);"><img src="~/image/icon/save.png" title="Сохранить изменения" /></button></div>
     </li>
 </ul>

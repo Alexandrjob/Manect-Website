@@ -6,7 +6,7 @@ function ClickStageButton(Element, StageId) {
         var stage = {
             Id: Number(StageId)
         }
-        SendStage(stage);
+        GetStage(stage);
 
         var top = $('.' + Element).offset().top;
         var left = $('.' + Element).offset().left;
@@ -21,18 +21,17 @@ function ClickSaveStageButton(StageId) {
     var stage = {
         Id: Number(StageId)
     }
-    SendStage(stage);
+    GetStage(stage);
     HideForm();  
 }
 
 function HideForm() {
     $('#editStageForm').offset({ top: 0 });
-    //$('#foreground').css('opacity', 0);
     $('#foreground').hide();
     $("#project-step").empty();
 }
 
-function SendStage(stage) {
+function GetStage(stage) {
     $.ajax({
         url: '/Project/GetStage',
         type: 'POST',
@@ -45,7 +44,7 @@ function SendStage(stage) {
 
         },
         error: function () {
-            alert("AAAAAAAAAAAAAAAAAAAAAAAAAAAA...");
+            alert("Error sending message (connection to the server is lost). Reload the page...");
             $('#editStageForm').css('box-shadow', '');
         }
     });
