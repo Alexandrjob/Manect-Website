@@ -1,4 +1,4 @@
-function ClickStageButton(Element, StageId) {
+function EditStageButton(Element, StageId) {
     if ($('#foreground').is(':visible')) {
         HideForm();  
     }
@@ -18,10 +18,22 @@ function ClickStageButton(Element, StageId) {
 }
 
 function ClickSaveStageButton(StageId) {
+
+    var stageName = $('#step-name').val();
+    var stageComment = $('#step-comment').val();
+    var stageExpirationDate = $('#step-expiration_date').val();
+    var stageCreationDate = $('#step-creation_date').val();
+    var stageExecutorId = $('#step-executor_Id').val();
+
     var stage = {
-        Id: Number(StageId)
+        Id: Number(StageId),
+        Name: stageName,
+        Comment: stageComment,
+        ExpirationDate: Date(stageExpirationDate),
+        CreationDate: Date(stageCreationDate),
+        ExecutorId: Number(stageExecutorId)
     }
-    GetStage(stage);
+    SaveStage(stage);
     HideForm();  
 }
 
@@ -50,8 +62,24 @@ function GetStage(stage) {
     });
 }
 
+function SaveStage(stage) {
+    $.ajax({
+        url: '/Project/SaveStage',
+        type: 'POST',
+        cache: false,
+        async: true,
+        dataType: "html",
+        data: { stage: stage },
+        success: function (result) {
+            $('#project-step').html(result);
 
-
+        },
+        error: function () {
+            alert("Error sending message (connection to the server is lost). Reload the page...");
+            $('#editStageForm').css('box-shadow', '');
+        }
+    });
+}
 
 !function (t) {
     function e(e) {

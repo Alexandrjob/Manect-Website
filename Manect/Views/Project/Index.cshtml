@@ -64,7 +64,7 @@
                                                 <input id="comment-1" type="text" name="comment-1" placeholder="Комментарии" value="@stage.Comment">
                                             </div>
                                         </div>
-                                        <div class="project-steps__edit"><button onclick="return ClickStageButton('stage-@count', @stage.Id);"><img src="~/image/icon/edit.png" title="Редактировать" /></button></div>
+                                        <div class="project-steps__edit"><button onclick="return EditStageButton('stage-@count', @stage.Id);"><img src="~/image/icon/edit.png" title="Редактировать" /></button></div>
                                         <div class="project-steps__date">Дата:<span>@stage.CreationDate.ToString("dd.MM.yyyy")</span></div>
                                         <div class="project-steps__users">
                                             <div class="select">
@@ -114,7 +114,7 @@
                 </section>
             </main>
         </div>
-        <div id="foreground" hidden>
+        <div id="foreground" class="foregroundOpen" hidden>
             <div id="editStageForm">
                 <div id="project-step"></div>
             </div>

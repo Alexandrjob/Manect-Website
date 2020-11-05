@@ -125,7 +125,6 @@ namespace Manect.Controllers
             {
                 currentUserId = Convert.ToInt32(HttpContext.Request.Cookies["UserId"]);
                 currentProjectId = Convert.ToInt32(HttpContext.Request.Cookies["projectId"]);
-                //return Ok();
             }
         }
     }
