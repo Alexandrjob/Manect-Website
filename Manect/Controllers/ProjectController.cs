@@ -68,20 +68,15 @@ namespace Manect.Controllers
             GetInformation();
 
             await _dataRepository.DeleteProjectAsync(currentUserId, currentProjectId);
-
             return RedirectToAction("Index", "Manager");
         }
 
         [HttpPost]
-        public async Task<IActionResult> SetFlagValueAsync(Status status, int stageId)
+        public async Task SetFlagValueAsync(Status status, int stageId)
         {
             GetInformation();
 
             await _dataRepository.SetFlagValueAsync(currentUserId, currentProjectId, stageId, status);
-
-            var project = await _dataRepository.GetAllProjectDataAsync(currentProjectId);
-            ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(currentUserId);
-            return View("Index", project);
         }
 
         [HttpPost]
@@ -103,7 +98,6 @@ namespace Manect.Controllers
 
             var project = await _dataRepository.GetAllProjectDataAsync(currentProjectId, stage.Id);
             ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(currentUserId);
-
             return PartialView("EditStageForm", project);
         }
 
@@ -111,10 +105,10 @@ namespace Manect.Controllers
         public async Task<IActionResult> SaveStageAsync([FromForm] Stage stage)
         {
             GetInformation();
+            await _dataRepository.ChangeStageAsync(stage);
 
             var project = await _dataRepository.GetAllProjectDataAsync(currentProjectId, stage.Id);
             ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(currentUserId);
-
             return PartialView("EditStageForm", project);
         }
 

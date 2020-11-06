@@ -54,8 +54,8 @@
                                         <div class="project-steps__info">
                                             <div class="project-steps__title">
                                                 <div class="checkbox">
-                                                    <input id="step-@count" type="checkbox" name="step-@count" value="@count">
-                                                    <label for="step-@count"></label>
+                                                    <input id="step-@count" type="checkbox" value="">
+                                                    <button for="step-@count"></button>
                                                     <div class="checkbox__text">@stage.Name</div>
                                                 </div>
                                             </div>
@@ -83,11 +83,11 @@
                                                         <button><div class="option" data-id="@count1"><span class="name">Без доп. исполнителя</span></div></button>
                                                     </form>
                                                     @foreach (Executor executor in ViewBag.Executors)
-                                                    {    
+                                                    {
                                                         count1++;
                                                         <form asp-controller="Project" asp-action="ChengeExecutor">
-                                                            <input hidden asp-for=@executor.Id name="executorId"/>
-                                                            <input hidden asp-for=@stage.Id name="stageId"/>
+                                                            <input hidden asp-for=@executor.Id name="executorId" />
+                                                            <input hidden asp-for=@stage.Id name="stageId" />
                                                             <button>
                                                                 <div class="option" data-id="@count1">
                                                                     <span class="icon"></span><span class="name">@executor.FirstName @executor.LastName</span>
@@ -100,7 +100,7 @@
                                         </div>
                                         <div class="project-steps__trash" title="Удалить этап">
                                             <form asp-controller="Project" asp-action="DeleteStage">
-                                                <input hidden asp-for=@stage.Id name="stageId"/>
+                                                <input hidden asp-for=@stage.Id name="stageId" />
                                                 <button>
                                                     <img src="/image/icon/trash.svg" alt="icon">
                                                 </button>

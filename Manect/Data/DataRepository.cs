@@ -162,12 +162,7 @@ namespace Manect.Data
 
             _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} в Проекте {ProjectId} Этап: {StageId}", DateTime.Now, userId, Status.Created, projectId, stageId);
 
-            Stage stage = new Stage
-            {
-                Id = stageId
-            };
-            dataContext.Stages.Attach(stage);
-
+            var stage = await dataContext.Stages.FirstOrDefaultAsync(s => s.Id == stageId);
             stage.Status = status;
 
             dataContext.Entry(stage).State = EntityState.Modified;
@@ -259,6 +254,32 @@ namespace Manect.Data
             
 
             stage.ExecutorId = executorId;
+            dataContext.Entry(stage).State = EntityState.Modified;
+            await dataContext.SaveChangesAsync();
+        }
+
+        public async Task ChangeStageAsync(Stage stage)
+        {
+            var dataContext = DataContext;
+            var oldStage = await dataContext.Stages
+                .AsNoTracking()
+                .Where(s => s.Id == stage.Id)
+                .Select(u => new
+                {
+                    u.ProjectId
+                })
+                .AsQueryable()
+                .Select(s => new Stage
+                {
+                    ProjectId = s.ProjectId
+                })
+                .FirstOrDefaultAsync();
+
+            stage.ProjectId = oldStage.ProjectId;
+
+            _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} в Проекте {ProjectId} Этап: {StageId}", DateTime.Now, stage.ExecutorId, Status.Modified, stage.ProjectId, stage.Id);
+
+            dataContext.Stages.Attach(stage);
             dataContext.Entry(stage).State = EntityState.Modified;
             await dataContext.SaveChangesAsync();
         }

@@ -10,11 +10,12 @@
             <div class="project-steps__info" width: style="width: 524px;">
                 <div class="project-steps__title">
                     <div class="checkbox">
-                        <input id="step-9999" type="checkbox" name="step-9999" value="9999">
-                        <label for="step-9999"></label>
+                        <input type="checkbox"  value="@Status.Completed">
+                        <label ></label>
                         <textarea class="checkbox__text" id="step-name" cols="60" rows="1" maxlength="55">@stage.Name</textarea>
                     </div>
                 </div>
+                <input hidden id="step-time" value="@stage.CreationDate.ToString("HH:mm:ss")"; />
                 <div class="project-steps__deadline" style="margin-top: 0px;">Дедлайн:<input id="step-expiration_date" type="date" name="ExpirationDate" value="@stage.ExpirationDate.ToString("yyyy-MM-dd")" /></div>
                 <div class="project-steps__comments">
                     <input id="step-comment" type="text" name="Comment" placeholder="Комментарии" value="@stage.Comment">
@@ -80,3 +81,5 @@
             ))
     }
 </script>
+
+<script src="~/js/moment.min.js"></script>

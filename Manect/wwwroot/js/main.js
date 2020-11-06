@@ -25,12 +25,21 @@ function ClickSaveStageButton(StageId) {
     var stageCreationDate = $('#step-creation_date').val();
     var stageExecutorId = $('#step-executor_Id').val();
 
+    var stageTime = $('#step-time').val();
+
+
+    var stageExpirationDate = new Date(moment(stageExpirationDate + " " + stageTime, "yyyy-MM-DD HH: mm: ss").format("yyyy-MM-DD HH: mm: ss"));
+    var stageCreationDate = new Date(moment(stageCreationDate + " " + stageTime, "yyyy-MM-DD HH: mm: ss").format("yyyy-MM-DD HH: mm: ss"));
+
+    stageExpirationDate = stageExpirationDate.toJSON(); 
+    stageCreationDate = stageCreationDate.toJSON(); 
+
     var stage = {
         Id: Number(StageId),
         Name: stageName,
         Comment: stageComment,
-        ExpirationDate: Date(stageExpirationDate),
-        CreationDate: Date(stageCreationDate),
+        ExpirationDate: stageExpirationDate,
+        CreationDate: stageCreationDate,
         ExecutorId: Number(stageExecutorId)
     }
     SaveStage(stage);
@@ -57,7 +66,6 @@ function GetStage(stage) {
         },
         error: function () {
             alert("Error sending message (connection to the server is lost). Reload the page...");
-            $('#editStageForm').css('box-shadow', '');
         }
     });
 }
@@ -76,7 +84,6 @@ function SaveStage(stage) {
         },
         error: function () {
             alert("Error sending message (connection to the server is lost). Reload the page...");
-            $('#editStageForm').css('box-shadow', '');
         }
     });
 }
@@ -202,7 +209,7 @@ function SaveStage(stage) {
             !function (t) {
                 "use strict";
                 t(".checkbox label").on("click", (function (e) {
-                    t(this).closest("li").toggleClass("checked")
+                    t(this).closest("li").toggleClass("checked") 
                 }
                 ))
             }(t)

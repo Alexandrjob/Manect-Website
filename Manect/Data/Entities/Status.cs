@@ -4,6 +4,7 @@
     {
         Created,
         Deleted,
+        Modified,
         NotAdded,
         NotDeleted,
         Completed
