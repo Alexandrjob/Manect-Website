@@ -1,20 +1,16 @@
 function EditStageButton(Element, StageId) {
-    if ($('#foreground').is(':visible')) {
-        HideForm();  
+    var stage = {
+        Id: Number(StageId)
     }
-    else {
-        var stage = {
-            Id: Number(StageId)
-        }
-        GetStage(stage);
+    SendStage(stage, 'GetStage');
 
-        var top = $('.' + Element).offset().top;
-        var left = $('.' + Element).offset().left;
-
-        $('#editStageForm').offset({ top: top });
-        $('#project-step').css('marginLeft', left);
-        $('#foreground').show();
-    }
+    var top = $('.' + Element).offset().top;
+    var left = $('.' + Element).offset().left;
+    
+    $('#stage-form-container').offset({ top: top });
+    $('#project-step-form').css('marginLeft', left);
+    $('#project-form-container').hide();
+    $('#foreground').show();
 }
 
 function ClickSaveStageButton(StageId) {
@@ -24,15 +20,10 @@ function ClickSaveStageButton(StageId) {
     var stageExpirationDate = $('#step-expiration_date').val();
     var stageCreationDate = $('#step-creation_date').val();
     var stageExecutorId = $('#step-executor_Id').val();
-
     var stageTime = $('#step-time').val();
 
-
-    var stageExpirationDate = new Date(moment(stageExpirationDate + " " + stageTime, "yyyy-MM-DD HH: mm: ss").format("yyyy-MM-DD HH: mm: ss"));
-    var stageCreationDate = new Date(moment(stageCreationDate + " " + stageTime, "yyyy-MM-DD HH: mm: ss").format("yyyy-MM-DD HH: mm: ss"));
-
-    stageExpirationDate = stageExpirationDate.toJSON(); 
-    stageCreationDate = stageCreationDate.toJSON(); 
+    stageExpirationDate = new Date(moment(stageExpirationDate + " " + stageTime, "yyyy-MM-DD HH: mm: ss").format("yyyy-MM-DD HH: mm: ss")).toJSON();
+    stageCreationDate = new Date(moment(stageCreationDate + " " + stageTime, "yyyy-MM-DD HH: mm: ss").format("yyyy-MM-DD HH: mm: ss")).toJSON();
 
     var stage = {
         Id: Number(StageId),
@@ -42,26 +33,37 @@ function ClickSaveStageButton(StageId) {
         CreationDate: stageCreationDate,
         ExecutorId: Number(stageExecutorId)
     }
-    SaveStage(stage);
+    SendStage(stage, 'SaveStage');
     HideForm();  
 }
 
-function HideForm() {
-    $('#editStageForm').offset({ top: 0 });
-    $('#foreground').hide();
-    $("#project-step").empty();
+function EditProjectButton(projectId) {
+    var project = {
+        Id: Number(projectId)
+    }
+    SendProject(project, 'GetProject');
+
+    $('#stage-form-container').hide();
+    $('#project-form-container').show();
+    $('#foreground').show();
 }
 
-function GetStage(stage) {
+function HideForm() {
+    $('#stage-form-container').offset({ top: 0 });
+    $('#foreground').hide();
+    $("#project-step-form").empty();
+}
+
+function SendStage(stage, url) {
     $.ajax({
-        url: '/Project/GetStage',
+        url: '/Project/' + url,
         type: 'POST',
         cache: false,
         async: true,
         dataType: "html",
         data: { stage: stage },
         success: function (result) {
-            $('#project-step').html(result);
+            $('#project-step-form').html(result);
 
         },
         error: function () {
@@ -70,16 +72,16 @@ function GetStage(stage) {
     });
 }
 
-function SaveStage(stage) {
+function SendProject(project, url) {
     $.ajax({
-        url: '/Project/SaveStage',
+        url: '/Project/' + url,
         type: 'POST',
         cache: false,
         async: true,
         dataType: "html",
-        data: { stage: stage },
+        data: { project: project },
         success: function (result) {
-            $('#project-step').html(result);
+            $('#project-form').html(result);
 
         },
         error: function () {

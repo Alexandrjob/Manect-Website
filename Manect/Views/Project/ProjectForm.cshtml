@@ -1,0 +1,14 @@
+﻿@using Manect.Data.Entities;
+@model Manect.Data.Entities.Project
+
+<div class="project-container">
+    <div class="project-name">
+        @Model.Name
+    </div>
+    <div class="project-property">
+        <div class="project-executor">Исполнитель: <span>@Model.Executor.FirstName @Model.Executor.LastName</span></div>
+        <div class="project-date">Дата создания: <span>@Model.CreationDate.ToString("yyyy-MM-dd")</span></div>
+        <div class="project-date">Дата дедлайна: <span>@Model.ExpirationDate.ToString("yyyy-MM-dd")</span></div>
+        <div class="project-price">Цена: <span>@Model.Price</span></div>
+    </div>
+</div>

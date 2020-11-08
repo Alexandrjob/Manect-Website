@@ -18,6 +18,7 @@
                     <div class="header">
                         <div class="header-title">
                             @Model.Name
+                            <button onclick="return EditProjectButton(@Model.Id);"><img src="~/image/icon/edit.png" title="Редактировать" /></button>
                             <div class="button button_invert">
                                 <form asp-controller="Project" asp-action="AddStage">
                                     <button>
@@ -55,7 +56,7 @@
                                             <div class="project-steps__title">
                                                 <div class="checkbox">
                                                     <input id="step-@count" type="checkbox" value="">
-                                                    <button for="step-@count"></button>
+                                                   <label for="step-@count"></label>
                                                     <div class="checkbox__text">@stage.Name</div>
                                                 </div>
                                             </div>
@@ -115,8 +116,11 @@
             </main>
         </div>
         <div id="foreground" class="foregroundOpen" hidden>
-            <div id="editStageForm">
-                <div id="project-step"></div>
+            <div id="project-form-container">
+                <div id="project-form"></div>
+            </div>
+            <div id="stage-form-container">
+                <div id="project-step-form" ></div>
             </div>
         </div>
     </div>

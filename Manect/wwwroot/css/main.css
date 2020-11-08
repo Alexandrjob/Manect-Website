@@ -28,17 +28,73 @@
     z-index: 1
 }
 
-#editStageForm {
+#project-form {
+    margin-left: auto;
+    height: 100%;
+    width: 45%
+}
+
+.project-container {
+    position: fixed
+}
+
+#project-form-container .project-name {
+    margin-top: 20px;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 29px
+}
+
+#project-form-container .project-property {
+    margin-top: 10px;
+    margin-left: 30px
+}
+
+#project-form-container .project-executor, .project-date, .project-price {
+    font-weight: 600;
+    font-size: 12px
+}
+
+    #project-form-container .project-executor span, .project-date span, .project-price span {
+        margin-left: 10px;
+        font-weight: 400;
+        font-size: 14px
+    }
+
+#project-form-container {
+    width: 48%;
+    height: 150px;
     background-color: #F3F3F3;
     box-shadow: 0 0 20px 10px rgba(0,0,0,0.10);
     opacity: 0; /*Элемент полностью прозрачный (невидимый)*/
     transition: 0.5s; /*Скорость перехода состояния элемента*/
-    animation: editStageFormShow 0.5s 1; /* Указываем название анимации, её время и количество повторов*/
+    animation: ProjectFormShow 0.5s 1; /* Указываем название анимации, её время и количество повторов*/
     animation-fill-mode: forwards; /* Чтобы элемент оставался в конечном состоянии анимации */
     animation-delay: 0.5s; /* Задержка перед началом*/
 }
 
-@keyframes editStageFormShow {
+@keyframes ProjectFormShow {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+
+#stage-form-container {
+    background-color: #F3F3F3;
+    box-shadow: 0 0 20px 10px rgba(0,0,0,0.10);
+    opacity: 0; /*Элемент полностью прозрачный (невидимый)*/
+    transition: 0.5s; /*Скорость перехода состояния элемента*/
+    animation: StageFormShow 0.5s 1; /* Указываем название анимации, её время и количество повторов*/
+    animation-fill-mode: forwards; /* Чтобы элемент оставался в конечном состоянии анимации */
+    animation-delay: 0.5s; /* Задержка перед началом*/
+}
+
+@keyframes StageFormShow {
     0% {
         opacity: 0;
     }
@@ -56,9 +112,9 @@ textarea{
     resize:none
 }
 
-.project-step {
+.project-step-form {
     position: relative;
-    }
+}
 
 /**/
     *, :after, :before {
@@ -598,7 +654,7 @@ main {
 }
 
 #my .container .project-steps__date, #project .container .project-steps__date, .project-steps__date {
-    width: 160px;
+    width: 165px;
     font-weight: 600;
     font-size: 12px;
     line-height: 14px

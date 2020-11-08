@@ -98,7 +98,7 @@ namespace Manect.Controllers
 
             var project = await _dataRepository.GetAllProjectDataAsync(currentProjectId, stage.Id);
             ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(currentUserId);
-            return PartialView("EditStageForm", project);
+            return PartialView("StageForm", project);
         }
 
         [HttpPost]
@@ -107,9 +107,18 @@ namespace Manect.Controllers
             GetInformation();
             await _dataRepository.ChangeStageAsync(stage);
 
-            var project = await _dataRepository.GetAllProjectDataAsync(currentProjectId, stage.Id);
+            var project = await _dataRepository.GetAllProjectDataAsync(currentProjectId);
             ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(currentUserId);
-            return PartialView("EditStageForm", project);
+            return View("Index", project);
+        }
+
+        public async Task<IActionResult> GetProjectAsync([FromForm] Project pr)
+        {
+            GetInformation();
+
+            var project = await _dataRepository.GetAllProjectDataAsync(currentProjectId);
+            ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(currentUserId);
+            return PartialView("ProjectForm", project);
         }
 
         private void GetInformation()
