@@ -283,5 +283,30 @@ namespace Manect.Data
             dataContext.Entry(stage).State = EntityState.Modified;
             await dataContext.SaveChangesAsync();
         }
+
+        public async Task ChangeProjectAsync(Project project)
+        {
+            var dataContext = DataContext;
+            //var oldProject = await dataContext.FurnitureProjects
+            //    .AsNoTracking()
+            //    .Where(p => p.Id == project.Id)
+            //    .Select(u => new
+            //    {
+            //        u.Id
+            //    })
+            //    .AsQueryable()
+            //    .Select(s => new Project
+            //    {
+            //        Id = s.Id
+            //    })
+            //    .FirstOrDefaultAsync();
+
+
+            _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} Проект {ProjectId}", DateTime.Now, project.Executor.Id, Status.Modified, project.Id);
+
+            dataContext.FurnitureProjects.Attach(project);
+            dataContext.Entry(project).State = EntityState.Modified;
+            await dataContext.SaveChangesAsync();
+        }
     }
 }

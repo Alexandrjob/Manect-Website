@@ -121,6 +121,15 @@ namespace Manect.Controllers
             return PartialView("ProjectForm", project);
         }
 
+        public async Task<IActionResult> SaveProjectAsync([FromForm] Project cProject)
+        {
+            GetInformation();
+            await _dataRepository.ChangeProjectAsync(cProject);
+
+            var project = await _dataRepository.GetAllProjectDataAsync(currentProjectId);
+            ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(currentUserId);
+            return View("Index", project);
+        }
         private void GetInformation()
         {
             if (HttpContext.Request.Cookies.ContainsKey("UserId") &

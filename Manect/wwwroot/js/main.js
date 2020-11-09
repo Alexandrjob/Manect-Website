@@ -10,6 +10,7 @@ function EditStageButton(Element, StageId) {
     $('#stage-form-container').offset({ top: top });
     $('#project-step-form').css('marginLeft', left);
     $('#project-form-container').hide();
+    $('#stage-form-container').show();
     $('#foreground').show();
 }
 
@@ -34,7 +35,13 @@ function ClickSaveStageButton(StageId) {
         ExecutorId: Number(stageExecutorId)
     }
     SendStage(stage, 'SaveStage');
-    HideForm();  
+    HideStageForm();  
+}
+
+function HideStageForm() {
+    $('#stage-form-container').offset({ top: 0 });
+    $('#foreground').hide();
+    $("#project-step-form").empty();
 }
 
 function EditProjectButton(projectId) {
@@ -48,10 +55,31 @@ function EditProjectButton(projectId) {
     $('#foreground').show();
 }
 
-function HideForm() {
-    $('#stage-form-container').offset({ top: 0 });
+function ClickSaveProjectButton(projectId) {
+
+    var projectName = $('#project-name').val();
+    var projectExpirationDate = $('#project-expiration_date').val();
+    var projectCreationDate = $('#project-creation_date').val();
+    var projectPrice = $('#project-price').val();
+    var projectTime = $('#project-time').val();
+
+    projectExpirationDate = new Date(moment(projectExpirationDate + " " + projectTime, "yyyy-MM-DD HH: mm: ss").format("yyyy-MM-DD HH: mm: ss")).toJSON();
+    projectCreationDate = new Date(moment(projectCreationDate + " " + projectTime, "yyyy-MM-DD HH: mm: ss").format("yyyy-MM-DD HH: mm: ss")).toJSON();
+
+    var project = {
+        Id: Number(projectId),
+        Name: projectName,
+        ExpirationDate: projectExpirationDate,
+        CreationDate: projectCreationDate,
+        Price: projectPrice
+    }
+    SendProject(project, 'SaveProject');
+    HideProjectForm();
+}
+
+function HideProjectForm() {
     $('#foreground').hide();
-    $("#project-step-form").empty();
+    $("#project-form").empty();
 }
 
 function SendStage(stage, url) {

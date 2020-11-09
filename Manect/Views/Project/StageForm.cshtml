@@ -15,7 +15,7 @@
                         <textarea class="checkbox__text" id="step-name" cols="60" rows="1" maxlength="55">@stage.Name</textarea>
                     </div>
                 </div>
-                <input hidden id="step-time" value="@stage.CreationDate.ToString("HH:mm:ss")"; />
+                <input hidden id="step-time" value="@stage.CreationDate.ToString("HH:mm:ss")" />
                 <div class="project-steps__deadline" style="margin-top: 0px;">Дедлайн:<input id="step-expiration_date" type="date" name="ExpirationDate" value="@stage.ExpirationDate.ToString("yyyy-MM-dd")" /></div>
                 <div class="project-steps__comments">
                     <input id="step-comment" type="text" name="Comment" placeholder="Комментарии" value="@stage.Comment">
@@ -53,7 +53,7 @@
                 </button>
             </form>
         </div>
-        <div class="project-steps__cancel" style="margin-left: 40px;"><button onclick="return HideForm();"><img src="~/image/icon/cancel.png" title="Отмена" /></button></div>
+        <div class="project-steps__cancel" style="margin-left: 40px;"><button onclick="return HideStageForm();"><img src="~/image/icon/cancel.png" title="Отмена" /></button></div>
         <div class="project-steps__save"><button onclick="return ClickSaveStageButton(@stage.Id);"><img src="~/image/icon/save.png" title="Сохранить изменения" /></button></div>
     </li>
 </ul>

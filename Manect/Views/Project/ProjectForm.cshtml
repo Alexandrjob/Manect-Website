@@ -1,14 +1,17 @@
-﻿@using Manect.Data.Entities;
-@model Manect.Data.Entities.Project
+﻿@model Manect.Data.Entities.Project
 
 <div class="project-container">
-    <div class="project-name">
-        @Model.Name
+    <div style="width:452px;">
+        <div class="project-name">
+            <input id="project-name" style="width:100%;" placeholder="Название проекта" value="@Model.Name"/> 
+        </div>
+        <div class="project-property">
+            <input hidden id="project-time" value="@Model.CreationDate.ToString("HH:mm:ss")" />
+            <div class="project-date">Дата создания: <input id="project-expiration_date" type="date" name="ExpirationDate" value="@Model.CreationDate.ToString("yyyy-MM-dd")"/></div>
+            <div class="project-date">Дата дедлайна: <input id="project-creation_date" type="date" name="CreationDate" value="@Model.ExpirationDate.ToString("yyyy-MM-dd")"/></div>
+            <div class="project-price">Цена: <input id="project-price" value="@Model.Price"/></div>
+        </div>
     </div>
-    <div class="project-property">
-        <div class="project-executor">Исполнитель: <span>@Model.Executor.FirstName @Model.Executor.LastName</span></div>
-        <div class="project-date">Дата создания: <span>@Model.CreationDate.ToString("yyyy-MM-dd")</span></div>
-        <div class="project-date">Дата дедлайна: <span>@Model.ExpirationDate.ToString("yyyy-MM-dd")</span></div>
-        <div class="project-price">Цена: <span>@Model.Price</span></div>
-    </div>
+    <div class="project-steps__cancel" style="margin-left: 0px; margin-top:10px;"><button onclick="return HideProjectForm();"><img src="~/image/icon/cancel.png" title="Отмена" /></button></div>
+    <div class="project-steps__save" style="margin-top:10px;"><button onclick="return ClickSaveProjectButton(@Model.Id);"><img src="~/image/icon/save.png" title="Сохранить изменения" /></button></div>
 </div>
