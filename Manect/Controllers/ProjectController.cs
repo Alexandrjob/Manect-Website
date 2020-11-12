@@ -121,12 +121,12 @@ namespace Manect.Controllers
             return PartialView("ProjectForm", project);
         }
 
-        public async Task<IActionResult> SaveProjectAsync([FromForm] Project cProject)
+        public async Task<IActionResult> SaveProjectAsync([FromForm] Project project)
         {
             GetInformation();
-            await _dataRepository.ChangeProjectAsync(cProject);
+            await _dataRepository.ChangeProjectAsync(project, currentUserId);
 
-            var project = await _dataRepository.GetAllProjectDataAsync(currentProjectId);
+            project = await _dataRepository.GetAllProjectDataAsync(currentProjectId);
             ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(currentUserId);
             return View("Index", project);
         }

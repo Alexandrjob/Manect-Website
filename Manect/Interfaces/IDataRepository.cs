@@ -19,6 +19,6 @@ namespace Manect.Interfaces
         Task<List<Executor>> GetExecutorsToListExceptAsync(int executorId);
         Task ChengeExecutorAsync(int executorId, int projectId, int stageId);
         Task ChangeStageAsync(Stage stage);
-        Task ChangeProjectAsync(Project project);
+        Task ChangeProjectAsync(Project project, int userId);
     }
 }
