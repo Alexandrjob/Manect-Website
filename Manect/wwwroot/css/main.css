@@ -351,35 +351,11 @@ a {
     display: flex
 }
 
-    .checkbox label {
-        position: relative;
-        height: 40px;
-        padding-left: 40px;
-        font: 600 24px/29px TT Travels;
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center
+    .checkbox-check {
+        height: 25px;
+        width: 25px;
+        appearance: auto
     }
-
-        .checkbox label:before {
-            content: "";
-            position: absolute;
-            display: block;
-            left: 0;
-            top: 0;
-            width: 40px;
-            height: 40px;
-            border: 1px solid #000;
-            border-radius: 50%
-        }
-
-    .checkbox input[type=checkbox] {
-        display: none
-    }
-
-        .checkbox input[type=checkbox]:checked + label:before {
-            background: transparent url(/image/icon/check.svg) 50% no-repeat
-        }
 
 .checkbox__text {
     margin-left: 20px;
@@ -694,7 +670,7 @@ main {
         }
 
 #my .container .project-steps__trash, #project .container .project-steps__trash, .project-steps__trash {
-    margin-left: 20px
+    margin-left: 10px
 }
 
     #my .container .project-steps__trash img, #project .container .project-steps__trash img, .project-steps__trash img {

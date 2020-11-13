@@ -37,8 +37,6 @@
                                     <button><a>Удалить проект</a></button>
                                 </form>
                             </div>
-
-                            <div class="button"><a href="#">Отмена</a></div>
                         </div>
                     </div>
                 </div>
@@ -51,63 +49,69 @@
                                 @foreach (Stage stage in Model.Stages)
                                 {
                                     count++;
-                                    <li class="stage-@count">
-                                        <div class="project-steps__info">
-                                            <div class="project-steps__title">
-                                                <div class="checkbox">
-                                                    <input id="step-@count" type="checkbox" value="">
-                                                   <label for="step-@count"></label>
-                                                    <div class="checkbox__text">@stage.Name</div>
+                                <li class="stage-@count">
+                                    <div class="project-steps__info">
+                                        <div class="project-steps__title">
+                                            <div class="checkbox">
+                                                <div>
+                                                    <input class="checkbox-check" type="checkbox">
                                                 </div>
-                                            </div>
-                                            <div class="project-steps__deadline">Дедлайн:<span>@stage.ExpirationDate.ToString("dd.MM.yyyy")</span></div>
-                                            <div class="project-steps__comments">
-                                                <input id="comment-1" type="text" name="comment-1" placeholder="Комментарии" value="@stage.Comment">
+                                                <div class="checkbox__text">@stage.Name</div>
                                             </div>
                                         </div>
-                                        <div class="project-steps__edit"><button onclick="return EditStageButton('stage-@count', @stage.Id);"><img src="~/image/icon/edit.png" title="Редактировать" /></button></div>
-                                        <div class="project-steps__date">Дата:<span>@stage.CreationDate.ToString("dd.MM.yyyy")</span></div>
-                                        <div class="project-steps__users">
-                                            <div class="select">
-                                                @if (Model.Executor.Id != stage.ExecutorId)
+                                        <div class="project-steps__deadline">Дедлайн:<span>@stage.ExpirationDate.ToString("dd.MM.yyyy")</span></div>
+                                        <div class="project-steps__comments">
+                                            <input id="comment-1" type="text" name="comment-1" placeholder="Комментарии" value="@stage.Comment">
+                                        </div>
+                                    </div>
+                                    <div class="project-steps__edit"><button onclick="return EditStageButton('stage-@count', @stage.Id);"><img src="~/image/icon/edit.png" title="Редактировать" /></button></div>
+                                    <div class="project-steps__date">Дата:<span>@stage.CreationDate.ToString("dd.MM.yyyy")</span></div>
+                                    <div class="project-steps__users">
+                                        <div class="select">
+                                            @if (Model.Executor.Id != stage.ExecutorId)
+                                            {
+                                                <a class="select-box" href="#" title="Изменить исполнителя"><img src="/image/icon/add_user.svg" alt="icon"><span>@stage.Executor.FirstName @stage.Executor.LastName</span></a>
+                                            }
+                                            else
+                                            {
+                                                <a class="select-box" href="#" title="Изменить исполнителя"><img src="/image/icon/add_user.svg" alt="icon"><span></span></a>
+                                            }
+                                            <div class="select-options">
+                                                <form asp-controller="Project" asp-action="ChengeExecutor">
+                                                    <input hidden asp-for=@Model.Executor.Id name="executorId" />
+                                                    <input hidden asp-for=@stage.Id name="stageId" />
+                                                    <button><div class="option" data-id="@count1"><span class="name">Без доп. исполнителя</span></div></button>
+                                                </form>
+                                                @foreach (Executor executor in ViewBag.Executors)
                                                 {
-                                                    <a class="select-box" href="#" title="Изменить исполнителя"><img src="/image/icon/add_user.svg" alt="icon"><span>@stage.Executor.FirstName @stage.Executor.LastName</span></a>
-                                                }
-                                                else
-                                                {
-                                                    <a class="select-box" href="#" title="Изменить исполнителя"><img src="/image/icon/add_user.svg" alt="icon"><span></span></a>
-                                                }
-                                                <div class="select-options">
+                                                    count1++;
                                                     <form asp-controller="Project" asp-action="ChengeExecutor">
-                                                        <input hidden asp-for=@Model.Executor.Id name="executorId" />
+                                                        <input hidden asp-for=@executor.Id name="executorId" />
                                                         <input hidden asp-for=@stage.Id name="stageId" />
-                                                        <button><div class="option" data-id="@count1"><span class="name">Без доп. исполнителя</span></div></button>
+                                                        <button>
+                                                            <div class="option" data-id="@count1">
+                                                                <span class="icon"></span><span class="name">@executor.FirstName @executor.LastName</span>
+                                                            </div>
+                                                        </button>
                                                     </form>
-                                                    @foreach (Executor executor in ViewBag.Executors)
-                                                    {
-                                                        count1++;
-                                                        <form asp-controller="Project" asp-action="ChengeExecutor">
-                                                            <input hidden asp-for=@executor.Id name="executorId" />
-                                                            <input hidden asp-for=@stage.Id name="stageId" />
-                                                            <button>
-                                                                <div class="option" data-id="@count1">
-                                                                    <span class="icon"></span><span class="name">@executor.FirstName @executor.LastName</span>
-                                                                </div>
-                                                            </button>
-                                                        </form>
-                                                    }
-                                                </div>
+                                                }
                                             </div>
                                         </div>
-                                        <div class="project-steps__trash" title="Удалить этап">
-                                            <form asp-controller="Project" asp-action="DeleteStage">
-                                                <input hidden asp-for=@stage.Id name="stageId" />
-                                                <button>
-                                                    <img src="/image/icon/trash.svg" alt="icon">
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </li>
+                                    </div>
+                                    <div class="project-steps__trash" title="Удалить этап">
+                                        <form asp-controller="Project" asp-action="DeleteStage">
+                                            <input hidden asp-for=@stage.Id name="stageId" />
+                                            <button>
+                                                <img src="/image/icon/trash.svg" alt="icon">
+                                            </button>
+                                        </form>
+                                    </div>
+                                    @*<div class="project-steps__save" style="margin-left: 10px; height: 38px; align-items: center; display: flex;">
+                                        <button>
+                                            <img src="~/image/icon/save.png" style="height: 38px;" title="Сохранить изменения" />
+                                        </button>
+                                     </div>*@
+                                </li>
                                 }
                             </ul>
                         </div>

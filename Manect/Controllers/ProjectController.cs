@@ -115,7 +115,7 @@ namespace Manect.Controllers
         public async Task<IActionResult> GetProjectAsync([FromForm] Project pr)
         {
             GetInformation();
-
+            
             var project = await _dataRepository.GetAllProjectDataAsync(currentProjectId);
             ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(currentUserId);
             return PartialView("ProjectForm", project);
