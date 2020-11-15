@@ -99,7 +99,7 @@ namespace Manect.Data
                 dataContext.Entry(stage).State = EntityState.Added;
                 _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} в Проекте {ProjectId} Этап: {StageId}", DateTime.Now, user.Id, Status.Created, project.Id, stage.Id);
             }
-                
+
             await dataContext.SaveChangesAsync();
 
             _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} Проект {ProjectId}", DateTime.Now, user.Id, Status.Created, project.Id);
@@ -140,11 +140,10 @@ namespace Manect.Data
         {
             var dataContext = DataContext;
 
-            _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} в Проекте {ProjectId} Этап: {StageId}", DateTime.Now, userId, Status.Completed, projectId, stageId);
+            _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} в Проекте {ProjectId} Этап: {StageId}", DateTime.Now, userId, status, projectId, stageId);
 
             var stage = await dataContext.Stages.FirstOrDefaultAsync(s => s.Id == stageId);
             stage.Status = status;
-
             dataContext.Entry(stage).State = EntityState.Modified;
             await dataContext.SaveChangesAsync();
         }
@@ -185,7 +184,7 @@ namespace Manect.Data
             }
             else
             {
-                
+
                 var stage = await dataContext.Stages
                 .AsNoTracking()
                 .Where(s => s.ProjectId == project.Id)
@@ -194,7 +193,7 @@ namespace Manect.Data
 
                 stages.Add(stage);
             }
-            
+
 
             project.Stages = stages;
             return project;
@@ -241,6 +240,7 @@ namespace Manect.Data
         public async Task ChangeStageAsync(Stage stage)
         {
             var dataContext = DataContext;
+            //TODO: Почему то ругается на отсутствие полей, в проекте такого нет
             var oldStage = await dataContext.Stages
                 .AsNoTracking()
                 .Where(s => s.Id == stage.Id)
@@ -264,7 +264,7 @@ namespace Manect.Data
             await dataContext.SaveChangesAsync();
         }
 
-        public async Task ChangeProjectAsync(Project project,int userId)
+        public async Task ChangeProjectAsync(Project project, int userId)
         {
             var dataContext = DataContext;
 

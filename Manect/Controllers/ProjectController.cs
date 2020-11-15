@@ -20,21 +20,26 @@ namespace Manect.Controllers
             _dataRepository = dataRepository;
         }
 
-        public async Task<IActionResult> IndexAsync(int projectId)
+        public async Task<IActionResult> IndexAsync()
         {
-            var name = HttpContext.User.Identity.Name;
-            var currentUser = await _dataRepository.FindUserIdByNameOrDefaultAsync(name);
+            if (!HttpContext.Request.Cookies.ContainsKey("UserId") /*&
+                            !HttpContext.Request.Cookies.ContainsKey("projectId")*/)
+            {
+                var name = HttpContext.User.Identity.Name;
+                var currentUser = await _dataRepository.FindUserIdByNameOrDefaultAsync(name);
 
-            HttpContext.Response.Cookies.Append("UserId", currentUser.Id.ToString());
-            HttpContext.Response.Cookies.Append("projectId", projectId.ToString());
+                HttpContext.Response.Cookies.Append("UserId", currentUser.Id.ToString());
+                //HttpContext.Response.Cookies.Append("projectId", projectId.ToString());
+            }
+            GetInformation();
 
-            var project = await _dataRepository.GetAllProjectDataAsync(projectId);
-            if(project == null)
+            var project = await _dataRepository.GetAllProjectDataAsync(currentProjectId);
+            if (project == null)
             {
                 return Redirect("/Error/Index");
             }
 
-            ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(currentUser.Id);
+            ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(currentUserId);
             return View(project);
         }
 
@@ -75,12 +80,11 @@ namespace Manect.Controllers
         public async Task SetFlagValueAsync(Status status, int stageId)
         {
             GetInformation();
-
             await _dataRepository.SetFlagValueAsync(currentUserId, currentProjectId, stageId, status);
         }
 
         [HttpPost]
-        public async Task<IActionResult> ChengeExecutorAsync(int executorId, int stageId)
+        public async Task<ViewResult> ChengeExecutorAsync(int executorId, int stageId)
         {
             GetInformation();
 
@@ -102,37 +106,29 @@ namespace Manect.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SaveStageAsync([FromForm] Stage stage)
+        public async Task SaveStageAsync([FromForm] Stage stage)
         {
             GetInformation();
             await _dataRepository.ChangeStageAsync(stage);
-
-            var project = await _dataRepository.GetAllProjectDataAsync(currentProjectId);
-            ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(currentUserId);
-            return View("Index", project);
         }
 
         public async Task<IActionResult> GetProjectAsync([FromForm] Project pr)
         {
             GetInformation();
-            
+
             var project = await _dataRepository.GetAllProjectDataAsync(currentProjectId);
             ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(currentUserId);
             return PartialView("ProjectForm", project);
         }
 
-        public async Task<IActionResult> SaveProjectAsync([FromForm] Project project)
+        public async Task SaveProjectAsync([FromForm] Project project)
         {
             GetInformation();
             await _dataRepository.ChangeProjectAsync(project, currentUserId);
-
-            project = await _dataRepository.GetAllProjectDataAsync(currentProjectId);
-            ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(currentUserId);
-            return View("Index", project);
         }
         private void GetInformation()
         {
-            if (HttpContext.Request.Cookies.ContainsKey("UserId") &
+            if (HttpContext.Request.Cookies.ContainsKey("UserId") |
                             HttpContext.Request.Cookies.ContainsKey("projectId"))
             {
                 currentUserId = Convert.ToInt32(HttpContext.Request.Cookies["UserId"]);

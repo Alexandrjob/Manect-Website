@@ -31,7 +31,7 @@ namespace Manect.Data.Entities
         public DateTime ExpirationDate { get; set; }
 
         /// <summary>
-        /// Возвращает true, если проект или этап выполнен, иначе false.
+        /// Отображает состояние обьекта.
         /// </summary>
         public Status Status { get; set; }
     }

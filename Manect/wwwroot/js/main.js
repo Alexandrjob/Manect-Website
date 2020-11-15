@@ -1,12 +1,12 @@
-function EditStageButton(Element, StageId) {
+function editStageButton(element, stageId) {
     var stage = {
-        Id: Number(StageId)
+        Id: Number(stageId)
     }
-    SendStage(stage, 'GetStage');
+    sendStage(stage, 'GetStage');
 
-    var top = $('.' + Element).offset().top;
-    var left = $('.' + Element).offset().left;
-    
+    var top = $('.' + element).offset().top;
+    var left = $('.' + element).offset().left;
+
     $('#stage-form-container').offset({ top: top });
     $('#project-step-form').css('marginLeft', left);
     $('#project-form-container').hide();
@@ -14,48 +14,50 @@ function EditStageButton(Element, StageId) {
     $('#foreground').show();
 }
 
-function ClickSaveStageButton(StageId) {
+function clickSaveStageButton(stageId) {
 
     var stageName = $('#step-name').val();
     var stageComment = $('#step-comment').val();
     var stageExpirationDate = $('#step-expiration_date').val();
     var stageCreationDate = $('#step-creation_date').val();
     var stageExecutorId = $('#step-executor_Id').val();
+    var stageStatus = $('#step-status').val();
     var stageTime = $('#step-time').val();
 
     stageExpirationDate = new Date(moment(stageExpirationDate + " " + stageTime, "yyyy-MM-DD HH: mm: ss").format("yyyy-MM-DD HH: mm: ss")).toJSON();
     stageCreationDate = new Date(moment(stageCreationDate + " " + stageTime, "yyyy-MM-DD HH: mm: ss").format("yyyy-MM-DD HH: mm: ss")).toJSON();
 
     var stage = {
-        Id: Number(StageId),
+        Id: Number(stageId),
         Name: stageName,
         Comment: stageComment,
         ExpirationDate: stageExpirationDate,
         CreationDate: stageCreationDate,
-        ExecutorId: Number(stageExecutorId)
+        ExecutorId: Number(stageExecutorId),
+        Status: stageStatus
     }
-    SendStage(stage, 'SaveStage');
-    HideStageForm();  
+    sendStage(stage, 'SaveStage');
+    hideStageForm();
 }
 
-function HideStageForm() {
+function hideStageForm() {
     $('#stage-form-container').offset({ top: 0 });
     $('#foreground').hide();
     $("#project-step-form").empty();
 }
 
-function EditProjectButton(projectId) {
+function editProjectButton(projectId) {
     var project = {
         Id: Number(projectId)
     }
-    SendProject(project, 'GetProject');
+    sendProject(project, 'GetProject');
 
     $('#stage-form-container').hide();
     $('#project-form-container').show();
     $('#foreground').show();
 }
 
-function ClickSaveProjectButton(projectId) {
+function clickSaveProjectButton(projectId) {
 
     var projectName = $('#project-name').val();
     var projectExpirationDate = $('#project-expiration_date').val();
@@ -73,16 +75,16 @@ function ClickSaveProjectButton(projectId) {
         CreationDate: projectCreationDate,
         Price: projectPrice
     }
-    SendProject(project, 'SaveProject');
-    HideProjectForm();
+    sendProject(project, 'SaveProject');
+    hideProjectForm();
 }
 
-function HideProjectForm() {
+function hideProjectForm() {
     $('#foreground').hide();
     $("#project-form").empty();
 }
 
-function SendStage(stage, url) {
+function sendStage(stage, url) {
     $.ajax({
         url: '/Project/' + url,
         type: 'POST',
@@ -91,16 +93,18 @@ function SendStage(stage, url) {
         dataType: "html",
         data: { stage: stage },
         success: function (result) {
-            $('#project-step-form').html(result);
-
+            if (url == "SaveStage")
+                location.reload();
+            else
+                $('#project-step-form').html(result);
         },
         error: function () {
-            alert("Error sending message (connection to the server is lost). Reload the page...");
+            alert("Error(522) sending message (connection to the server is lost). Reload the page...");
         }
     });
 }
 
-function SendProject(project, url) {
+function sendProject(project, url) {
     $.ajax({
         url: '/Project/' + url,
         type: 'POST',
@@ -109,13 +113,42 @@ function SendProject(project, url) {
         dataType: "html",
         data: { project: project },
         success: function (result) {
-            $('#project-form').html(result);
-
+            if (url == "SaveProject")
+                location.reload();
+            else
+                $('#project-form').html(result);
         },
         error: function () {
-            alert("Error sending message (connection to the server is lost). Reload the page...");
+            alert("Error(522) sending message (connection to the server is lost). Reload the page...");
         }
     });
+}
+
+function sendClickCheck(status, stageId) {
+    $.ajax({
+        url: '/Project/SetFlagValue',
+        type: 'POST',
+        cache: false,
+        async: true,
+        dataType: "html",
+        data: { status: status, stageId: stageId },
+        success: function (result) {
+        },
+        error: function () {
+            alert("Error(522) sending message (connection to the server is lost). Reload the page...");
+        }
+    });
+}
+
+function clickCheckBox(element, stageId) {
+    $('#' + element).closest("li").toggleClass("checked");
+    var value = $('#' + element).val();
+    if (value != 5)
+        $('#' + element).val(5)
+    else
+        $('#' + element).val(2);
+    var status = $('#' + element).val();
+    sendClickCheck(status, stageId);
 }
 
 !function (t) {
@@ -234,18 +267,6 @@ function SendProject(project, url) {
         n(7),
         n(9)
 }
-    , function (t, e, n) {
-        (function (t) {
-            !function (t) {
-                "use strict";
-                t(".checkbox label").on("click", (function (e) {
-                    t(this).closest("li").toggleClass("checked") 
-                }
-                ))
-            }(t)
-        }
-        ).call(this, n(0))
-    }
     , function (t, e, n) {
         (function (t) {
             !function (t) {

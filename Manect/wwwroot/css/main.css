@@ -105,12 +105,12 @@
     }
 }
 
-form{
-    display:flex
+form {
+    display: flex
 }
 
-textarea{
-    resize:none
+textarea {
+    resize: none
 }
 
 .project-step-form {
@@ -118,7 +118,7 @@ textarea{
 }
 
 /**/
-    *, :after, :before {
+*, :after, :before {
     box-sizing: border-box;
     margin: 0;
     padding: 0
@@ -351,11 +351,11 @@ a {
     display: flex
 }
 
-    .checkbox-check {
-        height: 25px;
-        width: 25px;
-        appearance: auto
-    }
+.checkbox-check {
+    height: 25px;
+    width: 25px;
+    appearance: auto
+}
 
 .checkbox__text {
     margin-left: 20px;
@@ -588,9 +588,9 @@ main {
 }
 
 
-    #my .container .project-steps li.checked, #project .container .project-steps li.checked {
-        background: hsla(0,0%,76.9%,.3)
-    }
+#my .container .project-steps li.checked, #project .container .project-steps li.checked {
+    background: hsla(0,0%,76.9%,.3)
+}
 
 #my .container .project-steps__info, #project .container .project-steps__info, .project-steps__info {
     width: 500px
@@ -611,17 +611,18 @@ main {
 #my .container .project-steps__comments, #project .container .project-steps__comments, .project-steps__comments {
     margin-left: 68px
 }
-    .project-steps__comments input {
+
+    .project-steps__comments label {
         font: normal 18px/22px TT Travels;
         width: 400px
     }
-    
-    #my .container .project-steps__edit, #my .container .project-steps__date, #my .container .project-steps__trash, #my .container .project-steps__users, #project .container .project-steps__edit, #project .container .project-steps__date, #project .container .project-steps__trash, #project .container .project-steps__users {
-        height: 40px;
-        min-height: 40px;
-        display: flex;
-        align-items: center
-    }
+
+#my .container .project-steps__edit, #my .container .project-steps__date, #my .container .project-steps__trash, #my .container .project-steps__users, #project .container .project-steps__edit, #project .container .project-steps__date, #project .container .project-steps__trash, #project .container .project-steps__users {
+    height: 40px;
+    min-height: 40px;
+    display: flex;
+    align-items: center
+}
 
 .project-steps__edit, .project-steps__date, .project-steps__trash, .project-steps__users, .project-steps__edit, .project-steps__date, .project-steps__trash, .project-steps__users {
     height: 40px;
@@ -642,7 +643,7 @@ main {
         font-weight: 400
     }
 
-    .project-steps__date input{
+    .project-steps__date input {
         margin-left: 10px;
         font-weight: 400
     }
@@ -747,6 +748,7 @@ main {
 }
 
     .select-options .option {
+        width: 100%;
         height: 32px;
         padding: 8px 16px;
         background: #fff;

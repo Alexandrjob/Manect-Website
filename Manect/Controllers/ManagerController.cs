@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Manect.Controllers
 {
     [Authorize]
-    public class ManagerController : Controller
+    public class ManagerController: Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -27,8 +27,9 @@ namespace Manect.Controllers
         public async Task<IActionResult> IndexAsync()
         {
             var name = HttpContext.User.Identity.Name;
-           var currentUser = await _dataRepository.FindUserIdByNameOrDefaultAsync(name);
+            var currentUser = await _dataRepository.FindUserIdByNameOrDefaultAsync(name);
 
+            ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(currentUser.Id);
             return View(await _dataRepository.GetProjectOrDefaultToListAsync(currentUser.Id));
         }
 
@@ -82,7 +83,8 @@ namespace Manect.Controllers
 
         public IActionResult OpenProject(int projectId)
         {
-            return RedirectToAction("Index", "Project", new { projectId });
+            HttpContext.Response.Cookies.Append("projectId", projectId.ToString());
+            return RedirectToAction("Index", "Project"/*, new { projectId }*/);
         }
     }
 }
