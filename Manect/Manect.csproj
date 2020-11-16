@@ -33,11 +33,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\MigrationsProject\" />
-    <Folder Include="Identity\MigrationsIdentity\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="Views\Project\Index.cshtml" />
     <None Include="wwwroot\image\icon\add_user.svg" />
     <None Include="wwwroot\image\icon\check.svg" />

@@ -1,4 +1,8 @@
 /**/
+[contenteditable="true"]:focus {
+    outline: none;
+}
+
 .foregroundOpen {
     position: fixed;
     top: 0;
@@ -31,7 +35,7 @@
 #project-form {
     margin-left: auto;
     height: 100%;
-    width: 450px
+    width: 451px
 }
 
 .project-container {
@@ -358,16 +362,12 @@ a {
 }
 
 .checkbox__text {
+    padding:initial;
     margin-left: 20px;
     font-weight: 600;
     font-size: 24px;
     line-height: 29px
 }
-
-    .checkbox__text span {
-        margin-left: 10px;
-        font-weight: 400
-    }
 
 .button a {
     height: 30px;

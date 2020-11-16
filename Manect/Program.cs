@@ -21,11 +21,14 @@ namespace Manect
                 var dataContext = services.GetRequiredService<ProjectDbContext>();
                 var syncTables = services.GetRequiredService<ISyncTables>();
 
-                await ProjectDbContextSeed.SeedAsync(dataContext, syncTables);
+                
 
                 var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
                 var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-                await AppIdentityDbContextSeed.SeedAsync(userManager, roleManager);
+                var identityContext = services.GetRequiredService<IdentityDbContext>();
+                await IdentityDbContextSeed.SeedAsync(userManager, roleManager, identityContext);
+
+                await ProjectDbContextSeed.SeedAsync(dataContext, syncTables);
             }
             host.Run();
         }

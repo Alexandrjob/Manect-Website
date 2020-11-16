@@ -22,12 +22,12 @@ namespace Manect.Services
             }
         }
 
-        private AppIdentityDbContext IdentityContext
+        private IdentityDbContext IdentityContext
         {
             get
             {
                 var scope = _serviceScopeFactory.CreateScope();
-                return scope.ServiceProvider.GetService<AppIdentityDbContext>();
+                return scope.ServiceProvider.GetService<IdentityDbContext>();
             }
         }
 

@@ -11,13 +11,14 @@
                 <div class="project-steps__title">
                     <div class="checkbox">
                         <input id="step-status" hidden value="@stage.Status" />
-                        <textarea class="checkbox__text" id="step-name" cols="60" rows="1" maxlength="55" style="margin-left:45px;">@stage.Name</textarea>
+                        <div id="step-name" class="checkbox__text" contenteditable="true" style="margin-left:45px;">@stage.Name</div>
+                        
                     </div>
                 </div>
                 <input hidden id="step-time" value="@stage.CreationDate.ToString("HH:mm:ss")" />
                 <div class="project-steps__deadline" style="margin-top: 0px;">Дедлайн:<input id="step-expiration_date" type="date" name="ExpirationDate" value="@stage.ExpirationDate.ToString("yyyy-MM-dd")" /></div>
                 <div class="project-steps__comments">
-                    <input id="step-comment" type="text" name="Comment" placeholder="Комментарии" value="@stage.Comment">
+                    <input id="step-comment" type="text" name="Comment" placeholder="Комментарии" value="@stage.Comment" style="width: 100%;">
                 </div>
             </div>
 
@@ -61,6 +62,27 @@
     $(function () {
         clickSelectBox();
     });
+
+    //$(function () {
+    //    var txt = $('#step-name'),
+    //        hiddenDiv = $(document.createElement('div')),
+    //        content = null;
+
+    //    txt.addClass('noscroll');
+    //    hiddenDiv.addClass('hiddendiv');
+    //    //hiddenDiv.empty();
+    //    $('body').append(hiddenDiv);
+
+    //    txt.bind('keyup', function () {
+
+    //        content = txt.val();
+    //        content = content.replace(/\n/g, '<br>');
+    //        hiddenDiv.html(content);
+
+    //        txt.css('height', hiddenDiv.height());
+
+    //    });
+    //});
 
     function clickSelectBox() {
         $(".select-box").on("click", (function (e) {

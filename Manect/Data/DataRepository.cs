@@ -117,7 +117,7 @@ namespace Manect.Data
             var dataContext = DataContext;
 
             dataContext.Stages.Attach(stage);
-            dataContext.Stages.Remove(stage);
+            dataContext.Entry(stage).State = EntityState.Modified;
             await dataContext.SaveChangesAsync();
         }
 
@@ -131,8 +131,8 @@ namespace Manect.Data
             _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} Проект: {ProjectId}", DateTime.Now, userId, Status.Deleted, project.Id);
 
             var dataContext = DataContext;
-            dataContext.FurnitureProjects.Attach(project);
-            dataContext.Entry(project).State = EntityState.Deleted;
+            dataContext.Projects.Attach(project);
+            dataContext.Entry(project).State = EntityState.Modified;
             await dataContext.SaveChangesAsync();
         }
 
@@ -150,7 +150,7 @@ namespace Manect.Data
 
         public async Task<List<Project>> GetProjectOrDefaultToListAsync(int userId)
         {
-            var projects = await DataContext.FurnitureProjects
+            var projects = await DataContext.Projects
                 .AsNoTracking()
                 .Where(p => p.Executor.Id == userId)
                 .ToListAsync();
@@ -166,7 +166,7 @@ namespace Manect.Data
         {
             var dataContext = DataContext;
             //TODO:В будущем оптимизировать.
-            var project = await dataContext.FurnitureProjects
+            var project = await dataContext.Projects
                 .AsNoTracking()
                 .Where(p => p.Id == projectId)
                 .Include(p => p.Executor)
@@ -270,7 +270,7 @@ namespace Manect.Data
 
             _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} Проект {ProjectId}", DateTime.Now, userId, Status.Modified, project.Id);
 
-            dataContext.FurnitureProjects.Attach(project);
+            dataContext.Projects.Attach(project);
             dataContext.Entry(project).State = EntityState.Modified;
             await dataContext.SaveChangesAsync();
         }

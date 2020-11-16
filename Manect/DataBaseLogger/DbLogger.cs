@@ -71,10 +71,10 @@ namespace Manect.DataBaseLogger
                         await dataContext.AddAsync(logItem);
                         await dataContext.SaveChangesAsync();
 
-                        lock (_lock)
-                        {
-                            File.AppendAllText(filePath, formatter(state, exception) + Environment.NewLine);
-                        }
+                        //lock (_lock)
+                        //{
+                        //    File.AppendAllText(filePath, formatter(state, exception) + Environment.NewLine);
+                        //}
                     }
                 }
             }

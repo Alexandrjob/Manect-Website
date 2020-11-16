@@ -25,10 +25,17 @@ namespace Manect
             services.AddDbContext<ProjectDbContext>(c =>
                 c.UseSqlServer(Configuration.GetConnectionString("ProjectConnection")));
 
-            services.AddDbContext<AppIdentityDbContext>(options =>
+            services.AddDbContext<IdentityDbContext>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")))
-                    .AddIdentity<ApplicationUser, IdentityRole>()
-                    .AddEntityFrameworkStores<AppIdentityDbContext>();
+                    .AddIdentity<ApplicationUser, IdentityRole>(opts =>
+                    {
+                        opts.Password.RequiredLength = 5;   // минимальная длина
+                        opts.Password.RequireNonAlphanumeric = false;   // требуются ли не алфавитно-цифровые символы
+                        opts.Password.RequireLowercase = false; // требуются ли символы в нижнем регистре
+                        opts.Password.RequireUppercase = false; // требуются ли символы в верхнем регистре
+                        opts.Password.RequireDigit = false; // требуются ли цифры
+                    })
+                    .AddEntityFrameworkStores<IdentityDbContext>();
 
             services.ConfigureApplicationCookie(config =>
             {
@@ -44,7 +51,7 @@ namespace Manect
 
         public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory, IServiceScopeFactory serviceScopeFactory)
         {
-            app.UseDeveloperExceptionPage();
+            //app.UseDeveloperExceptionPage();
             app.UseStaticFiles();
             app.UseRouting();
 

@@ -3,9 +3,9 @@ function editStageButton(element, stageId) {
         Id: Number(stageId)
     }
     sendStage(stage, 'GetStage');
-
-    var top = $('.' + element).offset().top;
-    var left = $('.' + element).offset().left;
+    element = '.' + element;
+    var left = $(element).offset().left;
+    var top = $(element).offset().top - $(window).scrollTop();
 
     $('#stage-form-container').offset({ top: top });
     $('#project-step-form').css('marginLeft', left);
@@ -16,7 +16,7 @@ function editStageButton(element, stageId) {
 
 function clickSaveStageButton(stageId) {
 
-    var stageName = $('#step-name').val();
+    var stageName = $('#step-name').text();
     var stageComment = $('#step-comment').val();
     var stageExpirationDate = $('#step-expiration_date').val();
     var stageCreationDate = $('#step-creation_date').val();
@@ -41,7 +41,7 @@ function clickSaveStageButton(stageId) {
 }
 
 function hideStageForm() {
-    $('#stage-form-container').offset({ top: 0 });
+    $('#stage-form-container').offset({ top: 0 + $(window).scrollTop()});
     $('#foreground').hide();
     $("#project-step-form").empty();
 }
@@ -267,6 +267,19 @@ function clickCheckBox(element, stageId) {
         n(7),
         n(9)
 }
+    , function (t, e, n) {
+        (function (t) {
+            //!function (t) {
+            //    "use strict";
+            //    t(".checkbox label").on("click", (function (e) {
+            //        t(this).closest("li").toggleClass("checked")
+            //    }
+            //    ))
+            //}(t)
+        }
+        ).call(this, n(0))
+    }
+
     , function (t, e, n) {
         (function (t) {
             !function (t) {

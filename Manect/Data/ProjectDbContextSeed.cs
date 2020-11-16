@@ -1,7 +1,6 @@
 ﻿using Manect.Data.Entities;
 using Manect.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,60 +11,68 @@ namespace Manect.Data
     {
         public static async Task SeedAsync(ProjectDbContext dataContext, ISyncTables syncTables)
         {
+            //await ClearDataBase(dataContext);
+
             if (!dataContext.Executors.Any())
             {
                 await syncTables.UsersAsync();
             }
 
-            if (!dataContext.FurnitureProjects.Any())
+            if (!dataContext.Projects.Any())
             {
-                var userKostya = await dataContext.Executors.Where(user => user.UserName == "Kostya").FirstOrDefaultAsync();
-                var userSasha = await dataContext.Executors.Where(user => user.UserName == "Sasha").FirstOrDefaultAsync();
-                if (userKostya != default & userSasha != default)
+                var executors = await dataContext.Executors.ToListAsync();
+                var user2 = executors.FirstOrDefault(u => u.UserName == "Sasha");
+                if (executors != default)
                 {
-                    await dataContext.FurnitureProjects.AddRangeAsync(
-                        GetPreconfiguredProjects(userKostya, userSasha));
+                    for(int i = 0; i < executors.Count; i++)
+                    {
+                        await dataContext.Projects.AddRangeAsync(
+                        GetPreconfiguredProjects(executors[i], user2));
+                    }
 
                     dataContext.SaveChanges();
                 }
             }
         }
 
-        static IEnumerable<Project> GetPreconfiguredProjects(Executor userKostya, Executor userSasha)
+        static IEnumerable<Project> GetPreconfiguredProjects(Executor user1, Executor user2)
         {
             return new List<Project>()
             {
-                new Project("Кухня", 160000, userKostya,
+                new Project("Кухня", 160000, user1,
                         new List<Stage>()
                         {
-                            new Stage("Обсуждение пожеланий клиента, предварительный эскиз ",userKostya, comment: "Обосрался по жесткой."),
-                            new Stage(" Замер помещения", userSasha,comment: "Срочно!"),
-                            new Stage("Окончательный эскиз", userKostya, comment: "Что то не получается, спрошу у Кости."),
-                            new Stage("Просчёт", userKostya),
-                            new Stage("Дополнительные комплектующие и нюансы", userKostya),
-                            new Stage("Производство", userKostya),
-                            new Stage("Монтаж",userSasha),
-                            new Stage("Сдача объекта", userKostya)
+                            new Stage("Обсуждение пожеланий клиента, предварительный эскиз ",user1),
+                            new Stage(" Замер помещения", user2,comment: "Срочно!"),
+                            new Stage("Окончательный эскиз", user1, comment: "Что то не получается, спрошу у Кости."),
+                            new Stage("Просчёт", user1),
+                            new Stage("Дополнительные комплектующие и нюансы", user1),
+                            new Stage("Производство", user1),
+                            new Stage("Монтаж",user2),
+                            new Stage("Сдача объекта", user1)
                         }),
 
-                new Project("Туалет", 260000, userKostya,
+                new Project("Туалет", 260000, user1,
                         new List<Stage>()
                         {
-                            new Stage("макет", userKostya)
+                            new Stage("макет", user2)
                         }),
 
 
-                new Project("Шкаф", 50000, userKostya,
+                new Project("Шкаф", 50000, user1,
                         new List<Stage>()
                         {
-                            new Stage("Встреча с клиентом", userKostya)
+                            new Stage("Встреча с клиентом", user1)
                         }),
-                new Project("Спальня", 50000, userSasha,
-                        new List<Stage>()
-                        {
-                            new Stage("Редактирование договора", userSasha)
-                        })
             };
+        }
+
+        static async Task ClearDataBase(ProjectDbContext dataContext)
+        {
+            dataContext.Executors.RemoveRange(dataContext.Executors);
+            dataContext.Projects.RemoveRange(dataContext.Projects);
+            dataContext.Stages.RemoveRange(dataContext.Stages);
+            await dataContext.SaveChangesAsync();
         }
     }
 }
