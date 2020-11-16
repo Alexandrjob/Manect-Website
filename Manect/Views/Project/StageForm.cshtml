@@ -7,7 +7,7 @@
 <ul class="project-step">
     <li class="stage-9999">
         <form class="project-step" asp-controller="Project" asp-action="SaveStage">
-            <div class="project-steps__info" width: style="width: 500px;">
+            <div class="project-steps__info" width: style="width: 522px;">
                 <div class="project-steps__title">
                     <div class="checkbox">
                         <input id="step-status" hidden value="@stage.Status" />
@@ -23,7 +23,7 @@
             </div>
 
             <div class="project-steps__date">Дата:<input id="step-creation_date" type="date" name="CreationDate" value="@stage.CreationDate.ToString("yyyy-MM-dd")" /></div>
-            <div class="project-steps__users" style="margin-left: 100px;">
+            <div class="project-steps__users" style="margin-left: 102px;">
                 <div class="select">
                     @if (Model.Executor.Id != stage.ExecutorId)
                     {
@@ -44,7 +44,7 @@
                 </div>
             </div>
         </form>
-        <div class="project-steps__trash" style="margin-left: 20px;" title="Удалить этап">
+        <div class="project-steps__trash" style="margin-left: 10px;" title="Удалить этап">
             <form asp-controller="Project" asp-action="DeleteStage">
                 <input hidden asp-for=@stage.Id name="stageId" />
                 <input hidden asp-for=@stage.ProjectId name="projectId" />
