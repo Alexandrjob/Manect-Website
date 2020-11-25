@@ -73,7 +73,7 @@ namespace Manect.Controllers
             GetInformation();
 
             await _dataRepository.DeleteProjectAsync(currentUserId, currentProjectId);
-            return RedirectToAction("Index", "Manager");
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
@@ -120,12 +120,13 @@ namespace Manect.Controllers
             ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(currentUserId);
             return PartialView("ProjectForm", project);
         }
-
+        [HttpPost]
         public async Task SaveProjectAsync([FromForm] Project project)
         {
             GetInformation();
             await _dataRepository.ChangeProjectAsync(project, currentUserId);
         }
+
         private void GetInformation()
         {
             if (HttpContext.Request.Cookies.ContainsKey("UserId") |

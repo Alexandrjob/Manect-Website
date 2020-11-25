@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 namespace Manect.Controllers
 {
     [Authorize]
-    public class ManagerController: Controller
+    public class HomeController: Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IDataRepository _dataRepository;
 
-        public ManagerController(
+        public HomeController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IDataRepository dataRepository)
@@ -59,7 +59,7 @@ namespace Manect.Controllers
             if (result.Succeeded)
             {
                 //TODO: В будущем поменять на адаптивным метод, чтобы исключение не выкидывал а перекидывал на index
-                return LocalRedirect(model.ReturnUrl);
+                return LocalRedirect("/Home/Index");
             }
             return View(model);
         }
@@ -67,7 +67,7 @@ namespace Manect.Controllers
         public async Task<IActionResult> LogOffAsync()
         {
             await _signInManager.SignOutAsync();
-            return Redirect("/Manager/Index");
+            return Redirect("/Home/Index");
         }
 
         [HttpPost]
@@ -78,7 +78,7 @@ namespace Manect.Controllers
 
             await _dataRepository.AddProjectDefaultAsync(currentUser);
             //TODO: нужно чтобы страница просто обновлялась.
-            return Redirect("/Manager/Index");
+            return Redirect("/Home/Index");
         }
 
         public IActionResult OpenProject(int projectId)

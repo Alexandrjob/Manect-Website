@@ -20,12 +20,12 @@
                         <a class="close-menu" href="#" title="Закрыть меню"><img src="~/image/icon/close.svg" alt="icon"></a>
                         <nav class="sidebar-menu">
                             <ul>
-                                <li class="active"><a asp-controller="Manager" asp-action="Index">Мои проекты</a></li>
-                                <li><a href="calendar.html" title="Календарь">Календарь</a></li>
+                                <li class="active"><a asp-controller="Home" asp-action="Index">Мои проекты</a></li>
+                                @*<li><a href="calendar.html" title="Календарь">Календарь</a></li>
                                 <li><a href="my.html" title="Теперь моё">Теперь моё</a></li>
                                 <li><a href="history.html" title="История">История</a></li>
-                                <li><a href="projects.html" title="Проекты моих исполнителей">Проекты моих исполнителей</a></li>
-                                <li><a asp-controller="Manager" asp-action="LogOff">LogOff</a></li>
+                                <li><a href="projects.html" title="Проекты моих исполнителей">Проекты моих исполнителей</a></li>*@
+                                <li><a asp-controller="Home" asp-action="LogOff">Выйти</a></li>
                             </ul>
                         </nav>
                         <div class="sidebar-copyright">&copy; 2020 Dома мебель</div>
@@ -35,7 +35,6 @@
         </header>
         @RenderBody()
     </div>
-
     <!-- js-->
     <script src="/js/vendors.js"></script>
     <script src="/js/main.js"></script>

@@ -117,7 +117,7 @@ namespace Manect.Data
             var dataContext = DataContext;
 
             dataContext.Stages.Attach(stage);
-            dataContext.Entry(stage).State = EntityState.Modified;
+            dataContext.Entry(stage).State = EntityState.Deleted;
             await dataContext.SaveChangesAsync();
         }
 
@@ -132,7 +132,7 @@ namespace Manect.Data
 
             var dataContext = DataContext;
             dataContext.Projects.Attach(project);
-            dataContext.Entry(project).State = EntityState.Modified;
+            dataContext.Entry(project).State = EntityState.Deleted;
             await dataContext.SaveChangesAsync();
         }
 

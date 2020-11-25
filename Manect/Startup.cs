@@ -26,7 +26,7 @@ namespace Manect
                 c.UseSqlServer(Configuration.GetConnectionString("ProjectConnection")));
 
             services.AddDbContext<IdentityDbContext>(options =>
-               options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")))
+               options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection"), providerOptions => providerOptions.EnableRetryOnFailure()))
                     .AddIdentity<ApplicationUser, IdentityRole>(opts =>
                     {
                         opts.Password.RequiredLength = 5;   // минимальная длина
@@ -35,11 +35,12 @@ namespace Manect
                         opts.Password.RequireUppercase = false; // требуются ли символы в верхнем регистре
                         opts.Password.RequireDigit = false; // требуются ли цифры
                     })
-                    .AddEntityFrameworkStores<IdentityDbContext>();
+                    .AddEntityFrameworkStores<IdentityDbContext>()
+                    .AddDefaultTokenProviders();
 
             services.ConfigureApplicationCookie(config =>
             {
-                config.LoginPath = "/Manager/Login";
+                config.LoginPath = "/Home/Login";
             });
 
             services.AddScoped<IDataRepository, DataRepository>();
