@@ -1,8 +1,8 @@
-
 (function ($) {
     "use strict";
-
-
+    if ($('.input100').val().trim() != "") {
+        $('.input100').addClass('has-val');
+    }
     /*==================================================================
     [ Focus Contact2 ]*/
     $('.input100').each(function(){
