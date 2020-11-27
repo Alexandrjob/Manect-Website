@@ -6,7 +6,7 @@ namespace Manect.Data.Entities
     /// <summary>
     /// Этап.
     /// </summary>
-    public class Stage : BaseEntity
+    public class Stage: BaseEntity
     {
         /// <summary>
         /// Комментарий.

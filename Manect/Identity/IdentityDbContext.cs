@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Manect.Identity
 {
-    public class IdentityDbContext : IdentityDbContext<ApplicationUser>
+    public class IdentityDbContext: IdentityDbContext<ApplicationUser>
     {
         public IdentityDbContext(DbContextOptions<IdentityDbContext> options)
             : base(options)

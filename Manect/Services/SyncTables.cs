@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Manect.Services
 {
-    public class SyncTables : ISyncTables
+    public class SyncTables: ISyncTables
     {
         private readonly IServiceScopeFactory _serviceScopeFactory;
 

@@ -9,7 +9,7 @@ using System.Reflection;
 
 namespace Manect.DataBaseLogger
 {
-    public class DbLogger : ILogger
+    public class DbLogger: ILogger
     {
         /// <summary>
         /// Путь к файлу.

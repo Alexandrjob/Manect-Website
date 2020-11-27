@@ -6,7 +6,7 @@ namespace Manect.Data.Entities
     /// <summary>
     /// Мебельный проект.
     /// </summary>
-    public class Project : BaseEntity
+    public class Project: BaseEntity
     {
         /// <summary>
         /// Цена проекта.

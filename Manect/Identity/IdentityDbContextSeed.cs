@@ -15,7 +15,7 @@ namespace Manect.Identity
             if (!userManager.Users.Any())
             {
                 //Тут Должны быть ребята, но их почему-то нет
-                
+
             }
         }
 

@@ -24,7 +24,7 @@ namespace Manect.Data
                 var user2 = executors.FirstOrDefault(u => u.UserName == "Sasha");
                 if (executors != default)
                 {
-                    for(int i = 0; i < executors.Count; i++)
+                    for (int i = 0; i < executors.Count; i++)
                     {
                         await dataContext.Projects.AddRangeAsync(
                         GetPreconfiguredProjects(executors[i], user2));
