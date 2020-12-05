@@ -49,10 +49,7 @@ namespace Manect.Controllers
             GetInformation();
 
             await _dataRepository.AddStageAsync(currentUserId, currentProjectId);
-
-            var project = await _dataRepository.GetAllProjectDataAsync(currentProjectId);
-            ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(currentUserId);
-            return View("Index", project);
+            return Redirect("Index");
         }
 
         [HttpPost]
@@ -61,10 +58,7 @@ namespace Manect.Controllers
             GetInformation();
 
             await _dataRepository.DeleteStageAsync(currentUserId, currentProjectId, stageId);
-
-            var project = await _dataRepository.GetAllProjectDataAsync(currentProjectId);
-            ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(currentUserId);
-            return View("Index", project);
+            return Redirect("Index");
         }
 
         [HttpPost]
@@ -84,15 +78,12 @@ namespace Manect.Controllers
         }
 
         [HttpPost]
-        public async Task<ViewResult> ChengeExecutorAsync(int executorId, int stageId)
+        public async Task<IActionResult> ChengeExecutorAsync(int executorId, int stageId)
         {
             GetInformation();
 
             await _dataRepository.ChengeExecutorAsync(executorId, currentProjectId, stageId);
-
-            var project = await _dataRepository.GetAllProjectDataAsync(currentProjectId);
-            ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(currentUserId);
-            return View("Index", project);
+            return Redirect("Index");
         }
 
         [HttpPost]
