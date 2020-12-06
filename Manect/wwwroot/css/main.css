@@ -624,7 +624,14 @@ main {
     align-items: center
 }
 
-.project-steps__edit, .project-steps__date, .project-steps__trash, .project-steps__users, .project-steps__edit, .project-steps__date, .project-steps__trash, .project-steps__users {
+.project-steps__edit, .project-steps__date, .project-steps__trash, .project-steps__users {
+    height: 40px;
+    min-height: 40px;
+    display: flex;
+    align-items: center
+}
+
+#project-steps__edit {
     height: 40px;
     min-height: 40px;
     display: flex;

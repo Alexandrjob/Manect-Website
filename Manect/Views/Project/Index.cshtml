@@ -71,7 +71,15 @@
                                                 <input placeholder="Комментарии" style="cursor: auto;width: 100%;" value="@stage.Comment" readonly>
                                             </div>
                                         </div>
-                                        <div class="project-steps__edit"><button onclick="return editStageButton('stage-@count', @stage.Id);"><img src="~/image/icon/edit.png" title="Редактировать" /></button></div>
+
+                                        <div class="select" id="project-steps__edit">
+                                            <a class="select-box" href="#" title="Открыть"><img src="~/image/icon/settings48.png" alt="icon"></a>
+                                            <div class="select-options">
+                                                <div class="option"><button onclick="return editStageButton('stage-@count', @stage.Id);">Редактировать этап</button></div>
+                                                <div class="option"><input type="file"></div>
+                                            </div>
+                                        </div>
+
                                         <div class="project-steps__date">Дата:<span>@stage.CreationDate.ToString("dd.MM.yyyy")</span></div>
                                         <div class="project-steps__users">
                                             <div class="select">
