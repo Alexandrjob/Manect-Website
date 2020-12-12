@@ -7,6 +7,7 @@
         Modified,
         NotAdded,
         NotDeleted,
-        Completed
+        Completed,
+        Received
     }
 }

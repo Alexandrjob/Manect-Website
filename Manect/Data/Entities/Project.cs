@@ -3,9 +3,6 @@ using System.Collections.Generic;
 
 namespace Manect.Data.Entities
 {
-    /// <summary>
-    /// Мебельный проект.
-    /// </summary>
     public class Project: BaseEntity
     {
         /// <summary>

@@ -7,10 +7,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace Manect.Data
 {
-    public class DataRepository: IDataRepository
+    public partial class DataRepository: IDataRepository
     {
         private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly ILogger _logger;
@@ -45,11 +47,6 @@ namespace Manect.Data
                     Id = un.Id
                 })
                 .FirstOrDefaultAsync();
-        }
-
-        public async Task<Executor> FindUserByEmailOrDefaultAsync(string email)
-        {
-            return await DataContext.Executors.FirstOrDefaultAsync(user => user.Email == email);
         }
 
         public async Task<Stage> AddStageAsync(int userId, int projectId)
@@ -199,12 +196,12 @@ namespace Manect.Data
             return project;
         }
 
-        public async Task<List<Executor>> GetExecutorsToListExceptAsync(int executorId)
+        public async Task<List<Executor>> GetExecutorsToListExceptAsync(int userId)
         {
             var dataContext = DataContext;
             List<Executor> executors = await dataContext.Executors
                 .AsNoTracking()
-                .Where(e => e.Id != executorId)
+                .Where(e => e.Id != userId)
                 .Select(u => new
                 {
                     u.Id,
@@ -223,8 +220,7 @@ namespace Manect.Data
             return executors;
         }
 
-        //TODO: Залогировать.
-        public async Task ChengeExecutorAsync(int executorId, int projectId, int stageId)
+        public async Task ChengeExecutorAsync(int userId, int projectId, int stageId)
         {
             var dataContext = DataContext;
 
@@ -232,7 +228,7 @@ namespace Manect.Data
                 .FirstOrDefaultAsync(s => s.Id == stageId);
 
             _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} в Проекте {ProjectId} Этап: {StageId}", DateTime.Now, stage.ExecutorId, Status.Modified, stage.ProjectId, stage.Id);
-            stage.ExecutorId = executorId;
+            stage.ExecutorId = userId;
             dataContext.Entry(stage).State = EntityState.Modified;
             await dataContext.SaveChangesAsync();
         }
@@ -273,6 +269,49 @@ namespace Manect.Data
             dataContext.Projects.Attach(project);
             dataContext.Entry(project).State = EntityState.Modified;
             await dataContext.SaveChangesAsync();
+        }
+
+        public async Task AddFileAsync(DataToChange dataToChange)
+        {
+            var dataContext = DataContext;
+            foreach (var file in dataToChange.Files)
+            {
+                if (IsNotExtensionValid(file)) return;
+
+                using var memoryStream = new MemoryStream();
+                await file.CopyToAsync(memoryStream);
+
+                if (memoryStream.Length > 5242880) return;
+
+                var appFile = new AppFile()
+                {
+                    StageId = dataToChange.StageId,
+                    Name = file.FileName,
+                    Content = memoryStream.ToArray()
+                };
+                dataContext.Files.Add(appFile);
+            }
+            _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} файл {FileId} в Проекте {ProjectId}", DateTime.Now, dataToChange.UserId, Status.Created, dataToChange.Files.FirstOrDefault(), dataToChange.ProjectId);
+            await dataContext.SaveChangesAsync();
+        }
+
+        private bool IsNotExtensionValid(IFormFile file)
+        {
+            var fileType = file.FileName.Split(".").Last();
+            foreach (var extensions in Enum.GetValues(typeof(Extensions)))
+            {
+                if (fileType == extensions.ToString())
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public async Task<AppFile> GetFileAsync(DataToChange dataToChange)
+        {
+            _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} файл {FileId} в Проекте {ProjectId}", DateTime.Now, dataToChange.UserId, Status.Received, dataToChange.FileId, dataToChange.ProjectId);
+            return await DataContext.Files.FirstOrDefaultAsync(f => f.Id == dataToChange.FileId);
         }
     }
 }

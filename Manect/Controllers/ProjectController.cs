@@ -1,8 +1,10 @@
 ﻿using Manect.Data.Entities;
 using Manect.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Manect.Controllers
@@ -15,9 +17,12 @@ namespace Manect.Controllers
         private int currentUserId;
         private int currentProjectId;
 
+        public DataToChange DataToChange { get; set; }
+
         public ProjectController(IDataRepository dataRepository)
         {
             _dataRepository = dataRepository;
+            DataToChange = new DataToChange();
         }
 
         public async Task<IActionResult> IndexAsync()
@@ -103,19 +108,37 @@ namespace Manect.Controllers
             await _dataRepository.ChangeStageAsync(stage);
         }
 
-        public async Task<IActionResult> GetProjectAsync([FromForm] Project pr)
+        public async Task<IActionResult> GetProjectAsync()
         {
             GetInformation();
 
+            //TODO: Оптимизировать запросы.
             var project = await _dataRepository.GetAllProjectDataAsync(currentProjectId);
             ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(currentUserId);
             return PartialView("ProjectForm", project);
         }
+
         [HttpPost]
         public async Task SaveProjectAsync([FromForm] Project project)
         {
             GetInformation();
             await _dataRepository.ChangeProjectAsync(project, currentUserId);
+        }
+
+        public async Task AddFileAsync([FromForm] int stageId, IList<IFormFile> Files)
+        {
+            GetInformation();
+            DataToChange.StageId = stageId;
+            DataToChange.Files = Files;
+
+            await _dataRepository.AddFileAsync(DataToChange);
+        }
+        public async Task DownloadFileAsync([FromForm] int fileId)
+        {
+            GetInformation();
+            DataToChange.FileId = fileId;
+
+            AppFile a = await _dataRepository.GetFileAsync(DataToChange);
         }
 
         private void GetInformation()
@@ -126,6 +149,9 @@ namespace Manect.Controllers
                 currentUserId = Convert.ToInt32(HttpContext.Request.Cookies["UserId"]);
                 currentProjectId = Convert.ToInt32(HttpContext.Request.Cookies["projectId"]);
             }
+            DataToChange.UserId = currentUserId;
+            DataToChange.ProjectId = currentProjectId;
         }
     }
+
 }

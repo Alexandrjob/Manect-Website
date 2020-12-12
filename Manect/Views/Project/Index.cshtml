@@ -76,7 +76,7 @@
                                             <a class="select-box" href="#" title="Открыть"><img src="~/image/icon/settings48.png" alt="icon"></a>
                                             <div class="select-options">
                                                 <div class="option"><button onclick="return editStageButton('stage-@count', @stage.Id);">Редактировать этап</button></div>
-                                                <div class="option"><input type="file"></div>
+                                                <div class="option"><input id="files" name="files" type="file" multiple onchange="changeInputFiles(@stage.Id,'files')";></div>
                                             </div>
                                         </div>
 

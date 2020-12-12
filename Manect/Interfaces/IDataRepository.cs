@@ -7,7 +7,6 @@ namespace Manect.Interfaces
     public interface IDataRepository
     {
         Task<Executor> FindUserIdByNameOrDefaultAsync(string name);
-        Task<Executor> FindUserByEmailOrDefaultAsync(string email);
         Task<Stage> AddStageAsync(int userId, int projectId);
         Task<Project> AddProjectDefaultAsync(Executor user);
         Task DeleteStageAsync(int userId, int projectId, int stageId);
@@ -20,5 +19,7 @@ namespace Manect.Interfaces
         Task ChengeExecutorAsync(int executorId, int projectId, int stageId);
         Task ChangeStageAsync(Stage stage);
         Task ChangeProjectAsync(Project project, int userId);
+        Task AddFileAsync(DataToChange dataToChange);
+        Task<AppFile> GetFileAsync(DataToChange dataToChange);
     }
 }

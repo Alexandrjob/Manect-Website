@@ -13,6 +13,7 @@ namespace Manect.Data
 
         public DbSet<Stage> Stages { get; set; }
         public DbSet<Project> Projects { get; set; }
+        public DbSet<AppFile> Files { get; set; }
         public DbSet<Executor> Executors { get; set; }
         public DbSet<LogItem> LogUserActivity { get; set; }
     }

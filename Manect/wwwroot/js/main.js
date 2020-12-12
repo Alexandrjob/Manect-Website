@@ -41,7 +41,7 @@ function clickSaveStageButton(stageId) {
 }
 
 function hideStageForm() {
-    $('#stage-form-container').offset({ top: 0 + $(window).scrollTop()});
+    $('#stage-form-container').offset({ top: 0 + $(window).scrollTop() });
     $('#foreground').hide();
     $("#project-step-form").empty();
 }
@@ -149,6 +149,36 @@ function clickCheckBox(element, stageId) {
         $('#' + element).val(2);
     var status = $('#' + element).val();
     sendClickCheck(status, stageId);
+}
+
+function changeInputFiles(stageId, inputFileId) {
+    var input = document.getElementById(inputFileId);
+    var files = input.files;
+    var formData = new FormData();
+
+    formData.append("stageId", stageId);
+    for (var i = 0; i != files.length; i++) {
+        formData.append("files", files[i]);
+    }
+    sendInputFiles(formData);
+}
+
+function sendInputFiles(formData) {
+    $.ajax({
+        url: '/Project/AddFile',
+        type: 'POST',
+        cache: false,
+        processData: false,
+        contentType: false,
+        dataType: "html",
+        data: formData,
+        success: function (result) {
+            alert("Coplited");
+        },
+        error: function () {
+            alert("Error(522) sending message (connection to the server is lost). Reload the page...");
+        }
+    });
 }
 
 !function (t) {
