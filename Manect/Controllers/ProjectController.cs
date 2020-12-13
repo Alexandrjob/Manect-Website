@@ -14,9 +14,6 @@ namespace Manect.Controllers
     {
         private readonly IDataRepository _dataRepository;
 
-        private int currentUserId;
-        private int currentProjectId;
-
         public DataToChange DataToChange { get; set; }
 
         public ProjectController(IDataRepository dataRepository)
@@ -38,70 +35,63 @@ namespace Manect.Controllers
             }
             GetInformation();
 
-            var project = await _dataRepository.GetAllProjectDataAsync(currentProjectId);
+            var project = await _dataRepository.GetAllProjectDataAsync(DataToChange.ProjectId);
             if (project == null)
             {
                 return Redirect("/Error/Index");
             }
 
-            ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(currentUserId);
+            ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(DataToChange.UserId);
             return View(project);
         }
 
-        [HttpPost]
         public async Task<IActionResult> AddStageAsync()
         {
             GetInformation();
 
-            await _dataRepository.AddStageAsync(currentUserId, currentProjectId);
+            await _dataRepository.AddStageAsync(DataToChange.UserId, DataToChange.ProjectId);
             return Redirect("Index");
         }
 
-        [HttpPost]
         public async Task<IActionResult> DeleteStageAsync(int stageId)
         {
             GetInformation();
 
-            await _dataRepository.DeleteStageAsync(currentUserId, currentProjectId, stageId);
+            await _dataRepository.DeleteStageAsync(DataToChange.UserId, DataToChange.ProjectId, stageId);
             return Redirect("Index");
         }
 
-        [HttpPost]
         public async Task<IActionResult> DeleteProjectAsync()
         {
             GetInformation();
 
-            await _dataRepository.DeleteProjectAsync(currentUserId, currentProjectId);
+            await _dataRepository.DeleteProjectAsync(DataToChange.UserId, DataToChange.ProjectId);
             return RedirectToAction("Index", "Home");
         }
 
-        [HttpPost]
         public async Task SetFlagValueAsync(Status status, int stageId)
         {
             GetInformation();
-            await _dataRepository.SetFlagValueAsync(currentUserId, currentProjectId, stageId, status);
+            await _dataRepository.SetFlagValueAsync(DataToChange.UserId, DataToChange.ProjectId, stageId, status);
         }
 
-        [HttpPost]
         public async Task<IActionResult> ChengeExecutorAsync(int executorId, int stageId)
         {
             GetInformation();
 
-            await _dataRepository.ChengeExecutorAsync(executorId, currentProjectId, stageId);
+            await _dataRepository.ChengeExecutorAsync(executorId, DataToChange.ProjectId, stageId);
             return Redirect("Index");
         }
 
-        [HttpPost]
         public async Task<IActionResult> GetStageAsync([FromForm] Stage stage)
         {
             GetInformation();
 
-            var project = await _dataRepository.GetAllProjectDataAsync(currentProjectId, stage.Id);
-            ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(currentUserId);
+            var project = await _dataRepository.GetAllProjectDataAsync(DataToChange.ProjectId, stage.Id);
+            ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(DataToChange.UserId);
             return PartialView("StageForm", project);
         }
 
-        [HttpPost]
         public async Task SaveStageAsync([FromForm] Stage stage)
         {
             GetInformation();
@@ -113,16 +103,15 @@ namespace Manect.Controllers
             GetInformation();
 
             //TODO: Оптимизировать запросы.
-            var project = await _dataRepository.GetAllProjectDataAsync(currentProjectId);
-            ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(currentUserId);
+            var project = await _dataRepository.GetAllProjectDataAsync(DataToChange.ProjectId);
+            ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(DataToChange.UserId);
             return PartialView("ProjectForm", project);
         }
 
-        [HttpPost]
         public async Task SaveProjectAsync([FromForm] Project project)
         {
             GetInformation();
-            await _dataRepository.ChangeProjectAsync(project, currentUserId);
+            await _dataRepository.ChangeProjectAsync(project, DataToChange.UserId);
         }
 
         public async Task AddFileAsync([FromForm] int stageId, IList<IFormFile> Files)
@@ -133,6 +122,7 @@ namespace Manect.Controllers
 
             await _dataRepository.AddFileAsync(DataToChange);
         }
+
         public async Task DownloadFileAsync([FromForm] int fileId)
         {
             GetInformation();
@@ -141,17 +131,23 @@ namespace Manect.Controllers
             AppFile a = await _dataRepository.GetFileAsync(DataToChange);
         }
 
+        public async Task<IActionResult> GetFileListAsync([FromForm] int stageId)
+        {
+            GetInformation();
+            DataToChange.StageId = stageId;
+
+            List<AppFile> files = await _dataRepository.FileListAsync(DataToChange);
+            return View(files);
+        }
+
         private void GetInformation()
         {
             if (HttpContext.Request.Cookies.ContainsKey("UserId") |
                             HttpContext.Request.Cookies.ContainsKey("projectId"))
             {
-                currentUserId = Convert.ToInt32(HttpContext.Request.Cookies["UserId"]);
-                currentProjectId = Convert.ToInt32(HttpContext.Request.Cookies["projectId"]);
+                DataToChange.UserId = Convert.ToInt32(HttpContext.Request.Cookies["UserId"]);
+                DataToChange.ProjectId = Convert.ToInt32(HttpContext.Request.Cookies["projectId"]);
             }
-            DataToChange.UserId = currentUserId;
-            DataToChange.ProjectId = currentProjectId;
         }
     }
-
 }

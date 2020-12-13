@@ -21,5 +21,6 @@ namespace Manect.Interfaces
         Task ChangeProjectAsync(Project project, int userId);
         Task AddFileAsync(DataToChange dataToChange);
         Task<AppFile> GetFileAsync(DataToChange dataToChange);
+        Task<List<AppFile>> FileListAsync(DataToChange dataToChange);
     }
 }

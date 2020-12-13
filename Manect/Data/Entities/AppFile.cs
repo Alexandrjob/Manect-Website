@@ -20,6 +20,12 @@ namespace Manect.Data.Entities
         /// </summary>
         public string Name { get; set; }
 
+         /// <summary>
+         /// Размер файла(TODO скорее всего).
+         /// </summary>
+        [NotMapped]
+        public int Length { get; set; }
+
         /// <summary>
         /// Массив байтов файла.
         /// </summary>

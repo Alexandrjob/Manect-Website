@@ -313,5 +313,27 @@ namespace Manect.Data
             _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} файл {FileId} в Проекте {ProjectId}", DateTime.Now, dataToChange.UserId, Status.Received, dataToChange.FileId, dataToChange.ProjectId);
             return await DataContext.Files.FirstOrDefaultAsync(f => f.Id == dataToChange.FileId);
         }
+
+        public async Task<List<AppFile>> FileListAsync(DataToChange dataToChange)
+        {
+            var files = await DataContext.Files
+                                         .Where(f => f.StageId == dataToChange.StageId)
+                                         .Select(obj => new
+                                         {
+                                             obj.Name,
+                                             obj.StageId,
+                                             obj.Content.Length
+                                         })
+                                        .AsQueryable()
+                                        .Select(un => new AppFile
+                                        {
+                                            Name = un.Name,
+                                            StageId = un.StageId,
+                                            Length = un.Length
+                                        })
+                                        .ToListAsync();
+
+            return files;
+        }
     }
 }
