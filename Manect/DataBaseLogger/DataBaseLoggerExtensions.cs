@@ -5,10 +5,9 @@ namespace Manect.DataBaseLogger
 {
     public static class DataBaseLoggerExtensions
     {
-        public static ILoggerFactory AddDataBase(this ILoggerFactory factory,
-                                        string filePath, IServiceScopeFactory serviceScopeFactory)
+        public static ILoggerFactory AddDataBase(this ILoggerFactory factory, IServiceScopeFactory serviceScopeFactory)
         {
-            factory.AddProvider(new DataBaseLoggerProvider(filePath, serviceScopeFactory));
+            factory.AddProvider(new DataBaseLoggerProvider(serviceScopeFactory));
             return factory;
         }
     }

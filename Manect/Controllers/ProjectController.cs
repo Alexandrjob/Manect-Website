@@ -123,12 +123,13 @@ namespace Manect.Controllers
             await _dataRepository.AddFileAsync(DataToChange);
         }
 
-        public async Task DownloadFileAsync([FromForm] int fileId)
+        public async Task<IActionResult> DownloadFileAsync([FromForm] int fileId)
         {
             GetInformation();
             DataToChange.FileId = fileId;
+            AppFile file = await _dataRepository.GetFileAsync(DataToChange);
 
-            AppFile a = await _dataRepository.GetFileAsync(DataToChange);
+            return File( file.Content, file.Type, file.Name);
         }
 
         public async Task<IActionResult> GetFileListAsync([FromForm] int stageId)
@@ -137,7 +138,7 @@ namespace Manect.Controllers
             DataToChange.StageId = stageId;
 
             List<AppFile> files = await _dataRepository.FileListAsync(DataToChange);
-            return View(files);
+            return PartialView("FileList", files);
         }
 
         private void GetInformation()

@@ -1,0 +1,12 @@
+﻿@model List<Manect.Data.Entities.AppFile>
+
+@foreach (var file in Model)
+{
+    int Length = file.Length / 8000;
+    <div class="option" id="flagDelete-@file.Id">
+        <div style="width:180px; text-overflow: ellipsis; overflow: hidden;">@file.Name</div>
+        <div style="margin-left: auto">@Length<span>КБ</span></div>
+        <div style="margin-left: auto"><img src="/image/icon/trash.svg" alt="icon"></div>
+        <div style="margin-left: auto" title="Скачать файл" onclick="return downloadFile(@file.Id);"><img src="~/image/icon/dowload48.png" alt="icon"></div>
+    </div>
+}

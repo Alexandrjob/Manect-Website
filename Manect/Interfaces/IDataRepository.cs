@@ -7,8 +7,8 @@ namespace Manect.Interfaces
     public interface IDataRepository
     {
         Task<Executor> FindUserIdByNameOrDefaultAsync(string name);
-        Task<Stage> AddStageAsync(int userId, int projectId);
-        Task<Project> AddProjectDefaultAsync(Executor user);
+        Task AddStageAsync(int userId, int projectId);
+        Task AddProjectDefaultAsync(Executor user);
         Task DeleteStageAsync(int userId, int projectId, int stageId);
         Task DeleteProjectAsync(int userId, int projectId);
         Task SetFlagValueAsync(int userId, int projectId, int stageId, Status status);
@@ -20,6 +20,7 @@ namespace Manect.Interfaces
         Task ChangeStageAsync(Stage stage);
         Task ChangeProjectAsync(Project project, int userId);
         Task AddFileAsync(DataToChange dataToChange);
+        Task DeleteFileAsync(DataToChange dataToChange);
         Task<AppFile> GetFileAsync(DataToChange dataToChange);
         Task<List<AppFile>> FileListAsync(DataToChange dataToChange);
     }

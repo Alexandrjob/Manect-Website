@@ -81,7 +81,7 @@ function clickSaveProjectButton(projectId) {
 
 function hideProjectForm() {
     $('#foreground').hide();
-    $("#project-form").empty();
+    $("#project-form").remove();
 }
 
 function sendStage(stage, url) {
@@ -151,8 +151,8 @@ function clickCheckBox(element, stageId) {
     sendClickCheck(status, stageId);
 }
 
-function changeInputFiles(stageId, inputFileId) {
-    var input = document.getElementById(inputFileId);
+function changeInputFiles(stageId) {
+    var input = document.getElementById(stageId);
     var files = input.files;
     var formData = new FormData();
 
@@ -160,12 +160,24 @@ function changeInputFiles(stageId, inputFileId) {
     for (var i = 0; i != files.length; i++) {
         formData.append("files", files[i]);
     }
-    sendInputFiles(formData);
+    sendFiles(formData, 0, "AddFile");
 }
 
-function sendInputFiles(formData) {
+function getFileList(stageId) {
+    var formData = new FormData();
+    formData.append("stageId", stageId);
+    sendFiles(formData, stageId, "GetFileList");
+}
+
+function downloadFile(fileId) {
+    var formData = new FormData();
+    formData.append("fileId", fileId);
+    sendFiles(formData, 0, "DownloadFile");
+}
+
+function sendFiles(formData, element, url) {
     $.ajax({
-        url: '/Project/AddFile',
+        url: '/Project/' + url,
         type: 'POST',
         cache: false,
         processData: false,
@@ -173,12 +185,21 @@ function sendInputFiles(formData) {
         dataType: "html",
         data: formData,
         success: function (result) {
-            alert("Coplited");
+            if (url == "GetFileList")
+                $('#stage-sel-options-' + element).append(result);
         },
         error: function () {
             alert("Error(522) sending message (connection to the server is lost). Reload the page...");
         }
     });
+}
+
+function deleteFileList() {
+    var fileListId = Array.from($('div[id^="flagDelete"][class="option"]')).map(item => item.getAttribute('Id'));
+
+    for (var i = 0; i < fileListId.length; i++) {
+        $("#" + fileListId[i]).remove();
+    }
 }
 
 !function (t) {
@@ -328,6 +349,7 @@ function sendInputFiles(formData) {
                     )),
                     t(document).on("click", (function (e) {
                         t(".option").is(e.target) || t(".select-options").hide()
+                        deleteFileList();
                     }
                     ))
             }(t)

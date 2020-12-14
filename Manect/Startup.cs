@@ -52,11 +52,10 @@ namespace Manect
 
         public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory, IServiceScopeFactory serviceScopeFactory)
         {
-            //app.UseDeveloperExceptionPage();
             app.UseStaticFiles();
             app.UseRouting();
 
-            loggerFactory.AddDataBase("logger.txt", serviceScopeFactory);
+            loggerFactory.AddDataBase(serviceScopeFactory);
 
             app.UseAuthentication();
             app.UseAuthorization();

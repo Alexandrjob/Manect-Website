@@ -49,7 +49,7 @@ namespace Manect.Data
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<Stage> AddStageAsync(int userId, int projectId)
+        public async Task AddStageAsync(int userId, int projectId)
         {
             var user = new Executor
             {
@@ -68,12 +68,10 @@ namespace Manect.Data
             await dataContext.SaveChangesAsync();
 
             _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} в Проекте {ProjectId} Этап: {StageId}", DateTime.Now, userId, Status.Created, projectId, stage.Id);
-
-            return stage;
         }
 
         //TODO: сделать метод универсальным (получать значение по которому можно понять какой проект(шаблоны будут записаны в новой таблице) нужно создать)
-        public async Task<Project> AddProjectDefaultAsync(Executor user)
+        public async Task AddProjectDefaultAsync(Executor user)
         {
             Project project = new Project("Стандартный шаблон проекта", 0, user,
                 new List<Stage>()
@@ -100,8 +98,6 @@ namespace Manect.Data
             await dataContext.SaveChangesAsync();
 
             _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} Проект {ProjectId}", DateTime.Now, user.Id, Status.Created, project.Id);
-
-            return project;
         }
         public async Task DeleteStageAsync(int userId, int projectId, int stageId)
         {
@@ -287,12 +283,16 @@ namespace Manect.Data
                 {
                     StageId = dataToChange.StageId,
                     Name = file.FileName,
+                    Type = file.ContentType,
                     Content = memoryStream.ToArray()
                 };
                 dataContext.Files.Add(appFile);
+                //TODO: Надеюсь, что будет незаметно.
+                await dataContext.SaveChangesAsync();
+                _logger.LogInformation("Время: {TimeAction}. Пользователь(Id:{ExecutorId}) , {Status} файл(Id:{FileId}) в Проекте (Id:{ProjectId})", DateTime.Now, dataToChange.UserId, Status.Created, appFile.Id, dataToChange.ProjectId);
             }
-            _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} файл {FileId} в Проекте {ProjectId}", DateTime.Now, dataToChange.UserId, Status.Created, dataToChange.Files.FirstOrDefault(), dataToChange.ProjectId);
-            await dataContext.SaveChangesAsync();
+            
+            
         }
 
         private bool IsNotExtensionValid(IFormFile file)
@@ -320,20 +320,25 @@ namespace Manect.Data
                                          .Where(f => f.StageId == dataToChange.StageId)
                                          .Select(obj => new
                                          {
+                                             obj.Id,
                                              obj.Name,
-                                             obj.StageId,
                                              obj.Content.Length
                                          })
                                         .AsQueryable()
                                         .Select(un => new AppFile
                                         {
+                                            Id = un.Id,
                                             Name = un.Name,
-                                            StageId = un.StageId,
                                             Length = un.Length
                                         })
                                         .ToListAsync();
 
             return files;
+        }
+
+        public Task DeleteFileAsync(DataToChange dataToChange)
+        {
+            throw new NotImplementedException();
         }
     }
 }
