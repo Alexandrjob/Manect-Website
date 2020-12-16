@@ -163,16 +163,16 @@ function changeInputFiles(stageId) {
     sendFiles(formData, 0, "AddFile");
 }
 
+function deleteFile(fileId) {
+    var formData = new FormData();
+    formData.append("fileId", fileId);
+    sendFiles(formData, 0, "DeleteFile");
+}
+
 function getFileList(stageId) {
     var formData = new FormData();
     formData.append("stageId", stageId);
     sendFiles(formData, stageId, "GetFileList");
-}
-
-function downloadFile(fileId) {
-    var formData = new FormData();
-    formData.append("fileId", fileId);
-    sendFiles(formData, 0, "DownloadFile");
 }
 
 function sendFiles(formData, element, url) {
@@ -182,10 +182,9 @@ function sendFiles(formData, element, url) {
         cache: false,
         processData: false,
         contentType: false,
-        dataType: "html",
         data: formData,
         success: function (result) {
-            if (url == "GetFileList")
+            if (url === "GetFileList")
                 $('#stage-sel-options-' + element).append(result);
         },
         error: function () {

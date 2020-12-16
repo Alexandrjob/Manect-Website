@@ -28,6 +28,7 @@ namespace Manect.Controllers
         {
             var name = HttpContext.User.Identity.Name;
             var currentUser = await _dataRepository.FindUserIdByNameOrDefaultAsync(name);
+            HttpContext.Response.Cookies.Append("UserId", currentUser.Id.ToString());
 
             ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(currentUser.Id);
             return View(await _dataRepository.GetProjectOrDefaultToListAsync(currentUser.Id));
@@ -84,7 +85,7 @@ namespace Manect.Controllers
         public IActionResult OpenProject(int projectId)
         {
             HttpContext.Response.Cookies.Append("projectId", projectId.ToString());
-            return RedirectToAction("Index", "Project"/*, new { projectId }*/);
+            return RedirectToAction("Index", "Project");
         }
     }
 }

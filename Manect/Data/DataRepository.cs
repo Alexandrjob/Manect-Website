@@ -310,8 +310,9 @@ namespace Manect.Data
 
         public async Task<AppFile> GetFileAsync(DataToChange dataToChange)
         {
-            _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} файл {FileId} в Проекте {ProjectId}", DateTime.Now, dataToChange.UserId, Status.Received, dataToChange.FileId, dataToChange.ProjectId);
-            return await DataContext.Files.FirstOrDefaultAsync(f => f.Id == dataToChange.FileId);
+            _logger.LogInformation("Время: {TimeAction}. Пользователь(Id:{ExecutorId}) , {Status} файл(Id:{FileId}) в Проекте (Id:{ProjectId})",
+                                 DateTime.Now, dataToChange.UserId, Status.Received, dataToChange.FileId, dataToChange.ProjectId);
+            return await DataContext.Files.AsNoTracking().FirstOrDefaultAsync(f => f.Id == dataToChange.FileId);
         }
 
         public async Task<List<AppFile>> FileListAsync(DataToChange dataToChange)
@@ -336,9 +337,24 @@ namespace Manect.Data
             return files;
         }
 
-        public Task DeleteFileAsync(DataToChange dataToChange)
+        public async Task DeleteFileAsync(DataToChange dataToChange)
         {
-            throw new NotImplementedException();
+            var file = new AppFile
+            {
+                Id = dataToChange.FileId,
+                //Content = new byte[0],
+                //Length = 0,
+                //Name = "",
+                //StageId = 0,
+                //Type = "",
+            };
+            _logger.LogInformation("Время: {TimeAction}. Пользователь(Id:{ExecutorId}) , {Status} файл(Id:{FileId}) в Проекте (Id:{ProjectId})", 
+                                DateTime.Now, dataToChange.UserId, Status.Deleted, dataToChange.FileId, dataToChange.ProjectId);
+
+            var dataContext = DataContext;
+            dataContext.Files.Attach(file);
+            dataContext.Entry(file).State = EntityState.Deleted;
+            await dataContext.SaveChangesAsync();
         }
     }
 }

@@ -1,5 +1,8 @@
 ﻿namespace Manect.Data.Entities
 {
+    /// <summary>
+    /// Статус обьекта в бд.
+    /// </summary>
     public enum Status
     {
         Created,

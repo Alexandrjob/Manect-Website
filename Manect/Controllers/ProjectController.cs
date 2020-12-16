@@ -24,15 +24,6 @@ namespace Manect.Controllers
 
         public async Task<IActionResult> IndexAsync()
         {
-            if (!HttpContext.Request.Cookies.ContainsKey("UserId") /*&
-                            !HttpContext.Request.Cookies.ContainsKey("projectId")*/)
-            {
-                var name = HttpContext.User.Identity.Name;
-                var currentUser = await _dataRepository.FindUserIdByNameOrDefaultAsync(name);
-
-                HttpContext.Response.Cookies.Append("UserId", currentUser.Id.ToString());
-                //HttpContext.Response.Cookies.Append("projectId", projectId.ToString());
-            }
             GetInformation();
 
             var project = await _dataRepository.GetAllProjectDataAsync(DataToChange.ProjectId);
@@ -114,6 +105,15 @@ namespace Manect.Controllers
             await _dataRepository.ChangeProjectAsync(project, DataToChange.UserId);
         }
 
+        public async Task<IActionResult> GetFileListAsync([FromForm] int stageId)
+        {
+            GetInformation();
+            DataToChange.StageId = stageId;
+
+            List<AppFile> files = await _dataRepository.FileListAsync(DataToChange);
+            return PartialView("FileList", files);
+        }
+
         public async Task AddFileAsync([FromForm] int stageId, IList<IFormFile> Files)
         {
             GetInformation();
@@ -123,7 +123,7 @@ namespace Manect.Controllers
             await _dataRepository.AddFileAsync(DataToChange);
         }
 
-        public async Task<IActionResult> DownloadFileAsync([FromForm] int fileId)
+        public async Task<IActionResult> DownloadFileAsync(int fileId)
         {
             GetInformation();
             DataToChange.FileId = fileId;
@@ -132,13 +132,11 @@ namespace Manect.Controllers
             return File( file.Content, file.Type, file.Name);
         }
 
-        public async Task<IActionResult> GetFileListAsync([FromForm] int stageId)
+        public async Task DeleteFileAsync([FromForm]  int fileId)
         {
             GetInformation();
-            DataToChange.StageId = stageId;
-
-            List<AppFile> files = await _dataRepository.FileListAsync(DataToChange);
-            return PartialView("FileList", files);
+            DataToChange.FileId = fileId;
+            await _dataRepository.DeleteFileAsync(DataToChange);
         }
 
         private void GetInformation()
