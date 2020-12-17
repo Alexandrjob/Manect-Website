@@ -38,10 +38,5 @@ namespace Manect.Data.Entities
         /// Список этапов исполнителя.
         /// </summary>
         public ICollection<Stage> Stages { get; set; }
-
-        public Executor()
-        {
-
-        }
     }
 }

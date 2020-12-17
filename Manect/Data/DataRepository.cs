@@ -76,14 +76,13 @@ namespace Manect.Data
             Project project = new Project("Стандартный шаблон проекта", 0, user,
                 new List<Stage>()
                 {
-                        new Stage("Обсуждение пожеланий клиента, предварительный эскиз", user),
+                        new Stage("Встреча  с клиентом", user),
                         new Stage("Замер обьекта", user),
-                        new Stage("Окончательный эскиз ", user),
-                        new Stage("Просчёт ", user),
-                        new Stage("Дополнительные комплектующие и нюансы", user),
-                        new Stage("Производство", user),
+                        new Stage("Просчет", user),
+                        new Stage("Эскиз", user),
+                        new Stage("Материалы и счета", user),
                         new Stage("Монтаж", user),
-                        new Stage("Сдача объекта", user)
+                        new Stage("Нюансы проекта", user)
                 });
 
             var dataContext = DataContext;
@@ -291,8 +290,6 @@ namespace Manect.Data
                 await dataContext.SaveChangesAsync();
                 _logger.LogInformation("Время: {TimeAction}. Пользователь(Id:{ExecutorId}) , {Status} файл(Id:{FileId}) в Проекте (Id:{ProjectId})", DateTime.Now, dataToChange.UserId, Status.Created, appFile.Id, dataToChange.ProjectId);
             }
-            
-            
         }
 
         private bool IsNotExtensionValid(IFormFile file)
@@ -312,6 +309,7 @@ namespace Manect.Data
         {
             _logger.LogInformation("Время: {TimeAction}. Пользователь(Id:{ExecutorId}) , {Status} файл(Id:{FileId}) в Проекте (Id:{ProjectId})",
                                  DateTime.Now, dataToChange.UserId, Status.Received, dataToChange.FileId, dataToChange.ProjectId);
+
             return await DataContext.Files.AsNoTracking().FirstOrDefaultAsync(f => f.Id == dataToChange.FileId);
         }
 
@@ -341,12 +339,7 @@ namespace Manect.Data
         {
             var file = new AppFile
             {
-                Id = dataToChange.FileId,
-                //Content = new byte[0],
-                //Length = 0,
-                //Name = "",
-                //StageId = 0,
-                //Type = "",
+                Id = dataToChange.FileId
             };
             _logger.LogInformation("Время: {TimeAction}. Пользователь(Id:{ExecutorId}) , {Status} файл(Id:{FileId}) в Проекте (Id:{ProjectId})", 
                                 DateTime.Now, dataToChange.UserId, Status.Deleted, dataToChange.FileId, dataToChange.ProjectId);

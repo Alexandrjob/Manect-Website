@@ -4,6 +4,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Manect.Data.Entities
 {
+    /// <summary>
+    /// Этап проекта.
+    /// </summary>
     public class Stage: BaseEntity
     {
         /// <summary>

@@ -63,31 +63,11 @@
         clickSelectBox();
     });
 
-    //$(function () {
-    //    var txt = $('#step-name'),
-    //        hiddenDiv = $(document.createElement('div')),
-    //        content = null;
-
-    //    txt.addClass('noscroll');
-    //    hiddenDiv.addClass('hiddendiv');
-    //    //hiddenDiv.empty();
-    //    $('body').append(hiddenDiv);
-
-    //    txt.bind('keyup', function () {
-
-    //        content = txt.val();
-    //        content = content.replace(/\n/g, '<br>');
-    //        hiddenDiv.html(content);
-
-    //        txt.css('height', hiddenDiv.height());
-
-    //    });
-    //});
-
     function clickSelectBox() {
         $(".select-box").on("click", (function (e) {
             $(this).siblings(".select-options").is(":visible") ? t(".select-options").hide() : ($(".select-options").hide(),
                 $(this).siblings(".select-options").css("display", "flex"), e.stopPropagation())
+            deleteFileList();
         }
         )),
             $(".select-options").on("click", ".option", (function () {
@@ -97,7 +77,7 @@
             }
             )),
             $(document).on("click", (function (e) {
-                $(".option").is(e.target) || $(".select-options").hide()
+                $(".option").is(e.target) && $(".select-options").hide()
             }
             ))
     }

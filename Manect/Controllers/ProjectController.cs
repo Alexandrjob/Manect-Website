@@ -109,9 +109,8 @@ namespace Manect.Controllers
         {
             GetInformation();
             DataToChange.StageId = stageId;
-
             List<AppFile> files = await _dataRepository.FileListAsync(DataToChange);
-            return PartialView("FileList", files);
+            return PartialView("File", files);
         }
 
         public async Task AddFileAsync([FromForm] int stageId, IList<IFormFile> Files)

@@ -1,3 +1,7 @@
+$(function () {
+    $(".login100-form-btn").focus();
+});
+
 (function ($) {
     "use strict";
     if ($('.input100').val().trim() != "") {

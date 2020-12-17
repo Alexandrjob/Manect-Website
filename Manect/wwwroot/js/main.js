@@ -167,6 +167,9 @@ function deleteFile(fileId) {
     var formData = new FormData();
     formData.append("fileId", fileId);
     sendFiles(formData, 0, "DeleteFile");
+
+    var fileListId = Array.from($("div[id^=\"flagDelete-" + fileId + "\"][class=\"option-file\"]")).map(item => item.getAttribute('Id'));
+    $("#" + fileListId[0]).remove();
 }
 
 function getFileList(stageId) {
@@ -194,7 +197,7 @@ function sendFiles(formData, element, url) {
 }
 
 function deleteFileList() {
-    var fileListId = Array.from($('div[id^="flagDelete"][class="option"]')).map(item => item.getAttribute('Id'));
+    var fileListId = Array.from($('div[id^="flagDelete"][class="option-file"]')).map(item => item.getAttribute('Id'));
 
     for (var i = 0; i < fileListId.length; i++) {
         $("#" + fileListId[i]).remove();
@@ -318,16 +321,7 @@ function deleteFileList() {
         n(9)
 }
     , function (t, e, n) {
-        (function (t) {
-            //!function (t) {
-            //    "use strict";
-            //    t(".checkbox label").on("click", (function (e) {
-            //        t(this).closest("li").toggleClass("checked")
-            //    }
-            //    ))
-            //}(t)
-        }
-        ).call(this, n(0))
+        (function (t) { }).call(this, n(0))
     }
 
     , function (t, e, n) {
@@ -337,8 +331,8 @@ function deleteFileList() {
                 t(".select-box").on("click", (function (e) {
                     e.preventDefault(),
                         t(this).siblings(".select-options").is(":visible") ? t(".select-options").hide() : (t(".select-options").hide(),
-                            t(this).siblings(".select-options").css("display", "flex"),
-                            e.stopPropagation())
+                            t(this).siblings(".select-options").css("display", "flex"), e.stopPropagation())
+                    deleteFileList();
                 }
                 )),
                     t(".select-options").on("click", ".option", (function () {
@@ -347,8 +341,7 @@ function deleteFileList() {
                     }
                     )),
                     t(document).on("click", (function (e) {
-                        t(".option").is(e.target) || t(".select-options").hide()
-                        deleteFileList();
+                        t(".option").is(e.target) && t(".select-options").hide()
                     }
                     ))
             }(t)

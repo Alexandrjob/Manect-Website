@@ -21,13 +21,12 @@ namespace Manect.Data
             if (!dataContext.Projects.Any())
             {
                 var executors = await dataContext.Executors.ToListAsync();
-                var user2 = executors.FirstOrDefault(u => u.UserName == "Sasha");
                 if (executors != default)
                 {
                     for (int i = 0; i < executors.Count; i++)
                     {
                         await dataContext.Projects.AddRangeAsync(
-                        GetPreconfiguredProjects(executors[i], user2));
+                        GetPreconfiguredProjects(executors[i]));
                     }
 
                     dataContext.SaveChanges();
@@ -35,36 +34,30 @@ namespace Manect.Data
             }
         }
 
-        static IEnumerable<Project> GetPreconfiguredProjects(Executor user1, Executor user2)
+        static IEnumerable<Project> GetPreconfiguredProjects(Executor user1)
         {
             return new List<Project>()
             {
-                new Project("Кухня", 160000, user1,
-                        new List<Stage>()
-                        {
-                            new Stage("Обсуждение пожеланий клиента, предварительный эскиз ",user1),
-                            new Stage(" Замер помещения", user2,comment: "Срочно!"),
-                            new Stage("Окончательный эскиз", user1, comment: "Что то не получается, спрошу у Кости."),
-                            new Stage("Просчёт", user1),
-                            new Stage("Дополнительные комплектующие и нюансы", user1),
-                            new Stage("Производство", user1),
-                            new Stage("Монтаж",user2),
-                            new Stage("Сдача объекта", user1)
-                        }),
+                new Project("Кухня", 160000, user1, GetStageList(user1)),
 
-                new Project("Туалет", 260000, user1,
-                        new List<Stage>()
-                        {
-                            new Stage("макет", user2)
-                        }),
+                new Project("Туалет", 260000, user1, GetStageList(user1)),
 
-
-                new Project("Шкаф", 50000, user1,
-                        new List<Stage>()
-                        {
-                            new Stage("Встреча с клиентом", user1)
-                        }),
+                new Project("Шкаф", 50000, user1, GetStageList(user1)),
             };
+        }
+
+        private static List<Stage> GetStageList(Executor user1)
+        {
+            return new List<Stage>()
+                        {
+                            new Stage("Встреча  с клиентом", user1),
+                            new Stage("Замер обьекта", user1),
+                            new Stage("Просчет", user1),
+                            new Stage("Эскиз", user1),
+                            new Stage("Материалы и счета", user1),
+                            new Stage("Монтаж", user1),
+                            new Stage("Нюансы проекта", user1)
+                        };
         }
 
         static async Task ClearDataBase(ProjectDbContext dataContext)
