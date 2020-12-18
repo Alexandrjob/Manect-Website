@@ -46,14 +46,14 @@ namespace Manect.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return Redirect("/Error/Index");
+                return RedirectToAction("/Error/Index", new { errorMessage = "Данные пользователя для входа введены неверно"});
             }
 
             var user = await _userManager.FindByEmailAsync(model.Email);
 
             if (user == null)
             {
-                return Redirect("/Error/Index");
+                return RedirectToAction("Index", "Error", new { errorMessage = "Пользователь не найден" });
             }
             var result = await _signInManager.PasswordSignInAsync(user, model.Password, false, false);
 

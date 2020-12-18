@@ -4,9 +4,9 @@ namespace Manect.Controllers
 {
     public class ErrorController: Controller
     {
-        public IActionResult Index()
+        public IActionResult Index(string errorMessage)
         {
-            return View();
+            return View((object)errorMessage);
         }
     }
 }

@@ -70,7 +70,6 @@ namespace Manect.Data
             _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} в Проекте {ProjectId} Этап: {StageId}", DateTime.Now, userId, Status.Created, projectId, stage.Id);
         }
 
-        //TODO: сделать метод универсальным (получать значение по которому можно понять какой проект(шаблоны будут записаны в новой таблице) нужно создать)
         public async Task AddProjectDefaultAsync(Executor user)
         {
             Project project = new Project("Стандартный шаблон проекта", 0, user,
@@ -341,13 +340,61 @@ namespace Manect.Data
             {
                 Id = dataToChange.FileId
             };
-            _logger.LogInformation("Время: {TimeAction}. Пользователь(Id:{ExecutorId}) , {Status} файл(Id:{FileId}) в Проекте (Id:{ProjectId})", 
+            _logger.LogInformation("Время: {TimeAction}. Пользователь(Id:{ExecutorId}) , {Status} файл(Id:{FileId}) в Проекте (Id:{ProjectId})",
                                 DateTime.Now, dataToChange.UserId, Status.Deleted, dataToChange.FileId, dataToChange.ProjectId);
 
             var dataContext = DataContext;
             dataContext.Files.Attach(file);
             dataContext.Entry(file).State = EntityState.Deleted;
             await dataContext.SaveChangesAsync();
+        }
+
+        public async Task<List<Executor>> GetProgectListExecutorsAsync()
+        {
+            var dataContext = DataContext;
+            const string ADMINUSERNAME = "Katya";
+            const string CREATORUSERNAME = "Sasha";
+
+            List<Executor> projectsExecutors = await dataContext.Executors
+                .AsNoTracking()
+                .Where(executor=>executor.UserName != ADMINUSERNAME & executor.UserName != CREATORUSERNAME)
+                .Select(executor => new
+                {
+                    executor.Id,
+                    executor.FirstName,
+                    executor.LastName,
+                    Projects = executor.Projects.Select(project => new
+                    {
+                        project.Id,
+                        project.Name
+                    })
+
+                })
+                .AsQueryable()
+                .Select(executor => new Executor
+                {
+                    Id = executor.Id,
+                    FirstName = executor.FirstName,
+                    LastName = executor.LastName,
+                    Projects = executor.Projects.Select(project => new Project
+                    {
+                        Id = project.Id,
+                        Name = project.Name
+                    }).ToList()
+                })
+                .ToListAsync();
+
+            return projectsExecutors;
+        }
+
+        public async Task<bool> IsAdminAsync(DataToChange dataToChange)
+        {
+            const string ADMINUSERNAME = "Katya";
+            var dataContext = DataContext;
+            
+            var currentUser = await dataContext.Executors.Where(executor => executor.Id == dataToChange.UserId).Select(ex=>ex.UserName).FirstOrDefaultAsync();
+            var obj = await dataContext.Executors.AnyAsync(executor => currentUser == ADMINUSERNAME);
+            return obj;
         }
     }
 }

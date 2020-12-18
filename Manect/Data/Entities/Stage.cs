@@ -20,12 +20,6 @@ namespace Manect.Data.Entities
         public ICollection<AppFile> Files { get; set; }
 
         /// <summary>
-        /// Id исполнителя.
-        /// </summary>
-        [ForeignKey("Executor")]
-        public int ExecutorId { get; set; }
-
-        /// <summary>
         /// Id проекта в котором был создан этап.
         /// </summary>
         // Внешний ключ

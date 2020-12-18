@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Manect.Data.Entities
 {
@@ -18,6 +19,12 @@ namespace Manect.Data.Entities
         /// Исполнитель проекта или этапа(в зависимости от класса реализующий данный класс).
         /// </summary>  
         public Executor Executor { get; set; }
+
+        /// <summary>
+        /// Id исполнителя.
+        /// </summary>
+        [ForeignKey("Executor")]
+        public int ExecutorId { get; set; }
 
         /// <summary>
         /// Дата создания проекта или этапа(в зависимости от класса реализующий данный класс).

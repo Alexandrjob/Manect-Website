@@ -13,7 +13,6 @@ namespace Manect.Interfaces
         Task DeleteProjectAsync(int userId, int projectId);
         Task SetFlagValueAsync(int userId, int projectId, int stageId, Status status);
         Task<Project> GetAllProjectDataAsync(int projectId, int stageId = default);
-        //TODO: В будущем при необходимости переделать это не очень хорошо - делать выборку по имени.
         Task<List<Project>> GetProjectOrDefaultToListAsync(int userId);
         Task<List<Executor>> GetExecutorsToListExceptAsync(int executorId);
         Task ChengeExecutorAsync(int executorId, int projectId, int stageId);
@@ -23,5 +22,7 @@ namespace Manect.Interfaces
         Task DeleteFileAsync(DataToChange dataToChange);
         Task<AppFile> GetFileAsync(DataToChange dataToChange);
         Task<List<AppFile>> FileListAsync(DataToChange dataToChange);
+        Task<List<Executor>> GetProgectListExecutorsAsync();
+        Task<bool> IsAdminAsync(DataToChange dataToChange);
     }
 }

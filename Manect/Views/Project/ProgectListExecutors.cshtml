@@ -1,0 +1,42 @@
+﻿@using Manect.Data.Entities;
+@model IEnumerable<Executor>
+
+
+<html lang="ru">
+<head>
+    <title>Manect-Проекты сотрудников</title>
+</head>
+<body class="index-page">
+    <header>
+        <div class="container">
+            <div class="header-menu"><a class="open-menu" href="#menu" title="Открыть меню"><img src="~/image/icon/menu_bar.svg" alt="icon"></a></div>
+            <div class="header">
+                <div class="header-title">Проекты сотрудников</div>
+            </div>
+        </div>
+    </header>
+    <main>
+        <section id="index">
+            <div class="container">
+                <div class="content">
+                    @foreach (Executor executor in Model)
+                    {
+                        <h1>@executor.FirstName @executor.LastName</h1>
+                        <ul class="project-list">
+                            @foreach (Project project in executor.Projects)
+                            {
+                                <li>
+                                    <form asp-controller="Home" asp-action="OpenProject">
+                                        <input hidden asp-for=@project.Id name="projectId" />
+                                        <button><img src="~/image/project.jpg" alt="image"><span>@project.Name</span></button>
+                                    </form>
+                                </li>
+                            }
+                        </ul>
+                    }
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

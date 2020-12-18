@@ -5,10 +5,12 @@ function editStageButton(element, stageId) {
     sendStage(stage, 'GetStage');
     element = '.' + element;
     var left = $(element).offset().left;
+    var height = $(element).css("height");
     var top = $(element).offset().top - $(window).scrollTop();
 
     $('#stage-form-container').offset({ top: top });
     $('#project-step-form').css('marginLeft', left);
+    $('#project-step-form').css('height', height);
     $('#project-form-container').hide();
     $('#stage-form-container').show();
     $('#foreground').show();

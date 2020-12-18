@@ -138,6 +138,18 @@ namespace Manect.Controllers
             await _dataRepository.DeleteFileAsync(DataToChange);
         }
 
+        public async Task<IActionResult> ProgectListExecutorsAsync()
+        {
+            GetInformation();
+            bool isAdmin = await _dataRepository.IsAdminAsync(DataToChange);
+            if (isAdmin)
+            {
+                var projects = await _dataRepository.GetProgectListExecutorsAsync();
+                return View(projects);
+            }
+            return RedirectToAction("Index", "Error", new { errorMessage = "ТЕБЕ СЮДА НЕЛЬЗЯ ДРУЖОЧЕК-ПИРОЖОЧЕК" });
+        }
+
         private void GetInformation()
         {
             if (HttpContext.Request.Cookies.ContainsKey("UserId") |
