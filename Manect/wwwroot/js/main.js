@@ -165,8 +165,9 @@ function changeInputFiles(stageId) {
     sendFiles(formData, 0, "AddFile");
 }
 
-function deleteFile(fileId) {
+function deleteFile(stageId, fileId) {
     var formData = new FormData();
+    formData.append("stageId", stageId);
     formData.append("fileId", fileId);
     sendFiles(formData, 0, "DeleteFile");
 

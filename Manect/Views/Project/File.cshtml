@@ -8,7 +8,7 @@
             <div class="file-name" title="Имя файла">@file.Name</div>
             <div style="margin-left: auto" title="Размер файла">@length<span>МБ</span></div>
         </div>
-        <div class="file-act" title="Удалить файл" onclick="return deleteFile(@file.Id);"><img src="/image/icon/trash.svg" alt="icon"></div>
+        <div class="file-act" title="Удалить файл" onclick="return deleteFile(@file.StageId, @file.Id);"><img src="/image/icon/trash.svg" alt="icon"></div>
         <a class="file-act" href="@Url.Action("DownloadFile", "Project", new { fileId = file.Id })">
             <div style="margin-left: auto" title="Скачать файл">
                 <img src="~/image/icon/dowload48.png" alt="icon">

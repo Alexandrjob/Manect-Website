@@ -577,7 +577,7 @@ main {
             flex: 0 0 auto
         }
 
-#my .container .project-steps:not(:last-child), #my .container h3, #project .container .project-steps:not(:last-child), #project .container h3 {
+#my .container .project-steps:not(:last-child), #my .container h3, #project .container .project-steps:not(:last-child), #project .container h4 {
     margin-bottom: 12px
 }
 

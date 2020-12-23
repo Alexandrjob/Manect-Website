@@ -74,6 +74,12 @@ namespace Manect.Controllers
             return Redirect("Index");
         }
 
+        public async Task<IActionResult> ChengeExecutorDelegatedAsync(int executorId, int projectId, int stageId)
+        {
+            await _dataRepository.ChengeExecutorAsync(executorId, projectId, stageId);
+            return Redirect("StagesListDelegated");
+        }
+
         public async Task<IActionResult> GetStageAsync([FromForm] Stage stage)
         {
             GetInformation();
@@ -128,12 +134,13 @@ namespace Manect.Controllers
             DataToChange.FileId = fileId;
             AppFile file = await _dataRepository.GetFileAsync(DataToChange);
 
-            return File( file.Content, file.Type, file.Name);
+            return File(file.Content, file.Type, file.Name);
         }
 
-        public async Task DeleteFileAsync([FromForm]  int fileId)
+        public async Task DeleteFileAsync([FromForm] int stageId, int fileId)
         {
             GetInformation();
+            DataToChange.StageId = stageId;
             DataToChange.FileId = fileId;
             await _dataRepository.DeleteFileAsync(DataToChange);
         }
@@ -150,6 +157,14 @@ namespace Manect.Controllers
             return RedirectToAction("Index", "Error", new { errorMessage = "ТЕБЕ СЮДА НЕЛЬЗЯ ДРУЖОЧЕК-ПИРОЖОЧЕК" });
         }
 
+        public async Task<IActionResult> StagesListDelegatedAsync()
+        {
+            GetInformation();
+
+            var projects = await _dataRepository.GetStagesListDelegatedAsync(DataToChange);
+            ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(DataToChange.UserId);
+            return View(projects);
+        }
         private void GetInformation()
         {
             if (HttpContext.Request.Cookies.ContainsKey("UserId") |

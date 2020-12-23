@@ -97,6 +97,7 @@ namespace Manect.Data
 
             _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} Проект {ProjectId}", DateTime.Now, user.Id, Status.Created, project.Id);
         }
+
         public async Task DeleteStageAsync(int userId, int projectId, int stageId)
         {
             var stage = new Stage
@@ -153,49 +154,70 @@ namespace Manect.Data
             return new List<Project>();
         }
 
+        //TODO: Раздробить метод. 2 параметр для редактирования представления этапа.
         public async Task<Project> GetAllProjectDataAsync(int projectId, int stageId = default)
         {
             var dataContext = DataContext;
             //TODO:В будущем оптимизировать.
-            var project = await dataContext.Projects
+            var project = new Project();
+
+
+            if (stageId == default)
+            {
+                project = await dataContext.Projects
                 .AsNoTracking()
                 .Where(p => p.Id == projectId)
                 .Include(p => p.Executor)
                 .FirstOrDefaultAsync();
 
-            List<Stage> stages = new List<Stage>();
-            if (stageId == default)
-            {
+                List<Stage> stages = new List<Stage>();
+
                 stages = await dataContext.Stages
                 .AsNoTracking()
                 .Where(s => s.ProjectId == project.Id)
                 .Include(s => s.Executor)
                 .OrderBy(s => s.CreationDate)
                 .ToListAsync();
+
+                project.Stages = stages;
+                return project;
             }
             else
             {
+                project = await dataContext.Projects
+                .AsNoTracking()
+                .Where(p => p.Id == projectId)
+                .Include(p => p.Executor)
+                .FirstOrDefaultAsync();
+
+                List<Stage> stages = new List<Stage>();
+
+                projectId = await dataContext.Stages.Where(s => s.Id == stageId).Select(s => s.ProjectId).FirstOrDefaultAsync();
+                project = await dataContext.Projects
+                    .AsNoTracking()
+                    .Where(p => p.Id == projectId)
+                    .Include(p => p.Executor)
+                    .FirstOrDefaultAsync();
 
                 var stage = await dataContext.Stages
                 .AsNoTracking()
-                .Where(s => s.ProjectId == project.Id)
                 .Include(s => s.Executor)
                 .FirstOrDefaultAsync(s => s.Id == stageId);
 
                 stages.Add(stage);
+                project.Stages = stages;
+                return project;
             }
-
-
-            project.Stages = stages;
-            return project;
         }
 
         public async Task<List<Executor>> GetExecutorsToListExceptAsync(int userId)
         {
             var dataContext = DataContext;
+            const string CREATORUSERNAME = "Sasha";
+
             List<Executor> executors = await dataContext.Executors
                 .AsNoTracking()
-                .Where(e => e.Id != userId)
+                .Where(e => e.Id != userId && e.UserName != CREATORUSERNAME)
                 .Select(u => new
                 {
                     u.Id,
@@ -257,7 +279,8 @@ namespace Manect.Data
         public async Task ChangeProjectAsync(Project project, int userId)
         {
             var dataContext = DataContext;
-
+            //TODO: ПЛОХО!!
+            project.ExecutorId = userId;
             _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} Проект {ProjectId}", DateTime.Now, userId, Status.Modified, project.Id);
 
             dataContext.Projects.Attach(project);
@@ -320,14 +343,16 @@ namespace Manect.Data
                                          {
                                              obj.Id,
                                              obj.Name,
+                                             obj.StageId,
                                              obj.Content.Length
                                          })
                                         .AsQueryable()
-                                        .Select(un => new AppFile
+                                        .Select(f => new AppFile
                                         {
-                                            Id = un.Id,
-                                            Name = un.Name,
-                                            Length = un.Length
+                                            Id = f.Id,
+                                            Name = f.Name,
+                                            StageId = f.StageId,
+                                            Length = f.Length
                                         })
                                         .ToListAsync();
 
@@ -340,8 +365,8 @@ namespace Manect.Data
             {
                 Id = dataToChange.FileId
             };
-            _logger.LogInformation("Время: {TimeAction}. Пользователь(Id:{ExecutorId}) , {Status} файл(Id:{FileId}) в Проекте (Id:{ProjectId})",
-                                DateTime.Now, dataToChange.UserId, Status.Deleted, dataToChange.FileId, dataToChange.ProjectId);
+            _logger.LogInformation("Время: {TimeAction}. Пользователь(Id:{ExecutorId}) , {Status} файл(Id:{FileId}) в этапе (Id:{ProjectId})",
+                                DateTime.Now, dataToChange.UserId, Status.Deleted, dataToChange.FileId, dataToChange.StageId);
 
             var dataContext = DataContext;
             dataContext.Files.Attach(file);
@@ -357,7 +382,7 @@ namespace Manect.Data
 
             List<Executor> projectsExecutors = await dataContext.Executors
                 .AsNoTracking()
-                .Where(executor=>executor.UserName != ADMINUSERNAME & executor.UserName != CREATORUSERNAME)
+                .Where(executor => executor.UserName != ADMINUSERNAME && executor.UserName != CREATORUSERNAME)
                 .Select(executor => new
                 {
                     executor.Id,
@@ -390,11 +415,53 @@ namespace Manect.Data
         public async Task<bool> IsAdminAsync(DataToChange dataToChange)
         {
             const string ADMINUSERNAME = "Katya";
+            const string CREATORUSERNAME = "Sasha";
             var dataContext = DataContext;
-            
-            var currentUser = await dataContext.Executors.Where(executor => executor.Id == dataToChange.UserId).Select(ex=>ex.UserName).FirstOrDefaultAsync();
-            var obj = await dataContext.Executors.AnyAsync(executor => currentUser == ADMINUSERNAME);
-            return obj;
+
+            var currentUser = await dataContext.Executors.Where(executor => executor.Id == dataToChange.UserId).Select(ex => ex.UserName).FirstOrDefaultAsync();
+
+            if (currentUser == ADMINUSERNAME || currentUser == CREATORUSERNAME)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public async Task<List<Project>> GetStagesListDelegatedAsync(DataToChange dataToChange)
+        {
+            var dataContext = DataContext;
+            var projects = await dataContext.Projects
+                .AsNoTracking()
+                .Where(p => p.ExecutorId != dataToChange.UserId)
+                .Select(project => new
+                {
+                    project.Id,
+                    project.Name,
+                    project.Executor.FirstName,
+                    project.Executor.LastName,
+                    project.ExecutorId,
+                    project.CreationDate,
+                    Stages = project.Stages.Where(stage => stage.ExecutorId == dataToChange.UserId)
+                })
+                .AsQueryable()
+                .Select(project => new Project
+                {
+                    Id = project.Id,
+                    Name = project.Name,
+                    CreationDate = project.CreationDate,
+                    Executor = new Executor()
+                    {
+                         FirstName = project.FirstName,
+                         LastName = project.LastName
+                    },
+                    ExecutorId = project.ExecutorId,
+                    Stages = project.Stages.ToList()
+                })
+                .ToListAsync();
+
+            projects = projects.Where(p => p.Stages.Count != 0).ToList();
+            projects.ForEach(p => p.Stages = p.Stages.OrderBy(s => s.CreationDate).ToList());
+            return projects;
         }
     }
 }

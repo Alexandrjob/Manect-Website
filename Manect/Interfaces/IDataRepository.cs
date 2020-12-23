@@ -24,5 +24,6 @@ namespace Manect.Interfaces
         Task<List<AppFile>> FileListAsync(DataToChange dataToChange);
         Task<List<Executor>> GetProgectListExecutorsAsync();
         Task<bool> IsAdminAsync(DataToChange dataToChange);
+        Task<List<Project>> GetStagesListDelegatedAsync(DataToChange dataToChange);
     }
 }

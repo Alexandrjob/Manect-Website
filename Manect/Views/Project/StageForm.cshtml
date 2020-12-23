@@ -3,7 +3,6 @@
 @{
     Stage stage = Model.Stages.FirstOrDefault();
 }
-
 <ul class="project-step">
     <li class="stage-9999">
         <form class="project-step" asp-controller="Project" asp-action="SaveStage">
@@ -34,7 +33,7 @@
                         <a class="select-box" onclick="return clickSelectBox();" style="cursor:pointer" title="Изменить исполнителя"><img src="/image/icon/add_user.svg" alt="icon"><span></span></a>
                     }
                     <div class="select-options">
-                        <input hidden id="step-executor_Id" name="executorId" type="number" value="@Model.Executor.Id" />
+                        <input hidden id="step-executor_Id" name="executorId" type="number" value="@stage.ExecutorId" />
                         <div class="option" data-id="@Model.Executor.Id"><span class="name">Без доп. исполнителя</span></div>
                         @foreach (Executor executor in ViewBag.Executors)
                         {
