@@ -165,6 +165,7 @@ namespace Manect.Controllers
             ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(DataToChange.UserId);
             return View(projects);
         }
+
         private void GetInformation()
         {
             if (HttpContext.Request.Cookies.ContainsKey("UserId") |

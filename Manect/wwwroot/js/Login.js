@@ -1,8 +1,5 @@
-$(function () {
-    $(".login100-form-btn").focus();
-});
-
 (function ($) {
+    $(".login100-form-btn").focus();
     "use strict";
     if ($('.input100').val().trim() != "") {
         $('.input100').addClass('has-val');
