@@ -27,11 +27,11 @@ namespace Manect.Controllers
         public async Task<IActionResult> IndexAsync()
         {
             var name = HttpContext.User.Identity.Name;
-            var currentUser = await _dataRepository.FindUserIdByNameOrDefaultAsync(name);
-            HttpContext.Response.Cookies.Append("UserId", currentUser.Id.ToString());
+            var currentUserId = await _dataRepository.FindUserIdByNameOrDefaultAsync(name);
+            HttpContext.Response.Cookies.Append("UserId", currentUserId.ToString());
 
-            ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(currentUser.Id);
-            return View(await _dataRepository.GetProjectOrDefaultToListAsync(currentUser.Id));
+            ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(currentUserId);
+            return View(await _dataRepository.GetProjectOrDefaultToListAsync(currentUserId));
         }
 
         [AllowAnonymous]
@@ -62,6 +62,7 @@ namespace Manect.Controllers
                 //TODO: В будущем поменять на адаптивным метод, чтобы исключение не выкидывал а перекидывал на index
                 return LocalRedirect("/Home/Index");
             }
+            //TODO: Как отобразить ошибку пароля?
             return View(model);
         }
 
@@ -70,14 +71,14 @@ namespace Manect.Controllers
             await _signInManager.SignOutAsync();
             return Redirect("/Home/Index");
         }
-
+        
         [HttpPost]
         public async Task<IActionResult> AddProject()
         {
             var name = HttpContext.User.Identity.Name;
-            var currentUser = await _dataRepository.FindUserIdByNameOrDefaultAsync(name);
+            var currentUserId = await _dataRepository.FindUserIdByNameOrDefaultAsync(name);
 
-            await _dataRepository.AddProjectDefaultAsync(currentUser);
+            await _dataRepository.AddProjectDefaultAsync(currentUserId);
             //TODO: нужно чтобы страница просто обновлялась.
             return Redirect("/Home/Index");
         }

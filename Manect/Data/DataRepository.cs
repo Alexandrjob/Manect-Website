@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.IO;
 using Microsoft.AspNetCore.Http;
+using ManectTelegramBot.Models;
 
 namespace Manect.Data
 {
@@ -32,20 +33,21 @@ namespace Manect.Data
             _logger = logger;
         }
 
-        public async Task<Executor> FindUserIdByNameOrDefaultAsync(string name)
+        public async Task<int> FindUserIdByNameOrDefaultAsync(string name)
+        {
+            return await DataContext.Executors
+               .AsNoTracking()
+               .Where(user => user.UserName == name)
+               .Select(u => u.Id)
+               .FirstOrDefaultAsync();
+        }
+
+        public async Task<int> FindUserIdByEmailOrDefaultAsync(string email)
         {
             return await DataContext.Executors
                 .AsNoTracking()
-                .Where(user => user.UserName == name)
-                .Select(u => new
-                {
-                    u.Id
-                })
-                .AsQueryable()
-                .Select(un => new Executor
-                {
-                    Id = un.Id
-                })
+                .Where(user => user.Email == email)
+                .Select(u => u.Id)
                 .FirstOrDefaultAsync();
         }
 
@@ -70,8 +72,11 @@ namespace Manect.Data
             _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} в Проекте {ProjectId} Этап: {StageId}", DateTime.Now, userId, Status.Created, projectId, stage.Id);
         }
 
-        public async Task AddProjectDefaultAsync(Executor user)
+        public async Task AddProjectDefaultAsync(int CurrentUserId)
         {
+            var user = new Executor();
+            user.Id = CurrentUserId;
+
             Project project = new Project("Стандартный шаблон проекта", 0, user,
                 new List<Stage>()
                 {
@@ -236,20 +241,20 @@ namespace Manect.Data
             return executors;
         }
 
-        public async Task ChengeExecutorAsync(int userId, int projectId, int stageId)
+        public async Task EditExecutorAsync(DataToChange dataToChange)
         {
             var dataContext = DataContext;
 
             var stage = await dataContext.Stages
-                .FirstOrDefaultAsync(s => s.Id == stageId);
+                .FirstOrDefaultAsync(s => s.Id == dataToChange.StageId);
 
             _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} в Проекте {ProjectId} Этап: {StageId}", DateTime.Now, stage.ExecutorId, Status.Modified, stage.ProjectId, stage.Id);
-            stage.ExecutorId = userId;
+            stage.ExecutorId = dataToChange.ExecutorId;
             dataContext.Entry(stage).State = EntityState.Modified;
             await dataContext.SaveChangesAsync();
         }
 
-        public async Task ChangeStageAsync(Stage stage)
+        public async Task EditStageAsync(Stage stage)
         {
             var dataContext = DataContext;
             //TODO: Почему то ругается на отсутствие полей, в проекте такого нет
@@ -276,7 +281,7 @@ namespace Manect.Data
             await dataContext.SaveChangesAsync();
         }
 
-        public async Task ChangeProjectAsync(Project project, int userId)
+        public async Task EditProjectAsync(Project project, int userId)
         {
             var dataContext = DataContext;
             //TODO: ПЛОХО!!
@@ -308,9 +313,9 @@ namespace Manect.Data
                     Content = memoryStream.ToArray()
                 };
                 dataContext.Files.Add(appFile);
-                //TODO: Надеюсь, что будет незаметно.
+                //TODO: Надеюсь, что будет незаметно.;
                 await dataContext.SaveChangesAsync();
-                _logger.LogInformation("Время: {TimeAction}. Пользователь(Id:{ExecutorId}) , {Status} файл(Id:{FileId}) в Проекте (Id:{ProjectId})", DateTime.Now, dataToChange.UserId, Status.Created, appFile.Id, dataToChange.ProjectId);
+                _logger.LogInformation("Время: {TimeAction}. Пользователь(Id:{ExecutorId}) , {Status} файл(Id:{FileId}) в Проекте (Id:{ProjectId})", DateTime.Now, dataToChange.CurrentUserId, Status.Created, appFile.Id, dataToChange.ProjectId);
             }
         }
 
@@ -330,7 +335,7 @@ namespace Manect.Data
         public async Task<AppFile> GetFileAsync(DataToChange dataToChange)
         {
             _logger.LogInformation("Время: {TimeAction}. Пользователь(Id:{ExecutorId}) , {Status} файл(Id:{FileId}) в Проекте (Id:{ProjectId})",
-                                 DateTime.Now, dataToChange.UserId, Status.Received, dataToChange.FileId, dataToChange.ProjectId);
+                                 DateTime.Now, dataToChange.CurrentUserId, Status.Received, dataToChange.FileId, dataToChange.ProjectId);
 
             return await DataContext.Files.AsNoTracking().FirstOrDefaultAsync(f => f.Id == dataToChange.FileId);
         }
@@ -366,7 +371,7 @@ namespace Manect.Data
                 Id = dataToChange.FileId
             };
             _logger.LogInformation("Время: {TimeAction}. Пользователь(Id:{ExecutorId}) , {Status} файл(Id:{FileId}) в этапе (Id:{ProjectId})",
-                                DateTime.Now, dataToChange.UserId, Status.Deleted, dataToChange.FileId, dataToChange.StageId);
+                                DateTime.Now, dataToChange.CurrentUserId, Status.Deleted, dataToChange.FileId, dataToChange.StageId);
 
             var dataContext = DataContext;
             dataContext.Files.Attach(file);
@@ -418,7 +423,7 @@ namespace Manect.Data
             const string CREATORUSERNAME = "Sasha";
             var dataContext = DataContext;
 
-            var currentUser = await dataContext.Executors.Where(executor => executor.Id == dataToChange.UserId).Select(ex => ex.UserName).FirstOrDefaultAsync();
+            var currentUser = await dataContext.Executors.Where(executor => executor.Id == dataToChange.CurrentUserId).Select(ex => ex.UserName).FirstOrDefaultAsync();
 
             if (currentUser == ADMINUSERNAME || currentUser == CREATORUSERNAME)
             {
@@ -432,7 +437,7 @@ namespace Manect.Data
             var dataContext = DataContext;
             var projects = await dataContext.Projects
                 .AsNoTracking()
-                .Where(p => p.ExecutorId != dataToChange.UserId)
+                .Where(p => p.ExecutorId != dataToChange.CurrentUserId)
                 .Select(project => new
                 {
                     project.Id,
@@ -441,7 +446,7 @@ namespace Manect.Data
                     project.Executor.LastName,
                     project.ExecutorId,
                     project.CreationDate,
-                    Stages = project.Stages.Where(stage => stage.ExecutorId == dataToChange.UserId)
+                    Stages = project.Stages.Where(stage => stage.ExecutorId == dataToChange.CurrentUserId)
                 })
                 .AsQueryable()
                 .Select(project => new Project
@@ -451,8 +456,8 @@ namespace Manect.Data
                     CreationDate = project.CreationDate,
                     Executor = new Executor()
                     {
-                         FirstName = project.FirstName,
-                         LastName = project.LastName
+                        FirstName = project.FirstName,
+                        LastName = project.LastName
                     },
                     ExecutorId = project.ExecutorId,
                     Stages = project.Stages.ToList()
@@ -462,6 +467,111 @@ namespace Manect.Data
             projects = projects.Where(p => p.Stages.Count != 0).ToList();
             projects.ForEach(p => p.Stages = p.Stages.OrderBy(s => s.CreationDate).ToList());
             return projects;
+        }
+
+        public async Task<long> GetTelegramIdAsync(DataToChange dataToChange)
+        {
+            var telegramId = await DataContext.Executors.Where(executor => executor.Id == dataToChange.CurrentUserId)
+                                                        .Select(executor => executor.TelegramId)
+                                                        .FirstOrDefaultAsync();
+            return telegramId;
+        }
+
+        public async Task AddTelegramIdAsync(DataToChange dataToChange)
+        {
+            var dataContext = DataContext;
+            //TODO:Нормально нет.
+            var currentExecutor = await dataContext.Executors.FirstOrDefaultAsync(executor => executor.Id == dataToChange.CurrentUserId);
+
+            currentExecutor.TelegramId = dataToChange.TelegramId;
+            dataContext.Entry(currentExecutor).State = EntityState.Modified;
+            await dataContext.SaveChangesAsync();
+        }
+
+        public async Task<MessageObject> GetInformationForMessageAsync(DataToChange dataToChange)
+        {
+            var dataContext = DataContext;
+
+            var messageObject = await dataContext.Executors
+                .AsNoTracking()
+                .Where(exe => exe.Id == dataToChange.CurrentUserId)
+                .Select(exe => new
+                {
+                    exe.FirstName,
+                    exe.LastName,
+                    Project = exe.Projects
+                                     .Where(project => project.Id == dataToChange.ProjectId)
+                                     .Select(p => new
+                                     {
+                                         p.Name,
+                                         p.Executor.FirstName,
+                                         p.Executor.LastName,
+                                         StageName = p.Stages.Where(stage => stage.Id == dataToChange.StageId).Select(s => s.Name).FirstOrDefault()
+                                     })
+                                     .FirstOrDefault()
+
+                })
+                .AsQueryable()
+                .Select(messageObject => new MessageObject
+                {
+                    SenderExecutor = new SenderExecutor()
+                    {
+                        FirstName = messageObject.FirstName,
+                        LastName = messageObject.LastName
+                    },
+
+                    StageName = messageObject.Project.StageName,
+                    ProjectName = messageObject.Project.Name,
+
+                    ExecutorProject = new ExecutorProject()
+                    {
+                        FirstName = messageObject.Project.FirstName,
+                        LastName = messageObject.Project.LastName
+                    }
+                })
+                .FirstOrDefaultAsync();
+
+            var recipientExecutor = await dataContext.Executors
+                .AsNoTracking()
+                .Where(exe => exe.Id == dataToChange.ExecutorId)
+                .Select(exe => new
+                {
+                    exe.FirstName,
+                    exe.LastName,
+                    exe.TelegramId
+                })
+                .AsQueryable()
+                .Select(recipientExecutor => new RecipientExecutor
+                {
+                    FirstName = recipientExecutor.FirstName,
+                    LastName = recipientExecutor.LastName,
+                    TelegramId = recipientExecutor.TelegramId
+                })
+                .FirstOrDefaultAsync();
+
+            messageObject.RecipientExecutor = recipientExecutor;
+            return messageObject;
+        }
+
+        public async Task<Executor> GetFullNameAsync(DataToChange dataToChange)
+        {
+            var executor = await DataContext.Executors
+               .AsNoTracking()
+               .Where(exe => exe.Id == dataToChange.CurrentUserId)
+               .Select(exe => new
+               {
+                   exe.FirstName,
+                   exe.LastName
+               })
+               .AsQueryable()
+               .Select(executor => new Executor
+               {
+                   FirstName = executor.FirstName,
+                   LastName = executor.LastName
+               })
+               .FirstOrDefaultAsync();
+
+            return executor;
         }
     }
 }

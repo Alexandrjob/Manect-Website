@@ -22,6 +22,7 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.1" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.1" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.1">
 			<PrivateAssets>all</PrivateAssets>
@@ -46,6 +47,10 @@
 		<None Include="wwwroot\image\icon\menu_bar.svg" />
 		<None Include="wwwroot\image\icon\plus.svg" />
 		<None Include="wwwroot\image\icon\trash.svg" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\ManectTelegramBot\ManectTelegramBot.csproj" />
 	</ItemGroup>
 
 	<ProjectExtensions>

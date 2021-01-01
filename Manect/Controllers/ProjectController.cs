@@ -1,5 +1,7 @@
 ﻿using Manect.Data.Entities;
 using Manect.Interfaces;
+using ManectTelegramBot.Models;
+using ManectTelegramBot.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,12 +15,14 @@ namespace Manect.Controllers
     public class ProjectController: Controller
     {
         private readonly IDataRepository _dataRepository;
+        private readonly ServiceTelegramMessage _telegramMessage;
 
         public DataToChange DataToChange { get; set; }
 
-        public ProjectController(IDataRepository dataRepository)
+        public ProjectController(IDataRepository dataRepository, ServiceTelegramMessage telegramMessage)
         {
             _dataRepository = dataRepository;
+            _telegramMessage = telegramMessage;
             DataToChange = new DataToChange();
         }
 
@@ -32,7 +36,7 @@ namespace Manect.Controllers
                 return Redirect("/Error/Index");
             }
 
-            ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(DataToChange.UserId);
+            ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(DataToChange.CurrentUserId);
             return View(project);
         }
 
@@ -40,7 +44,7 @@ namespace Manect.Controllers
         {
             GetInformation();
 
-            await _dataRepository.AddStageAsync(DataToChange.UserId, DataToChange.ProjectId);
+            await _dataRepository.AddStageAsync(DataToChange.CurrentUserId, DataToChange.ProjectId);
             return Redirect("Index");
         }
 
@@ -48,7 +52,7 @@ namespace Manect.Controllers
         {
             GetInformation();
 
-            await _dataRepository.DeleteStageAsync(DataToChange.UserId, DataToChange.ProjectId, stageId);
+            await _dataRepository.DeleteStageAsync(DataToChange.CurrentUserId, DataToChange.ProjectId, stageId);
             return Redirect("Index");
         }
 
@@ -56,27 +60,43 @@ namespace Manect.Controllers
         {
             GetInformation();
 
-            await _dataRepository.DeleteProjectAsync(DataToChange.UserId, DataToChange.ProjectId);
+            await _dataRepository.DeleteProjectAsync(DataToChange.CurrentUserId, DataToChange.ProjectId);
             return RedirectToAction("Index", "Home");
         }
 
         public async Task SetFlagValueAsync(Status status, int stageId)
         {
             GetInformation();
-            await _dataRepository.SetFlagValueAsync(DataToChange.UserId, DataToChange.ProjectId, stageId, status);
+            await _dataRepository.SetFlagValueAsync(DataToChange.CurrentUserId, DataToChange.ProjectId, stageId, status);
         }
 
         public async Task<IActionResult> ChengeExecutorAsync(int executorId, int stageId)
         {
             GetInformation();
+            DataToChange.ExecutorId = executorId;
+            DataToChange.StageId = stageId;
+            await _dataRepository.EditExecutorAsync(DataToChange);
 
-            await _dataRepository.ChengeExecutorAsync(executorId, DataToChange.ProjectId, stageId);
+            MessageObject messageObject = await _dataRepository.GetInformationForMessageAsync(DataToChange);
+
+            long chatId = await _dataRepository.GetTelegramIdAsync(DataToChange);
+            await _telegramMessage.Send(chatId, messageObject);
+
             return Redirect("Index");
         }
 
         public async Task<IActionResult> ChengeExecutorDelegatedAsync(int executorId, int projectId, int stageId)
         {
-            await _dataRepository.ChengeExecutorAsync(executorId, projectId, stageId);
+            DataToChange.ExecutorId = executorId;
+            DataToChange.ExecutorId = projectId;
+            DataToChange.StageId = stageId;
+            await _dataRepository.EditExecutorAsync(DataToChange);
+
+            MessageObject messageObject = await _dataRepository.GetInformationForMessageAsync(DataToChange);
+
+            long chatId = await _dataRepository.GetTelegramIdAsync(DataToChange);
+            await _telegramMessage.Send(chatId, messageObject);
+
             return Redirect("StagesListDelegated");
         }
 
@@ -85,14 +105,14 @@ namespace Manect.Controllers
             GetInformation();
 
             var project = await _dataRepository.GetAllProjectDataAsync(DataToChange.ProjectId, stage.Id);
-            ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(DataToChange.UserId);
+            ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(DataToChange.CurrentUserId);
             return PartialView("StageForm", project);
         }
 
         public async Task SaveStageAsync([FromForm] Stage stage)
         {
             GetInformation();
-            await _dataRepository.ChangeStageAsync(stage);
+            await _dataRepository.EditStageAsync(stage);
         }
 
         public async Task<IActionResult> GetProjectAsync()
@@ -101,14 +121,14 @@ namespace Manect.Controllers
 
             //TODO: Оптимизировать запросы.
             var project = await _dataRepository.GetAllProjectDataAsync(DataToChange.ProjectId);
-            ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(DataToChange.UserId);
+            ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(DataToChange.CurrentUserId);
             return PartialView("ProjectForm", project);
         }
 
         public async Task SaveProjectAsync([FromForm] Project project)
         {
             GetInformation();
-            await _dataRepository.ChangeProjectAsync(project, DataToChange.UserId);
+            await _dataRepository.EditProjectAsync(project, DataToChange.CurrentUserId);
         }
 
         public async Task<IActionResult> GetFileListAsync([FromForm] int stageId)
@@ -162,16 +182,19 @@ namespace Manect.Controllers
             GetInformation();
 
             var projects = await _dataRepository.GetStagesListDelegatedAsync(DataToChange);
-            ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(DataToChange.UserId);
+            ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(DataToChange.CurrentUserId);
             return View(projects);
         }
 
+        /// <summary>
+        /// Записывает в обьект DataToChange CurrentUserId и ProjectId.
+        /// </summary>
         private void GetInformation()
         {
             if (HttpContext.Request.Cookies.ContainsKey("UserId") |
                             HttpContext.Request.Cookies.ContainsKey("projectId"))
             {
-                DataToChange.UserId = Convert.ToInt32(HttpContext.Request.Cookies["UserId"]);
+                DataToChange.CurrentUserId = Convert.ToInt32(HttpContext.Request.Cookies["UserId"]);
                 DataToChange.ProjectId = Convert.ToInt32(HttpContext.Request.Cookies["projectId"]);
             }
         }

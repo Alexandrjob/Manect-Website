@@ -3,6 +3,10 @@ using Manect.DataBaseLogger;
 using Manect.Identity;
 using Manect.Interfaces;
 using Manect.Services;
+using ManectTelegramBot;
+using ManectTelegramBot.Abstractions;
+using ManectTelegramBot.Models.Commands;
+using ManectTelegramBot.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -45,9 +49,15 @@ namespace Manect
 
             services.AddScoped<IDataRepository, DataRepository>();
             services.AddScoped<ISyncTables, SyncTables>();
-
+            //Add Telegram bot
+            services.AddScoped<ICommandService, CommandService>();
+            services.AddScoped<ServiceTelegramMessage>();
+            services.AddTelegramBotClient(Configuration);
+            
             services.AddAuthorization();
             services.AddControllersWithViews();
+
+            services.AddControllers().AddNewtonsoftJson();
         }
 
         public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory, IServiceScopeFactory serviceScopeFactory)
