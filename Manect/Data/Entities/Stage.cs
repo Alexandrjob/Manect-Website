@@ -1,21 +1,27 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Manect.Data.Entities
 {
     /// <summary>
-    /// Этап.
+    /// Этап проекта.
     /// </summary>
-    public class Stage : BaseEntity
+    public class Stage: BaseEntity
     {
         /// <summary>
         /// Комментарий.
         /// </summary>
         public string Comment { get; set; }
 
-        [ForeignKey("Executor")]
-        public int ExecutorId { get; set; }
+        /// <summary>
+        /// Список изображений этапа.
+        /// </summary>
+        public ICollection<AppFile> Files { get; set; }
 
+        /// <summary>
+        /// Id проекта в котором был создан этап.
+        /// </summary>
         // Внешний ключ
         [ForeignKey("Project")]
         public int ProjectId { get; set; }

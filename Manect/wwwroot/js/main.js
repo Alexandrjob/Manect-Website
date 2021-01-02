@@ -5,10 +5,12 @@ function editStageButton(element, stageId) {
     sendStage(stage, 'GetStage');
     element = '.' + element;
     var left = $(element).offset().left;
+    var height = $(element).css("height");
     var top = $(element).offset().top - $(window).scrollTop();
 
     $('#stage-form-container').offset({ top: top });
     $('#project-step-form').css('marginLeft', left);
+    $('#project-step-form').css('height', height);
     $('#project-form-container').hide();
     $('#stage-form-container').show();
     $('#foreground').show();
@@ -41,7 +43,7 @@ function clickSaveStageButton(stageId) {
 }
 
 function hideStageForm() {
-    $('#stage-form-container').offset({ top: 0 + $(window).scrollTop()});
+    $('#stage-form-container').offset({ top: 0 + $(window).scrollTop() });
     $('#foreground').hide();
     $("#project-step-form").empty();
 }
@@ -81,7 +83,7 @@ function clickSaveProjectButton(projectId) {
 
 function hideProjectForm() {
     $('#foreground').hide();
-    $("#project-form").empty();
+    $("#project-form").remove();
 }
 
 function sendStage(stage, url) {
@@ -149,6 +151,60 @@ function clickCheckBox(element, stageId) {
         $('#' + element).val(2);
     var status = $('#' + element).val();
     sendClickCheck(status, stageId);
+}
+
+function changeInputFiles(stageId) {
+    var input = document.getElementById(stageId);
+    var files = input.files;
+    var formData = new FormData();
+
+    formData.append("stageId", stageId);
+    for (var i = 0; i != files.length; i++) {
+        formData.append("files", files[i]);
+    }
+    sendFiles(formData, 0, "AddFile");
+}
+
+function deleteFile(stageId, fileId) {
+    var formData = new FormData();
+    formData.append("stageId", stageId);
+    formData.append("fileId", fileId);
+    sendFiles(formData, 0, "DeleteFile");
+
+    var fileListId = Array.from($("div[id^=\"flagDelete-" + fileId + "\"][class=\"option-file\"]")).map(item => item.getAttribute('Id'));
+    $("#" + fileListId[0]).remove();
+}
+
+function getFileList(stageId) {
+    var formData = new FormData();
+    formData.append("stageId", stageId);
+    sendFiles(formData, stageId, "GetFileList");
+}
+
+function sendFiles(formData, element, url) {
+    $.ajax({
+        url: '/Project/' + url,
+        type: 'POST',
+        cache: false,
+        processData: false,
+        contentType: false,
+        data: formData,
+        success: function (result) {
+            if (url === "GetFileList")
+                $('#stage-sel-options-' + element).append(result);
+        },
+        error: function () {
+            alert("Error(522) sending message (connection to the server is lost). Reload the page...");
+        }
+    });
+}
+
+function deleteFileList() {
+    var fileListId = Array.from($('div[id^="flagDelete"][class="option-file"]')).map(item => item.getAttribute('Id'));
+
+    for (var i = 0; i < fileListId.length; i++) {
+        $("#" + fileListId[i]).remove();
+    }
 }
 
 !function (t) {
@@ -268,16 +324,7 @@ function clickCheckBox(element, stageId) {
         n(9)
 }
     , function (t, e, n) {
-        (function (t) {
-            //!function (t) {
-            //    "use strict";
-            //    t(".checkbox label").on("click", (function (e) {
-            //        t(this).closest("li").toggleClass("checked")
-            //    }
-            //    ))
-            //}(t)
-        }
-        ).call(this, n(0))
+        (function (t) { }).call(this, n(0))
     }
 
     , function (t, e, n) {
@@ -287,8 +334,8 @@ function clickCheckBox(element, stageId) {
                 t(".select-box").on("click", (function (e) {
                     e.preventDefault(),
                         t(this).siblings(".select-options").is(":visible") ? t(".select-options").hide() : (t(".select-options").hide(),
-                            t(this).siblings(".select-options").css("display", "flex"),
-                            e.stopPropagation())
+                            t(this).siblings(".select-options").css("display", "flex"), e.stopPropagation())
+                    deleteFileList();
                 }
                 )),
                     t(".select-options").on("click", ".option", (function () {
@@ -297,7 +344,7 @@ function clickCheckBox(element, stageId) {
                     }
                     )),
                     t(document).on("click", (function (e) {
-                        t(".option").is(e.target) || t(".select-options").hide()
+                        t(".option").is(e.target) && t(".select-options").hide()
                     }
                     ))
             }(t)

@@ -21,6 +21,12 @@ namespace Manect.Data.Entities
         public Executor Executor { get; set; }
 
         /// <summary>
+        /// Id исполнителя.
+        /// </summary>
+        [ForeignKey("Executor")]
+        public int ExecutorId { get; set; }
+
+        /// <summary>
         /// Дата создания проекта или этапа(в зависимости от класса реализующий данный класс).
         /// </summary>
         public DateTime CreationDate { get; set; }

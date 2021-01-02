@@ -71,11 +71,11 @@
     height: 150px;
     background-color: #F3F3F3;
     box-shadow: 0 0 20px 10px rgba(0,0,0,0.10);
-    opacity: 0; /*Элемент полностью прозрачный (невидимый)*/
-    transition: 0.5s; /*Скорость перехода состояния элемента*/
-    animation: ProjectFormShow 0.5s 1; /* Указываем название анимации, её время и количество повторов*/
-    animation-fill-mode: forwards; /* Чтобы элемент оставался в конечном состоянии анимации */
-    animation-delay: 0.5s; /* Задержка перед началом*/
+    opacity: 0;
+    transition: 0.5s;
+    animation: ProjectFormShow 0.5s 1;
+    animation-fill-mode: forwards;
+    animation-delay: 0.5s;
 }
 
 @keyframes ProjectFormShow {
@@ -92,11 +92,11 @@
 #stage-form-container {
     background-color: #F3F3F3;
     box-shadow: 0 0 20px 10px rgba(0,0,0,0.10);
-    opacity: 0; /*Элемент полностью прозрачный (невидимый)*/
-    transition: 0.5s; /*Скорость перехода состояния элемента*/
-    animation: StageFormShow 0.5s 1; /* Указываем название анимации, её время и количество повторов*/
-    animation-fill-mode: forwards; /* Чтобы элемент оставался в конечном состоянии анимации */
-    animation-delay: 0.5s; /* Задержка перед началом*/
+    opacity: 0;
+    transition: 0.5s;
+    animation: StageFormShow 0.5s 1;
+    animation-fill-mode: forwards;
+    animation-delay: 0.5s;
 }
 
 @keyframes StageFormShow {
@@ -160,7 +160,7 @@ article, aside, img, nav, section {
 
 img {
     position: relative;
-    max-width: 100%;
+    
     height: auto
 }
 
@@ -323,6 +323,10 @@ i {
     font-style: italic
 }
 
+div {
+    transition: all .3s ease-out
+}
+
 a {
     color: #202020;
     transition: all .3s ease-out
@@ -362,7 +366,7 @@ a {
 }
 
 .checkbox__text {
-    padding:initial;
+    padding: initial;
     margin-left: 20px;
     font-weight: 600;
     font-size: 24px;
@@ -573,7 +577,7 @@ main {
             flex: 0 0 auto
         }
 
-#my .container .project-steps:not(:last-child), #my .container h3, #project .container .project-steps:not(:last-child), #project .container h3 {
+#my .container .project-steps:not(:last-child), #my .container h3, #project .container .project-steps:not(:last-child), #project .container h4 {
     margin-bottom: 12px
 }
 
@@ -624,7 +628,14 @@ main {
     align-items: center
 }
 
-.project-steps__edit, .project-steps__date, .project-steps__trash, .project-steps__users, .project-steps__edit, .project-steps__date, .project-steps__trash, .project-steps__users {
+.project-steps__edit, .project-steps__date, .project-steps__trash, .project-steps__users {
+    height: 40px;
+    min-height: 40px;
+    display: flex;
+    align-items: center
+}
+
+#project-steps__edit {
     height: 40px;
     min-height: 40px;
     display: flex;
@@ -760,27 +771,72 @@ main {
         align-items: center
     }
 
-        .select-options .option:hover {
+    .select-options .option-file {
+        width: 100%;
+        height: 32px;
+        background: #fff;
+        display: inline-flex;
+        align-items: center
+    }
+
+        .select-options .option-file img {
+            width: 17px;
+            height: 17px;
+            margin-right: 10px
+        }
+
+    .select-options .file-info {
+        width: 245px;
+        font-size: 14px;
+        line-height: 17px;
+        white-space: nowrap;
+        cursor: default;
+        padding: 8px 16px;
+        display: inline-flex;
+        align-items: center
+    }
+
+    .select-options .file-name {
+        width: 180px;
+        text-overflow: ellipsis;
+        overflow: hidden
+    }
+
+    .select-options .file-act {
+        height: 100%;
+        padding-left: 5px;
+        cursor: pointer;
+        background: #fff;
+        margin-left: auto;
+        display: flex;
+        align-items: center
+    }
+
+        .select-options .file-act:hover {
             background: #e5e5e5
         }
 
-        .select-options .option span.icon {
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            margin-right: 10px;
-            background: #bdbdbd;
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            flex: 0 0 auto
-        }
+    .select-options .option:hover {
+        background: #e5e5e5
+    }
 
-        .select-options .option img {
-            width: 12px;
-            height: 12px;
-            margin-right: 10px
-        }
+    .select-options .option span.icon {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        margin-right: 10px;
+        background: #bdbdbd;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        flex: 0 0 auto
+    }
+
+    .select-options .option img {
+        width: 12px;
+        height: 12px;
+        margin-right: 10px
+    }
 
 .menu {
     position: fixed;

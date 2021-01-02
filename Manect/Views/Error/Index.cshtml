@@ -1,4 +1,5 @@
-﻿@{
+﻿@model string
+@{
     Layout = null;
 }
 
@@ -6,15 +7,15 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Error</title>
+    <title>Manect-ОШИБОЧКА</title>
+    <link rel="icon" type="image/png" href="~/image/icon/favicon.ico" />
     <link rel="stylesheet" href="~/css/Error.css">
 </head>
-
 <body translate="no">
     <div class="error-page">
         <div>
-            <h1 data-h1="ERROR">ERROR</h1>
-            <p data-p="NOT FOUND">NOT FOUND</p>
+            <h1 data-h1="ОШИБОЧКА">ОШИБОЧКА</h1>
+            <p>@Model <a asp-controller="Home" asp-action="Index" title="НАЖМИ!">нажми сюда чтобы вернуться</a></p>
         </div>
     </div>
 </body>

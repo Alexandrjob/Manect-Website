@@ -5,17 +5,15 @@ namespace Manect.DataBaseLogger
 {
     public class DataBaseLoggerProvider: ILoggerProvider
     {
-        private string path;
         private readonly IServiceScopeFactory _serviceScopeFactory;
 
-        public DataBaseLoggerProvider(string _path, IServiceScopeFactory serviceScopeFactory)
+        public DataBaseLoggerProvider(IServiceScopeFactory serviceScopeFactory)
         {
-            path = _path;
             _serviceScopeFactory = serviceScopeFactory;
         }
         public ILogger CreateLogger(string categoryName)
         {
-            return new DbLogger(path, _serviceScopeFactory);
+            return new DbLogger(_serviceScopeFactory);
         }
 
         public void Dispose()

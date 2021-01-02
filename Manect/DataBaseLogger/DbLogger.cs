@@ -3,20 +3,15 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 
 namespace Manect.DataBaseLogger
 {
-    public class DbLogger : ILogger
+    public class DbLogger: ILogger
     {
-        /// <summary>
-        /// Путь к файлу.
-        /// </summary>
-        private string filePath;
-        private static object _lock = new object();
         private readonly IServiceScopeFactory _serviceScopeFactory;
+
         private ProjectDbContext DataContext
         {
             get
@@ -26,9 +21,8 @@ namespace Manect.DataBaseLogger
             }
         }
 
-        public DbLogger(string path, IServiceScopeFactory serviceScopeFactory)
+        public DbLogger(IServiceScopeFactory serviceScopeFactory)
         {
-            filePath = path;
             _serviceScopeFactory = serviceScopeFactory;
         }
 
@@ -70,11 +64,6 @@ namespace Manect.DataBaseLogger
                         var dataContext = DataContext;
                         await dataContext.AddAsync(logItem);
                         await dataContext.SaveChangesAsync();
-
-                        lock (_lock)
-                        {
-                            File.AppendAllText(filePath, formatter(state, exception) + Environment.NewLine);
-                        }
                     }
                 }
             }

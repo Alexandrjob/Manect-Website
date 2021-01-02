@@ -30,6 +30,11 @@ namespace Manect.Data.Entities
         public string Email { get; set; }
 
         /// <summary>
+        /// Id чата в Телеграмм.
+        /// </summary>
+        public long TelegramId { get; set; }
+
+        /// <summary>
         /// Список проектов исполнителя.
         /// </summary>
         public ICollection<Project> Projects { get; set; }
@@ -38,10 +43,5 @@ namespace Manect.Data.Entities
         /// Список этапов исполнителя.
         /// </summary>
         public ICollection<Stage> Stages { get; set; }
-
-        public Executor()
-        {
-
-        }
     }
 }

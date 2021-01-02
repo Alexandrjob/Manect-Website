@@ -1,38 +1,9 @@
 
-
-
-
 /*//////////////////////////////////////////////////////////////////
 [ FONT ]*/
-
-@font-face {
-	font-family: Poppins-Regular;
-	src: url('/font/poppins/Poppins-Regular.ttf');
-}
-
-@font-face {
-	font-family: Poppins-Medium;
-	src: url('/font/poppins/Poppins-Medium.ttf');
-}
-
-@font-face {
-	font-family: Poppins-Bold;
-	src: url('/font/poppins/Poppins-Bold.ttf');
-}
-
-@font-face {
-	font-family: Poppins-SemiBold;
-	src: url('/font/poppins/Poppins-SemiBold.ttf');
-}
-
 @font-face {
 	font-family: Montserrat-Bold;
 	src: url('/font/montserrat/Montserrat-Bold.ttf');
-}
-
-@font-face {
-	font-family: Montserrat-SemiBold;
-	src: url('/font/montserrat/Montserrat-SemiBold.ttf');
 }
 
 @font-face {
@@ -56,7 +27,7 @@ body, html {
 }
 
 /*---------------------------------------------*/
-a {
+/*a {
 	font-family: Poppins-Regular;
 	font-size: 14px;
 	line-height: 1.7;
@@ -76,73 +47,18 @@ a {
 	a:hover {
 		text-decoration: none;
 		color: #000000;
-	}
+	}*/
 
 /*---------------------------------------------*/
 h1, h2, h3, h4, h5, h6 {
 	margin: 0px;
 }
 
-p {
-	font-family: Poppins-Regular;
-	font-size: 14px;
-	line-height: 1.7;
-	color: #666666;
-	margin: 0px;
-}
-
-ul, li {
-	margin: 0px;
-	list-style-type: none;
-}
-
-
 /*---------------------------------------------*/
 input {
 	outline: none;
 	border: none;
 }
-
-textarea {
-	outline: none;
-	border: none;
-}
-
-	textarea:focus, input:focus {
-		border-color: transparent !important;
-	}
-
-		input:focus::-webkit-input-placeholder {
-			color: transparent;
-		}
-
-		input:focus:-moz-placeholder {
-			color: transparent;
-		}
-
-		input:focus::-moz-placeholder {
-			color: transparent;
-		}
-
-		input:focus:-ms-input-placeholder {
-			color: transparent;
-		}
-
-		textarea:focus::-webkit-input-placeholder {
-			color: transparent;
-		}
-
-		textarea:focus:-moz-placeholder {
-			color: transparent;
-		}
-
-		textarea:focus::-moz-placeholder {
-			color: transparent;
-		}
-
-		textarea:focus:-ms-input-placeholder {
-			color: transparent;
-		}
 
 input::-webkit-input-placeholder {
 	color: #999999;
@@ -159,23 +75,6 @@ input::-moz-placeholder {
 input:-ms-input-placeholder {
 	color: #999999;
 }
-
-textarea::-webkit-input-placeholder {
-	color: #999999;
-}
-
-textarea:-moz-placeholder {
-	color: #999999;
-}
-
-textarea::-moz-placeholder {
-	color: #999999;
-}
-
-textarea:-ms-input-placeholder {
-	color: #999999;
-}
-
 
 label {
 	display: block;
@@ -293,7 +192,7 @@ iframe {
 
 /*==================================================================
 [ login more ]*/
-.login100-more {
+#login100-more {
 	width: calc(100% - 560px);
 	background-repeat: no-repeat;
 	background-size: cover;
@@ -302,7 +201,7 @@ iframe {
 	z-index: 1;
 }
 
-	.login100-more::before {
+	#login100-more::before {
 		content: "";
 		display: block;
 		position: absolute;
@@ -563,7 +462,7 @@ input.input100 {
 		padding-right: 30px;
 	}
 
-	.login100-more {
+	#login100-more {
 		width: 50%;
 	}
 }
@@ -573,7 +472,7 @@ input.input100 {
 		width: 100%;
 	}
 
-	.login100-more {
+	#login100-more {
 		display: none;
 	}
 }
