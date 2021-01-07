@@ -1,4 +1,5 @@
-﻿using Manect.Data.Entities;
+﻿using Manect.Controllers.Models;
+using Manect.Data.Entities;
 using Manect.Interfaces;
 using ManectTelegramBot.Models;
 using ManectTelegramBot.Service;
@@ -19,10 +20,11 @@ namespace Manect.Controllers
 
         public DataToChange DataToChange { get; set; }
 
-        public ProjectController(IDataRepository dataRepository, ServiceTelegramMessage telegramMessage)
+        public ProjectController(IDataRepository dataRepository/*, ServiceTelegramMessage telegramMessage*/)
         {
+
             _dataRepository = dataRepository;
-            _telegramMessage = telegramMessage;
+            //_telegramMessage = telegramMessage;
             DataToChange = new DataToChange();
         }
 
@@ -30,7 +32,7 @@ namespace Manect.Controllers
         {
             GetInformation();
 
-            var project = await _dataRepository.GetAllProjectDataAsync(DataToChange.ProjectId);
+            var project = await _dataRepository.GetProjectAllDataAsync(DataToChange.ProjectId);
             if (project == null)
             {
                 return Redirect("/Error/Index");
@@ -104,9 +106,9 @@ namespace Manect.Controllers
         {
             GetInformation();
 
-            var project = await _dataRepository.GetAllProjectDataAsync(DataToChange.ProjectId, stage.Id);
+            stage = await _dataRepository.GetStageAsync(stage.Id);
             ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(DataToChange.CurrentUserId);
-            return PartialView("StageForm", project);
+            return PartialView("StageForm", stage);
         }
 
         public async Task SaveStageAsync([FromForm] Stage stage)
@@ -120,7 +122,7 @@ namespace Manect.Controllers
             GetInformation();
 
             //TODO: Оптимизировать запросы.
-            var project = await _dataRepository.GetAllProjectDataAsync(DataToChange.ProjectId);
+            var project = await _dataRepository.GetProjectAllDataAsync(DataToChange.ProjectId);
             ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(DataToChange.CurrentUserId);
             return PartialView("ProjectForm", project);
         }
@@ -184,6 +186,13 @@ namespace Manect.Controllers
             var projects = await _dataRepository.GetStagesListDelegatedAsync(DataToChange);
             ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(DataToChange.CurrentUserId);
             return View(projects);
+        }
+
+        public async Task<IActionResult> History()
+        {
+            GetInformation();
+            List<HistoryItem> history = await _dataRepository.GetHistoryAsync();
+            return View(history);
         }
 
         /// <summary>

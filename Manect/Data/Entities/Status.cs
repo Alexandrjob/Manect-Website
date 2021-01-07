@@ -8,9 +8,16 @@
         Created,
         Deleted,
         Modified,
-        NotAdded,
-        NotDeleted,
         Completed,
         Received
+    }
+
+    public enum StatusRus
+    {
+        Создал,
+        Удалил,
+        Изменил,
+        Выполнил,
+        Скачал
     }
 }

@@ -1,4 +1,5 @@
-﻿using Manect.Identity;
+﻿using Manect.Controllers.Models;
+using Manect.Identity;
 using Manect.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

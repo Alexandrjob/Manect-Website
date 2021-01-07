@@ -51,8 +51,8 @@ namespace Manect
             services.AddScoped<ISyncTables, SyncTables>();
             //Add Telegram bot
             services.AddScoped<ICommandService, CommandService>();
-            services.AddScoped<ServiceTelegramMessage>();
-            services.AddTelegramBotClient(Configuration);
+            //services.AddScoped<ServiceTelegramMessage>();
+            //services.AddTelegramBotClient(Configuration);
             
             services.AddAuthorization();
             services.AddControllersWithViews();

@@ -1,4 +1,5 @@
-﻿using Manect.Data.Entities;
+﻿using Manect.Controllers.Models;
+using Manect.Data.Entities;
 using ManectTelegramBot.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -14,7 +15,8 @@ namespace Manect.Interfaces
         Task DeleteStageAsync(int userId, int projectId, int stageId);
         Task DeleteProjectAsync(int userId, int projectId);
         Task SetFlagValueAsync(int userId, int projectId, int stageId, Status status);
-        Task<Project> GetAllProjectDataAsync(int projectId, int stageId = default);
+        Task<Project> GetProjectAllDataAsync(int projectId);
+        Task<Stage> GetStageAsync(int stageId);
         Task<List<Project>> GetProjectOrDefaultToListAsync(int userId);
         Task<List<Executor>> GetExecutorsToListExceptAsync(int executorId);
         Task EditExecutorAsync(DataToChange dataToChange);
@@ -31,5 +33,6 @@ namespace Manect.Interfaces
         Task AddTelegramIdAsync(DataToChange dataToChange);
         Task<MessageObject> GetInformationForMessageAsync(DataToChange dataToChange);
         Task<Executor> GetFullNameAsync(DataToChange dataToChange);
+        Task<List<HistoryItem>> GetHistoryAsync();
     }
 }

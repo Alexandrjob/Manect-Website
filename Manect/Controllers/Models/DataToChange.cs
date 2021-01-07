@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Manect.Data.Entities;
+using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 
-namespace Manect.Data.Entities
+namespace Manect.Controllers.Models
 {
     public class DataToChange
     {

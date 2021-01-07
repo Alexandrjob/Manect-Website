@@ -1,0 +1,44 @@
+﻿@using Manect.Data.Entities;
+@model IEnumerable<Project>
+<head>
+    <title>Manect-История</title>
+</head>
+<body class="history-page">
+    <div id="app">
+        <header>
+            <div class="container">
+                <div class="header-menu"><a class="open-menu" href="#menu" title="Открыть меню"><img src="/image/icon/menu_bar.svg" alt="icon"></a></div>
+                <div class="header">
+                    <div class="header-title">История</div>
+                </div>
+            </div>
+        </header>
+        <main>
+            <section id="history">
+                <div class="container">
+                    <div class="content">
+                        <ul class="history-list">
+                            <li>
+                                <div class="history-list__image">Л</div>
+                                <div class="history-list__info">
+                                    <div class="history-list__title">Исполнитель: Лиза Проект: Шкаф</div>
+                                    <div class="history-list__changes">Изменения: выполнила 5 этап(Создание конечного макета).</div>
+                                    <div class="history-list__date">10 сент в 12:35</div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="history-list__image"><img src="image/user/1.jpg" alt="image"></div>
+                                <div class="history-list__info">
+                                    <div class="history-list__title">Лиза выполнила 5 этап(Создание конечного макета) в проекте Шкаф</div>
+                                    <div class="history-list__date">10 сент в 12:35</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="~/js/vendors/vendors.js"></script>
+    <script src="~/js/main.js"></script>
+</body>

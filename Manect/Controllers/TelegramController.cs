@@ -1,4 +1,4 @@
-﻿using Manect.Data.Entities;
+﻿using Manect.Controllers.Models;
 using Manect.Identity;
 using Manect.Interfaces;
 using ManectTelegramBot.Abstractions;
