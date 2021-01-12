@@ -121,8 +121,7 @@ namespace Manect.Controllers
         {
             GetInformation();
 
-            //TODO: Оптимизировать запросы.
-            var project = await _dataRepository.GetProjectAllDataAsync(DataToChange.ProjectId);
+            var project = await _dataRepository.GetProjectInfoAsync(DataToChange.ProjectId);
             ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(DataToChange.CurrentUserId);
             return PartialView("ProjectForm", project);
         }

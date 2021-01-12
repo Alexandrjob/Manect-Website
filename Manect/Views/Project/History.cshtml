@@ -1,5 +1,5 @@
-﻿@using Manect.Data.Entities;
-@model IEnumerable<Project>
+﻿@using Manect.Controllers.Models;
+@model IEnumerable<HistoryItem>
 <head>
     <title>Manect-История</title>
 </head>
@@ -27,9 +27,10 @@
                                 </div>
                             </li>
                             <li>
-                                <div class="history-list__image"><img src="image/user/1.jpg" alt="image"></div>
+                                @*<div class="history-list__image"><img src="image/user/1.jpg" alt="image"></div>*@
+                                <div class="history-list__image">Л</div>
                                 <div class="history-list__info">
-                                    <div class="history-list__title">Лиза выполнила 5 этап(Создание конечного макета) в проекте Шкаф</div>
+                                    <div class="history-list__title">Лиза выполнила 5 этап(Создание конечного макета) в проекте Шкаф 6</div>
                                     <div class="history-list__date">10 сент в 12:35</div>
                                 </div>
                             </li>

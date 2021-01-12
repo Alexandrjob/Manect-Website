@@ -11,6 +11,7 @@ using System.IO;
 using Microsoft.AspNetCore.Http;
 using ManectTelegramBot.Models;
 using Manect.Controllers.Models;
+using Manect.DataBaseLogger;
 
 namespace Manect.Data
 {
@@ -92,13 +93,6 @@ namespace Manect.Data
 
             var dataContext = DataContext;
             dataContext.Entry(project).State = EntityState.Added;
-
-            foreach (Stage stage in project.Stages)
-            {
-                dataContext.Entry(stage).State = EntityState.Added;
-                _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} в Проекте {ProjectId} Этап: {StageId}", DateTime.Now, user.Id, Status.Created, project.Id, stage.Id);
-            }
-
             await dataContext.SaveChangesAsync();
 
             _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} Проект {ProjectId}", DateTime.Now, user.Id, Status.Created, project.Id);
@@ -142,13 +136,26 @@ namespace Manect.Data
             await dataContext.SaveChangesAsync();
         }
 
-        //TODO: Оптимизировать много лишних данных.
         public async Task<List<Project>> GetProjectOrDefaultToListAsync(int userId)
         {
             var projects = await DataContext.Projects
                 .AsNoTracking()
                 .Where(p => p.Executor.Id == userId && p.Status != Status.Deleted)
+                .Select(p => new
+                {
+                    p.Id,
+                    p.Name,
+                    p.CreationDate
+                })
+                .AsQueryable()
+                .Select(pr => new Project
+                {
+                    Id = pr.Id,
+                    Name = pr.Name,
+                    CreationDate = pr.CreationDate
+                })
                 .ToListAsync();
+
             if (projects != null)
             {
                 return projects;
@@ -159,37 +166,83 @@ namespace Manect.Data
 
         public async Task<Project> GetProjectAllDataAsync(int projectId)
         {
-            var dataContext = DataContext;
-            //TODO:В будущем оптимизировать.
-            var project = new Project();
-
-            project = await dataContext.Projects
+            var project = await DataContext.Projects
             .AsNoTracking()
-            .Where(p => p.Id == projectId)
-            //.Include(p => p.Stages.Where(s => s.Status != Status.Deleted)Тут доисать явную загрузку исполнителя)
-            .Include(p => p.Executor)
-            .FirstOrDefaultAsync();
+            .Select(p => new
+            {
+                p.Id,
+                p.Name,
+                p.ExecutorId,
+                Stages = p.Stages.Select(s => new
+                {
+                    s.Id,
+                    s.Name,
+                    s.Status,
+                    s.ExpirationDate,
+                    s.CreationDate,
+                    s.Comment,
+                    s.ExecutorId,
+                    Executor = new
+                    {
+                        s.Executor.Id,
+                        s.Executor.FirstName,
+                        s.Executor.LastName
+                    }
+                }).ToList(),
+            })
+            .AsQueryable()
+            .Select(project => new Project
+            {
+                Id = project.Id,
+                Name = project.Name,
+                ExecutorId = project.ExecutorId,
+                Stages = project.Stages.Select(stage => new Stage
+                {
+                    Id = stage.Id,
+                    Name = stage.Name,
+                    Status = stage.Status,
+                    ExpirationDate = stage.ExpirationDate,
+                    CreationDate = stage.CreationDate,
+                    Comment = stage.Comment,
+                    ExecutorId = stage.ExecutorId,
+                    Executor = new Executor()
+                    {
+                        Id = stage.Executor.Id,
+                        FirstName = stage.Executor.FirstName,
+                        LastName = stage.Executor.LastName
+                    }
 
-            List<Stage> stages = new List<Stage>();
+                }).ToList()
+            }).FirstOrDefaultAsync(p => p.Id == projectId);
 
-            stages = await dataContext.Stages
-            .AsNoTracking()
-            .Where(s => s.ProjectId == project.Id && s.Status != Status.Deleted)
-            .Include(s => s.Executor)
-            .OrderBy(s => s.CreationDate)
-            .ToListAsync();
-
-            var allStages = await dataContext.Stages
-            .AsNoTracking()
-            .Where(s => s.ProjectId == project.Id )
-            .Include(s => s.Executor)
-            .OrderBy(s => s.CreationDate)
-            .ToListAsync();
-
-            project.Stages = stages;
             return project;
         }
 
+        public async Task<Project> GetProjectInfoAsync(int projectId)
+        {
+            var project = await DataContext.Projects
+               .AsNoTracking()
+               .Select(p => new
+               {
+                   p.Id,
+                   p.Name,
+                   p.CreationDate,
+                   p.ExpirationDate,
+                   p.Price
+               })
+               .AsQueryable()
+               .Select(project => new Project
+               {
+                   Id = project.Id,
+                   Name = project.Name,
+                   CreationDate = project.CreationDate,
+                   ExpirationDate = project.ExpirationDate,
+                   Price = project.Price
+
+               }).FirstOrDefaultAsync(p => p.Id == projectId);
+
+            return project;
+        }
         //TODO: Оптимизировать.
         public async Task<Stage> GetStageAsync(int stageId)
         {
@@ -263,25 +316,9 @@ namespace Manect.Data
 
         public async Task EditStageAsync(Stage stage)
         {
-            var dataContext = DataContext;
-            //TODO: Почему то ругается на отсутствие полей, в проекте такого нет
-            var oldStage = await dataContext.Stages
-                .AsNoTracking()
-                .Where(s => s.Id == stage.Id)
-                .Select(u => new
-                {
-                    u.ProjectId
-                })
-                .AsQueryable()
-                .Select(s => new Stage
-                {
-                    ProjectId = s.ProjectId
-                })
-                .FirstOrDefaultAsync();
-
-            stage.ProjectId = oldStage.ProjectId;
-
             _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} в Проекте {ProjectId} Этап: {StageId}", DateTime.Now, stage.ExecutorId, Status.Modified, stage.ProjectId, stage.Id);
+
+            var dataContext = DataContext;
 
             dataContext.Stages.Attach(stage);
             dataContext.Entry(stage).State = EntityState.Modified;
@@ -305,12 +342,12 @@ namespace Manect.Data
             var dataContext = DataContext;
             foreach (var file in dataToChange.Files)
             {
-                if (IsNotExtensionValid(file)) return;
+                if (IsNotExtensionValid(file)) break;
 
                 using var memoryStream = new MemoryStream();
                 await file.CopyToAsync(memoryStream);
 
-                if (memoryStream.Length > 5242880) return;
+                if (memoryStream.Length > 5242880) break;
 
                 var appFile = new AppFile()
                 {
@@ -320,7 +357,7 @@ namespace Manect.Data
                     Content = memoryStream.ToArray()
                 };
                 dataContext.Files.Add(appFile);
-                //TODO: Надеюсь, что будет незаметно.;
+                //TODO: Надеюсь, что будет незаметно.
                 await dataContext.SaveChangesAsync();
                 _logger.LogInformation("Время: {TimeAction}. Пользователь(Id:{ExecutorId}) , {Status} файл(Id:{FileId}) в Проекте (Id:{ProjectId})", DateTime.Now, dataToChange.CurrentUserId, Status.Created, appFile.Id, dataToChange.ProjectId);
             }
@@ -487,7 +524,6 @@ namespace Manect.Data
         public async Task AddTelegramIdAsync(DataToChange dataToChange)
         {
             var dataContext = DataContext;
-            //TODO:Нормально нет.
             var currentExecutor = await dataContext.Executors.FirstOrDefaultAsync(executor => executor.Id == dataToChange.CurrentUserId);
 
             currentExecutor.TelegramId = dataToChange.TelegramId;
@@ -584,11 +620,12 @@ namespace Manect.Data
         public async Task<List<HistoryItem>> GetHistoryAsync()
         {
             var dataContext = DataContext;
-            List<HistoryItem> history = new List<HistoryItem>();
+            List<LogItem> history = await dataContext.LogUserActivity.ToListAsync();
+            var b =history.TakeLast(30);
 
 
-
-            return history;
+            var a = new List<HistoryItem>();
+            return a;
         }
     }
 }

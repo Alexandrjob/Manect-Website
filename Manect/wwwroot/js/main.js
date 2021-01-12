@@ -16,7 +16,7 @@ function editStageButton(element, stageId) {
     $('#foreground').show();
 }
 
-function clickSaveStageButton(stageId) {
+function clickSaveStageButton(stageId, projectId) {
 
     var stageName = $('#step-name').text();
     var stageComment = $('#step-comment').val();
@@ -31,6 +31,7 @@ function clickSaveStageButton(stageId) {
 
     var stage = {
         Id: Number(stageId),
+        ProjectId: Number(projectId),
         Name: stageName,
         Comment: stageComment,
         ExpirationDate: stageExpirationDate,
@@ -83,7 +84,7 @@ function clickSaveProjectButton(projectId) {
 
 function hideProjectForm() {
     $('#foreground').hide();
-    $("#project-form").remove();
+    $("#project-form").empty();
 }
 
 function sendStage(stage, url) {

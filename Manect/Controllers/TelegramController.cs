@@ -14,7 +14,7 @@ namespace Manect.Controllers
 {
     [ApiController]
     [Route("api/telegram")]
-    public class TelegramController : Controller
+    public class TelegramController: Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -57,27 +57,29 @@ namespace Manect.Controllers
             if (message.Type != MessageType.Text)
             {
                 var chatId = message.Chat.Id;
-                await _telegramBotClient.SendTextMessageAsync(chatId, "Мой создатель не давай мне инструкций как отвечать на это(", parseMode: ParseMode.Markdown);
+                await _telegramBotClient.SendTextMessageAsync(chatId, "Мой создатель не давай мне инструкций как отвечать на это.", parseMode: ParseMode.Markdown);
                 return Ok();
             }
 
             string loginCommandName = @"/login";
             var isContains = message.Text.Contains(loginCommandName);
 
-            if(isContains)
+            if (isContains)
             {
                 var chatId = message.Chat.Id;
                 //Предполагается, что вводимые пользователем данные будут содержать 3 слова, одно - команда, два других email и password.
                 string[] textArray = message.Text.Split(' ');
-                if (textArray.Length > 3)
+                if (textArray.Length == 1)
                 {
-                    await _telegramBotClient.SendTextMessageAsync(chatId, "Я насчитал больше 3-х слов, попробуй написать это: \"/login email password\".\nГде email твой email а password твой пароль", parseMode: ParseMode.Markdown);
+                    await _telegramBotClient.SendTextMessageAsync(chatId, "Для получения уведомлений нужно пройти аутентификацию.\n" +
+                                                         "Напиши: \"/login email password\".\nГде email твой email а password твой пароль.\n" +
+                                                         "Важно! Соблюдай формат текста в примере - после каждого слова ПРОБЕЛ", parseMode: ParseMode.Markdown);
                     return Ok();
-                }
 
-                if (textArray.Length < 3)
+                }
+                if (textArray.Length != 3)
                 {
-                    await _telegramBotClient.SendTextMessageAsync(chatId, "Я насчитал меньше 3-х слов, попробуй написать это: \"/login email password\".\nГде email твой email а password твой пароль", parseMode: ParseMode.Markdown);
+                    await _telegramBotClient.SendTextMessageAsync(chatId, "Я не понимаю формат этого сообщения, может мой создатель допустил ошибку?(Нет)\nОтправь мне /login, чтобы я тебе помог.", parseMode: ParseMode.Markdown);
                     return Ok();
                 }
 
@@ -108,7 +110,7 @@ namespace Manect.Controllers
                         await _telegramBotClient.SendTextMessageAsync(chatId, text, parseMode: ParseMode.Markdown);
                         return Ok();
                     }
-                    text = string.Format("{0} {1}, я уже вас знаю) второй раз можно не здороваться", executorName.FirstName, executorName.LastName);
+                    text = string.Format("{0} {1}, я уже вас знаю) второй раз можно не здороваться.", executorName.FirstName, executorName.LastName);
                     await _telegramBotClient.SendTextMessageAsync(chatId, text, parseMode: ParseMode.Markdown);
                     return Ok();
                 }
@@ -125,7 +127,7 @@ namespace Manect.Controllers
                 }
             }
 
-            await _telegramBotClient.SendTextMessageAsync(update.Message.Chat.Id, "Мой создатель не давай мне инструкций как отвечать на это(");
+            await _telegramBotClient.SendTextMessageAsync(update.Message.Chat.Id, "Мой создатель не давай мне инструкций как отвечать на это.");
             return Ok();
         }
     }

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Manect.Controllers.Models
-{
+namespace Manect.Controllers
+{ 
     public class LoginViewModel
     {
         [Required]

@@ -16,6 +16,7 @@ namespace Manect.Interfaces
         Task DeleteProjectAsync(int userId, int projectId);
         Task SetFlagValueAsync(int userId, int projectId, int stageId, Status status);
         Task<Project> GetProjectAllDataAsync(int projectId);
+        Task<Project> GetProjectInfoAsync(int projectId);
         Task<Stage> GetStageAsync(int stageId);
         Task<List<Project>> GetProjectOrDefaultToListAsync(int userId);
         Task<List<Executor>> GetExecutorsToListExceptAsync(int executorId);
@@ -33,6 +34,6 @@ namespace Manect.Interfaces
         Task AddTelegramIdAsync(DataToChange dataToChange);
         Task<MessageObject> GetInformationForMessageAsync(DataToChange dataToChange);
         Task<Executor> GetFullNameAsync(DataToChange dataToChange);
-        Task<List<HistoryItem>> GetHistoryAsync();
+        Task<List<HistoryItem>> GetHistoryAsync();  
     }
 }

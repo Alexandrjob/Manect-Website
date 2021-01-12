@@ -80,7 +80,6 @@ namespace Manect.Controllers
             var currentUserId = await _dataRepository.FindUserIdByNameOrDefaultAsync(name);
 
             await _dataRepository.AddProjectDefaultAsync(currentUserId);
-            //TODO: нужно чтобы страница просто обновлялась.
             return Redirect("/Home/Index");
         }
 

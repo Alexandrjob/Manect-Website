@@ -83,7 +83,7 @@
                                         <div class="project-steps__date">Дата:<span>@stage.CreationDate.ToString("dd.MM.yyyy")</span></div>
                                         <div class="project-steps__users">
                                             <div class="select">
-                                                @if (Model.Executor.Id != stage.ExecutorId)
+                                                @if (Model.ExecutorId != stage.ExecutorId)
                                                 {
                                                     <a class="select-box" href="#" title="Изменить исполнителя"><img src="/image/icon/add_user.svg" alt="icon"><span>@stage.Executor.FirstName @stage.Executor.LastName</span></a>
                                                 }
@@ -93,7 +93,7 @@
                                                 }
                                                 <div class="select-options">
                                                     <form asp-controller="Project" asp-action="ChengeExecutor">
-                                                        <input hidden asp-for=@Model.Executor.Id name="executorId" />
+                                                        <input hidden asp-for=@Model.ExecutorId name="executorId" />
                                                         <input hidden asp-for=@stage.Id name="stageId" />
                                                         <button style="width: 100%;"><div class="option" data-id="@count1"><span class="name">Без доп. исполнителя</span></div></button>
                                                     </form>
