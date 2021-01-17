@@ -1,4 +1,5 @@
 ﻿using Manect.Data.Entities;
+using System;
 
 namespace Manect.Controllers.Models
 {
@@ -6,10 +7,14 @@ namespace Manect.Controllers.Models
     {
         public string ExecutorFirstName { get; set; }
         public string ExecutorLastName { get; set; }
-        public StatusRus StatusRus  { get; set; }
-        public string StageName { get; set; }
-        public int StageId { get; set; }
+        public int ExecutorId { get; set; }
         public string ProjectName { get; set; }
         public int ProjectId { get; set; }
+        public string StageName { get; set; }
+        public int StageId { get; set; }
+        public int FileId { get; set; }
+        public DateTime TimeAction { get; set; }
+        public Status Status { get; set; }
+        public StatusRus StatusRus  { get; set; }
     }
 }

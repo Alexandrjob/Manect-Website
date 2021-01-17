@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using ManectTelegramBot.Models;
 using Manect.Controllers.Models;
 using Manect.DataBaseLogger;
+using System.Diagnostics;
 
 namespace Manect.Data
 {
@@ -93,6 +94,11 @@ namespace Manect.Data
 
             var dataContext = DataContext;
             dataContext.Entry(project).State = EntityState.Added;
+
+            foreach (Stage stage in project.Stages)
+            {
+                dataContext.Entry(stage).State = EntityState.Added;
+            }
             await dataContext.SaveChangesAsync();
 
             _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} Проект {ProjectId}", DateTime.Now, user.Id, Status.Created, project.Id);
@@ -111,13 +117,9 @@ namespace Manect.Data
 
         public async Task DeleteProjectAsync(int userId, int projectId)
         {
-            var project = new Project
-            {
-                Id = projectId
-            };
             var dataContext = DataContext;
-            var stage = await dataContext.Projects.FirstOrDefaultAsync(p => p.Id == projectId);
-
+            var project = await dataContext.Projects.FirstOrDefaultAsync(p => p.Id == projectId);
+            project.Status = Status.Deleted;
             _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} Проект: {ProjectId}", DateTime.Now, userId, Status.Deleted, project.Id);
 
             dataContext.Entry(project).State = EntityState.Modified;
@@ -173,7 +175,7 @@ namespace Manect.Data
                 p.Id,
                 p.Name,
                 p.ExecutorId,
-                Stages = p.Stages.Select(s => new
+                Stages = p.Stages.Where(s => s.Status != Status.Deleted).Select(s => new
                 {
                     s.Id,
                     s.Name,
@@ -325,12 +327,13 @@ namespace Manect.Data
             await dataContext.SaveChangesAsync();
         }
 
-        public async Task EditProjectAsync(Project project, int userId)
+        public async Task EditProjectAsync(Project project, int CurrentUserId)
         {
             var dataContext = DataContext;
-            //TODO: ПЛОХО!!
-            project.ExecutorId = userId;
-            _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} Проект {ProjectId}", DateTime.Now, userId, Status.Modified, project.Id);
+
+             project.ExecutorId = await dataContext.Projects.Where(p=>p.Id == project.Id).Select(p => p.ExecutorId).FirstOrDefaultAsync();
+
+            _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} Проект {ProjectId}", DateTime.Now, CurrentUserId, Status.Modified, project.Id);
 
             dataContext.Projects.Attach(project);
             dataContext.Entry(project).State = EntityState.Modified;
@@ -342,6 +345,7 @@ namespace Manect.Data
             var dataContext = DataContext;
             foreach (var file in dataToChange.Files)
             {
+                //TODO: Переместить валидацию файлов в контроллер.
                 if (IsNotExtensionValid(file)) break;
 
                 using var memoryStream = new MemoryStream();
@@ -356,11 +360,11 @@ namespace Manect.Data
                     Type = file.ContentType,
                     Content = memoryStream.ToArray()
                 };
-                dataContext.Files.Add(appFile);
-                //TODO: Надеюсь, что будет незаметно.
-                await dataContext.SaveChangesAsync();
-                _logger.LogInformation("Время: {TimeAction}. Пользователь(Id:{ExecutorId}) , {Status} файл(Id:{FileId}) в Проекте (Id:{ProjectId})", DateTime.Now, dataToChange.CurrentUserId, Status.Created, appFile.Id, dataToChange.ProjectId);
+               
             }
+            await dataContext.SaveChangesAsync();
+            _logger.LogInformation("Время: {TimeAction}. Пользователь(Id:{ExecutorId}), {Status} файл(Id:{FileId}) в этапе(Id:{StagaId}) в Проекте(Id:{ProjectId})",
+                                           DateTime.Now, dataToChange.CurrentUserId, Status.Created, -1, dataToChange.StageId, dataToChange.ProjectId);
         }
 
         private bool IsNotExtensionValid(IFormFile file)
@@ -515,7 +519,7 @@ namespace Manect.Data
 
         public async Task<long> GetTelegramIdAsync(DataToChange dataToChange)
         {
-            var telegramId = await DataContext.Executors.Where(executor => executor.Id == dataToChange.CurrentUserId)
+            var telegramId = await DataContext.Executors.Where(executor => executor.Id == dataToChange.ExecutorId)
                                                         .Select(executor => executor.TelegramId)
                                                         .FirstOrDefaultAsync();
             return telegramId;
@@ -620,12 +624,87 @@ namespace Manect.Data
         public async Task<List<HistoryItem>> GetHistoryAsync()
         {
             var dataContext = DataContext;
-            List<LogItem> history = await dataContext.LogUserActivity.ToListAsync();
-            var b =history.TakeLast(30);
+            Stopwatch stopwatch = new Stopwatch();
+
+            stopwatch.Start();
+            var history = await dataContext.LogUserActivity
+                .AsNoTracking()
+                .OrderByDescending(l => l.TimeAction)
+                .Take(30)
+                .Select(s => new
+                {
+                    s.ExecutorId,
+                    s.ProjectId,
+                    s.StageId,
+                    s.FileId,
+                    s.Status,
+                    s.TimeAction
+                })
+                .AsQueryable()
+                .Select(h => new HistoryItem
+                {
+                    ExecutorId = h.ExecutorId,
+                    ProjectId = h.ProjectId,
+                    StageId = h.StageId,
+                    FileId = h.FileId,
+                    Status = h.Status,
+                    TimeAction = h.TimeAction
+                })
+                .ToListAsync();
+            stopwatch.Stop();
+            Console.WriteLine("Потрачено секунд на выполнение метода по получению логов: " + stopwatch.ElapsedMilliseconds);
 
 
-            var a = new List<HistoryItem>();
-            return a;
+            stopwatch.Start();
+            var executorIds = history.Select(l => l.ExecutorId).ToArray();
+            var projectIds = history.Select(l => l.ProjectId).ToArray();
+            var stageIds = history.Select(l => l.StageId).ToArray();
+            stopwatch.Stop();
+            Console.WriteLine("Потрачено секунд на выполнение метода по получению списка id's каждого из обьектов(исполнителей, проектов, этапов): " + stopwatch.ElapsedMilliseconds);
+
+
+            stopwatch.Start();
+            var executors = await dataContext.Executors.AsNoTracking().Where(e => executorIds.Contains(e.Id)).ToListAsync();
+            var projects = await dataContext.Projects.AsNoTracking().Where(e => projectIds.Contains(e.Id)).ToListAsync();
+            var stages = await dataContext.Stages.AsNoTracking().Where(e => stageIds.Contains(e.Id)).ToListAsync();
+            stopwatch.Stop();
+            Console.WriteLine("Потрачено секунд на выполнение метода по получению данных из бд по обьектов: " + stopwatch.ElapsedMilliseconds);
+
+
+            stopwatch.Start();
+            foreach (var h in history)
+            {
+                foreach (var e in executors)
+                {
+                    if (h.ExecutorId == e.Id)
+                    {
+                        h.ExecutorFirstName = e.FirstName;
+                        h.ExecutorLastName = e.LastName;
+                    }
+                }
+
+                foreach (var p in projects)
+                {
+                    if (h.ProjectId == p.Id)
+                    {
+                        h.ProjectName = p.Name;
+                    }
+                }
+
+                foreach (var s in stages)
+                {
+                    if (h.StageId == s.Id)
+                    {
+                        h.StageName = s.Name;
+                    }
+                }
+            }
+            stopwatch.Stop();
+            Console.WriteLine("Потрачено секунд на выполнение метода по внесение в history данных о обьектов: " + stopwatch.ElapsedMilliseconds);
+
+
+
+            return history;
         }
     }
 }

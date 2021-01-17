@@ -17,13 +17,13 @@ namespace ManectTelegramBot.Service
         private string GenerateMessage(MessageObject messageObject)
         {
 
-            var recipientName = messageObject.RecipientExecutor.FirstName + " " + messageObject.RecipientExecutor.LastName;
+            var recipientName = messageObject.RecipientExecutor.FirstName;
             var stageName = messageObject.StageName;
             var project = messageObject.ProjectName;
             var executorProjectName = messageObject.ExecutorProject.FirstName + " " + messageObject.ExecutorProject.LastName;
             var senderName = messageObject.SenderExecutor.FirstName + " " + messageObject.SenderExecutor.LastName;
 
-            var message = string.Format("{0}\nВам  делегировали этап {1}.\n В пректе {2}.\n исполнитель проекта: {3}.\n Кто передал:{4}.",
+            var message = string.Format("{0} вам  делегировали этап: {1} в проекте: {2}.\nИсполнитель проекта: {3}.\nПередал: {4}.",
                                         recipientName, stageName, project, executorProjectName, senderName);
             return message;
         }
@@ -39,7 +39,7 @@ namespace ManectTelegramBot.Service
             {
                 var senderName = messageObject.SenderExecutor.FirstName + " " + messageObject.SenderExecutor.LastName;
                 var recipientName = messageObject.RecipientExecutor.FirstName + " " + messageObject.RecipientExecutor.LastName;
-                message = string.Format("{0} пытался отправить сообщение {1}.\n\nОшибка: " + e.Message, senderName, recipientName);
+                message = string.Format("{0} пытался отправить сообщение {1}.\nОшибка: " + e.Message + ".", senderName, recipientName);
                 await _telegramBotClient.SendTextMessageAsync(453457635, message, parseMode: ParseMode.Markdown);
             }
         }

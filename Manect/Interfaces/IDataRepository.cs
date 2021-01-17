@@ -22,7 +22,7 @@ namespace Manect.Interfaces
         Task<List<Executor>> GetExecutorsToListExceptAsync(int executorId);
         Task EditExecutorAsync(DataToChange dataToChange);
         Task EditStageAsync(Stage stage);
-        Task EditProjectAsync(Project project, int userId);
+        Task EditProjectAsync(Project project, int CurrentUserId);
         Task AddFileAsync(DataToChange dataToChange);
         Task DeleteFileAsync(DataToChange dataToChange);
         Task<AppFile> GetFileAsync(DataToChange dataToChange);

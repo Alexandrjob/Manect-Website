@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Manect.Data.Entities
 {
     /// <summary>
-    /// Класс в котором хранятся стандартные для всех классов свойства.
+    /// Класс в котором хранятся стандартные свойства для всех классов.
     /// </summary>
     public class BaseEntity
     {

@@ -2,6 +2,9 @@
 
 namespace Manect.Data.Entities
 {
+    /// <summary>
+    /// Исполнитель.
+    /// </summary>
     public class Executor
     {
         /// <summary>
