@@ -11,7 +11,6 @@ using System.IO;
 using Microsoft.AspNetCore.Http;
 using ManectTelegramBot.Models;
 using Manect.Controllers.Models;
-using Manect.DataBaseLogger;
 using System.Diagnostics;
 
 namespace Manect.Data
@@ -20,6 +19,7 @@ namespace Manect.Data
     {
         private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly ILogger _logger;
+        private readonly IMessageFormatService _messageFormatService;
 
         private ProjectDbContext DataContext
         {
@@ -30,10 +30,11 @@ namespace Manect.Data
             }
         }
 
-        public DataRepository(IServiceScopeFactory serviceScopeFactory, ILogger<DataRepository> logger)
+        public DataRepository(IServiceScopeFactory serviceScopeFactory, ILogger<DataRepository> logger, IMessageFormatService messageFormatService)
         {
             _serviceScopeFactory = serviceScopeFactory;
             _logger = logger;
+            _messageFormatService = messageFormatService;
         }
 
         public async Task<int> FindUserIdByNameOrDefaultAsync(string name)
@@ -331,7 +332,7 @@ namespace Manect.Data
         {
             var dataContext = DataContext;
 
-             project.ExecutorId = await dataContext.Projects.Where(p=>p.Id == project.Id).Select(p => p.ExecutorId).FirstOrDefaultAsync();
+            project.ExecutorId = await dataContext.Projects.Where(p => p.Id == project.Id).Select(p => p.ExecutorId).FirstOrDefaultAsync();
 
             _logger.LogInformation("Время: {TimeAction}. Пользователь {ExecutorId}, {Status} Проект {ProjectId}", DateTime.Now, CurrentUserId, Status.Modified, project.Id);
 
@@ -360,10 +361,11 @@ namespace Manect.Data
                     Type = file.ContentType,
                     Content = memoryStream.ToArray()
                 };
-               
+                await dataContext.AddAsync(appFile);
             }
             await dataContext.SaveChangesAsync();
-            _logger.LogInformation("Время: {TimeAction}. Пользователь(Id:{ExecutorId}), {Status} файл(Id:{FileId}) в этапе(Id:{StagaId}) в Проекте(Id:{ProjectId})",
+            //В связи с изменением логики добавления этапа конечное сообщение на странице история будет просто говорить что в этап добавлен файл, без конкретики.
+            _logger.LogInformation("Время: {TimeAction}. Пользователь(Id:{ExecutorId}), {Status} файл(Id:{FileId}) в этапе(Id:{StageId}) в Проекте(Id:{ProjectId})",
                                            DateTime.Now, dataToChange.CurrentUserId, Status.Created, -1, dataToChange.StageId, dataToChange.ProjectId);
         }
 
@@ -629,6 +631,7 @@ namespace Manect.Data
             stopwatch.Start();
             var history = await dataContext.LogUserActivity
                 .AsNoTracking()
+                .Where(l=>l.ExecutorId != 6)
                 .OrderByDescending(l => l.TimeAction)
                 .Take(30)
                 .Select(s => new
@@ -651,22 +654,23 @@ namespace Manect.Data
                     TimeAction = h.TimeAction
                 })
                 .ToListAsync();
+
+            
             stopwatch.Stop();
             Console.WriteLine("Потрачено секунд на выполнение метода по получению логов: " + stopwatch.ElapsedMilliseconds);
 
 
             stopwatch.Start();
-            var executorIds = history.Select(l => l.ExecutorId).ToArray();
-            var projectIds = history.Select(l => l.ProjectId).ToArray();
-            var stageIds = history.Select(l => l.StageId).ToArray();
+            var AllIds = history.Select(l => new { l.ExecutorId, l.ProjectId, l.StageId }).ToArray();
             stopwatch.Stop();
             Console.WriteLine("Потрачено секунд на выполнение метода по получению списка id's каждого из обьектов(исполнителей, проектов, этапов): " + stopwatch.ElapsedMilliseconds);
 
 
             stopwatch.Start();
-            var executors = await dataContext.Executors.AsNoTracking().Where(e => executorIds.Contains(e.Id)).ToListAsync();
-            var projects = await dataContext.Projects.AsNoTracking().Where(e => projectIds.Contains(e.Id)).ToListAsync();
-            var stages = await dataContext.Stages.AsNoTracking().Where(e => stageIds.Contains(e.Id)).ToListAsync();
+            //TODO: Оптимизировать.
+            var executors = await dataContext.Executors.AsNoTracking().Where(e => AllIds.Select(a => a.ExecutorId).Contains(e.Id)).ToListAsync();
+            var projects = await dataContext.Projects.AsNoTracking().Where(e => AllIds.Select(a => a.ProjectId).Contains(e.Id)).ToListAsync();
+            var stages = await dataContext.Stages.AsNoTracking().Where(e => AllIds.Select(a => a.StageId).Contains(e.Id)).ToListAsync();
             stopwatch.Stop();
             Console.WriteLine("Потрачено секунд на выполнение метода по получению данных из бд по обьектов: " + stopwatch.ElapsedMilliseconds);
 
@@ -702,9 +706,35 @@ namespace Manect.Data
             stopwatch.Stop();
             Console.WriteLine("Потрачено секунд на выполнение метода по внесение в history данных о обьектов: " + stopwatch.ElapsedMilliseconds);
 
+            var messages = new List<string>();
 
+            foreach (var item in history)
+            {
+                foreach (var messageFormat in _messageFormatService.GetMessageFormats())
+                {
+                    if (messageFormat.Contains(item))
+                    {
+                        item.Message = messageFormat.Execute(item);
+                        break;
+                    }
+                }
+            }
+
+            foreach (var h in history)
+            {
+                h.AbbreviationName ="" + h.ExecutorFirstName.First() + h.ExecutorLastName.First();
+            }
 
             return history;
         }
+    }
+    class HistoryViewModel
+    {
+        public int ExecutorId { get; set; }
+        public int ProjectId { get; set; }
+        public int StageId { get; set; }
+        public string AbbreviationName { get; set; }
+        public string Message { get; set; }
+        public DateTime TimeAction { get; set; }
     }
 }

@@ -13,8 +13,9 @@ namespace Manect.Controllers.Models
         public string StageName { get; set; }
         public int StageId { get; set; }
         public int FileId { get; set; }
+        public string AbbreviationName { get; set; }
+        public string Message { get; set; }
         public DateTime TimeAction { get; set; }
         public Status Status { get; set; }
-        public StatusRus StatusRus  { get; set; }
     }
 }
