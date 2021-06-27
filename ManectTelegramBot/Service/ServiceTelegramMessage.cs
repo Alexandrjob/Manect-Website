@@ -23,7 +23,7 @@ namespace ManectTelegramBot.Service
             var executorProjectName = messageObject.ExecutorProject.FirstName + " " + messageObject.ExecutorProject.LastName;
             var senderName = messageObject.SenderExecutor.FirstName + " " + messageObject.SenderExecutor.LastName;
 
-            var message = string.Format("{0}, вам делегировали этап: {1} в проекте: {2}.\nИсполнитель проекта: {3}.\nПередал: {4}.",
+            var message = string.Format("{0}, вам делегировали этап: {1}\nВ проекте: {2}.\nИсполнитель проекта: {3}.\nПередал: {4}.",
                                         recipientName, stageName, project, executorProjectName, senderName);
             return message;
         }

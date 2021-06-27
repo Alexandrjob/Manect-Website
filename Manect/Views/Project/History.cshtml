@@ -21,11 +21,11 @@
                             @foreach (var item in Model)
                             {
                                 <li>
-                                        <div class="history-list__image">@item.AbbreviationName</div>
-                                        <div class="history-list__info">
-                                            <a title="Перейти к проекту" href="@Url.Action("OpenProject", "Home", new { ProjectId = item.ProjectId })"><div class="history-list__title"> @item.Message</div></a>
-                                            <div class="history-list__date">@item.TimeAction</div>
-                                        </div>
+                                    <div class="history-list__image">@item.AbbreviationName</div>
+                                    <div class="history-list__info">
+                                        <a title="Перейти к проекту" href="@Url.Action("OpenProject", "Home", new { ProjectId = item.ProjectId })"><div class="history-list__title"> @item.Message</div></a>
+                                        <div class="history-list__date">@item.TimeAction</div>
+                                    </div>
                                 </li>
                             }
                         </ul>

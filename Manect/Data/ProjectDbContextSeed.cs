@@ -40,7 +40,7 @@ namespace Manect.Data
             {
                 new Project("Кухня", 160000, user1, GetStageList(user1)),
 
-                new Project("Туалет", 260000, user1, GetStageList(user1)),
+                new Project("Гостиная", 260000, user1, GetStageList(user1)),
 
                 new Project("Шкаф", 50000, user1, GetStageList(user1)),
             };
@@ -65,6 +65,7 @@ namespace Manect.Data
             dataContext.Executors.RemoveRange(dataContext.Executors);
             dataContext.Projects.RemoveRange(dataContext.Projects);
             dataContext.Stages.RemoveRange(dataContext.Stages);
+            dataContext.LogUserActivity.RemoveRange(dataContext.LogUserActivity);
             await dataContext.SaveChangesAsync();
         }
     }

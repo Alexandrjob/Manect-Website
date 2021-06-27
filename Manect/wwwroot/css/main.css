@@ -703,12 +703,13 @@ main {
     border-radius: 50%;
     margin-right: 24px;
     background: hsla(0,0%,76.9%,.3);
-    font-size: 24px;
+    font-size: 20px;
     line-height: 28px;
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    flex: 0 0 auto
+    flex: 0 0 auto;
+    cursor: default
 }
 
     #history .container .history-list__image img {
@@ -725,6 +726,8 @@ main {
 }
 
 #history .container .history-list__changes, #history .container .history-list__date {
+    cursor: default;
+    margin-top: 2px;
     font-size: 14px;
     line-height: 16px
 }

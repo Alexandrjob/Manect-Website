@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Manect.Interfaces
 {
-    public abstract class MessageFormat
+    public abstract class StringFormat
     {
         public abstract bool Contains(HistoryItem item);
 

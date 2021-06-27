@@ -3,9 +3,9 @@ using Manect.Data.Entities;
 using Manect.Interfaces;
 using System;
 
-namespace Manect.Services.MessageFormats
+namespace Manect.Services.StringFormats
 {
-    public class ProjectMessageFormat: MessageFormat
+    public class ProjectStringFormat: StringFormat
     {
         public override bool Contains(HistoryItem item)
         {

@@ -60,45 +60,5 @@ namespace Manect.Services
             await dataContext.Executors.AddRangeAsync(identityUsers);
             await dataContext.SaveChangesAsync();
         }
-
-        //public void AddEventHandler()
-        //{
-        //    IdentityContext.Users.Local
-        //        .CollectionChanged += async (sender, args) =>
-        //        {
-        //            if (args.NewItems != null)
-        //            {
-        //                await AddUsersAsync(args.NewItems);
-        //            }
-        //            //TODO: В будущем реализовать алгоритм, про котором, когда удаляется пользователь, удалялось и все связанное с ним.
-        //            if (args.OldItems != null)
-        //            {
-        //                foreach (ApplicationUser c in args.OldItems)
-        //                {
-
-        //                }
-        //            }
-        //        };
-        //}
-
-        //private async Task AddUsersAsync(IList users)
-        //{
-        //    var newUsers = new List<ExecutorUser>();
-
-        //    foreach (ApplicationUser user in users)
-        //    {
-        //        var newUser = new ExecutorUser()
-        //        {
-        //            Name = user.UserName,
-        //            Email = user.Email,
-        //        };
-
-        //        newUsers.Add(newUser);
-        //    }
-
-        //    var dataContext = DataContext;
-        //    await dataContext.ExecutorUsers.AddRangeAsync(newUsers);
-        //    await dataContext.SaveChangesAsync();
-        //}
     }
 }

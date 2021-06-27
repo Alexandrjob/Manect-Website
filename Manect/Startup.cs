@@ -2,6 +2,8 @@ using Manect.Data;
 using Manect.DataBaseLogger;
 using Manect.Identity;
 using Manect.Interfaces;
+using Manect.Interfaces.IRepositories;
+using Manect.Repository;
 using Manect.Services;
 using ManectTelegramBot;
 using ManectTelegramBot.Abstractions;
@@ -27,7 +29,7 @@ namespace Manect
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ProjectDbContext>(c =>
-                c.UseSqlServer(Configuration.GetConnectionString("ProjectConnection")));
+                c.UseSqlServer(Configuration.GetConnectionString("ProjectConnection"), providerOptions => providerOptions.EnableRetryOnFailure()));
 
             services.AddDbContext<IdentityDbContext>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection"), providerOptions => providerOptions.EnableRetryOnFailure()))
@@ -47,13 +49,19 @@ namespace Manect
                 config.LoginPath = "/Home/Login";
             });
 
-            services.AddScoped<IDataRepository, DataRepository>();
+            services.AddScoped<IExecutorRepository, ExecutorRepository>();
+            services.AddScoped<IProjectRepository, ProjectRepository>();
+            services.AddScoped<IStageRepository, StageRepository>();
+            services.AddScoped<IFileRepository,FileRepository>();
+            services.AddScoped<ITelegramRepository, TelegramRepository>();
+            services.AddScoped<IHistoryItemRepository, HistoryItemRepository>();
+
             services.AddScoped<ISyncTables, SyncTables>();
             //Add Telegram bot
             services.AddScoped<ICommandService, CommandService>();
-            services.AddScoped<IMessageFormatService, MessageFormatService>();
-            //services.AddScoped<ServiceTelegramMessage>();
-            //services.AddTelegramBotClient(Configuration);
+            services.AddScoped<IStringFormatService, StringFormatService>();
+            services.AddScoped<ServiceTelegramMessage>();
+            services.AddTelegramBotClient(Configuration);
 
             services.AddAuthorization();
             services.AddControllersWithViews();

@@ -28,6 +28,7 @@
     {
         public long TelegramId { get; set; }
     }
+
     public class FullName
     {
         public string FirstName { get; set; }

@@ -1,6 +1,7 @@
 ﻿using Manect.Controllers.Models;
 using Manect.Identity;
 using Manect.Interfaces;
+using Manect.Interfaces.IRepositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,26 +14,27 @@ namespace Manect.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly IDataRepository _dataRepository;
+        private readonly IExecutorRepository _executorRepository;
+        private readonly IProjectRepository _projectRepository;
 
         public HomeController(
             UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
-            IDataRepository dataRepository)
+            SignInManager<ApplicationUser> signInManager, IExecutorRepository executorRepository, IProjectRepository projectRepository)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _dataRepository = dataRepository;
+            _executorRepository = executorRepository;
+            _projectRepository = projectRepository;
         }
 
         public async Task<IActionResult> IndexAsync()
         {
             var name = HttpContext.User.Identity.Name;
-            var currentUserId = await _dataRepository.FindUserIdByNameOrDefaultAsync(name);
+            var currentUserId = await _executorRepository.FindUserIdByNameOrDefaultAsync(name);
             HttpContext.Response.Cookies.Append("UserId", currentUserId.ToString());
 
-            ViewBag.Executors = await _dataRepository.GetExecutorsToListExceptAsync(currentUserId);
-            return View(await _dataRepository.GetProjectOrDefaultToListAsync(currentUserId));
+            ViewBag.Executors = await _executorRepository.GetExecutorsToListExceptAsync(currentUserId);
+            return View(await _projectRepository.GetProjectOrDefaultToListAsync(currentUserId));
         }
 
         [AllowAnonymous]
@@ -63,7 +65,7 @@ namespace Manect.Controllers
                 //TODO: В будущем поменять на адаптивным метод, чтобы исключение не выкидывал а перекидывал на index
                 return LocalRedirect("/Home/Index");
             }
-            //TODO: Как отобразить ошибку пароля?
+
             return View(model);
         }
 
@@ -77,9 +79,9 @@ namespace Manect.Controllers
         public async Task<IActionResult> AddProject()
         {
             var name = HttpContext.User.Identity.Name;
-            var currentUserId = await _dataRepository.FindUserIdByNameOrDefaultAsync(name);
+            var currentUserId = await _executorRepository.FindUserIdByNameOrDefaultAsync(name);
 
-            await _dataRepository.AddProjectDefaultAsync(currentUserId);
+            await _projectRepository.AddProjectDefaultAsync(currentUserId);
             return Redirect("/Home/Index");
         }
 

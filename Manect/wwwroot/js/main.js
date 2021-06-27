@@ -146,8 +146,8 @@ function sendClickCheck(status, stageId) {
 function clickCheckBox(element, stageId) {
     $('#' + element).closest("li").toggleClass("checked");
     var value = $('#' + element).val();
-    if (value != 5)
-        $('#' + element).val(5)
+    if (value != 3)
+        $('#' + element).val(3)
     else
         $('#' + element).val(2);
     var status = $('#' + element).val();

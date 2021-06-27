@@ -71,7 +71,7 @@
                                                         {
                                                             countExecutors++;
                                                             <form asp-controller="Project" asp-action="ChengeExecutorDelegated">
-                                                                <input hidden asp-for=@executor.Id name="executorId" />
+                                                                <input hidden asp-for=@project.ExecutorId name="executorId" />
                                                                 <input hidden asp-for=@project.Id name="projectId" />
                                                                 <input hidden asp-for=@stage.Id name="stageId" />
                                                                 <button style="width: 100%;">

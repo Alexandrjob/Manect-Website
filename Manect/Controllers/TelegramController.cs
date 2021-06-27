@@ -1,6 +1,7 @@
 ﻿using Manect.Controllers.Models;
 using Manect.Identity;
 using Manect.Interfaces;
+using Manect.Interfaces.IRepositories;
 using ManectTelegramBot.Abstractions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +20,9 @@ namespace Manect.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
 
-        private readonly IDataRepository _dataRepository;
+        private readonly IExecutorRepository _executorRepository;
+        private readonly ITelegramRepository _telegramRepository;
+
         private readonly ITelegramBotClient _telegramBotClient;
         private readonly ICommandService _commandService;
 
@@ -27,16 +30,18 @@ namespace Manect.Controllers
 
         public TelegramController(UserManager<ApplicationUser> userManager,
                                   SignInManager<ApplicationUser> signInManager,
-                                  IDataRepository dataRepository,
                                   ICommandService commandService,
-                                  ITelegramBotClient telegramBotClient)
+                                  ITelegramBotClient telegramBotClient, ITelegramRepository telegramRepository, IExecutorRepository executorRepository)
         {
 
             _userManager = userManager;
-            _signInManager = signInManager;
-            _dataRepository = dataRepository;
+            _signInManager = signInManager;;
+
             _commandService = commandService;
             _telegramBotClient = telegramBotClient;
+
+            _telegramRepository = telegramRepository;
+            _executorRepository = executorRepository;
 
             DataToChange = new DataToChange();
         }
@@ -96,16 +101,16 @@ namespace Manect.Controllers
                 if (result.Succeeded)
                 {
                     var messageTelegramId = update.Message.Chat.Id;
-                    var currentUserId = await _dataRepository.FindUserIdByEmailOrDefaultAsync(email);
+                    var currentUserId = await _executorRepository.FindUserIdByEmailOrDefaultAsync(email);
 
                     DataToChange.CurrentUserId = currentUserId;
-                    var executorName = await _dataRepository.GetFullNameAsync(DataToChange);
-                    var telegramId = await _dataRepository.GetTelegramIdAsync(DataToChange);
+                    var executorName = await _telegramRepository.GetFullNameAsync(DataToChange);
+                    var telegramId = await _telegramRepository.GetTelegramIdAsync(DataToChange);
                     string text;
                     if (telegramId != messageTelegramId)
                     {
                         DataToChange.TelegramId = messageTelegramId;
-                        await _dataRepository.AddTelegramIdAsync(DataToChange);
+                        await _telegramRepository.AddTelegramIdAsync(DataToChange);
                         text = string.Format("Аутентификация прошла успешно!\n{0} {1} теперь я буду часто писать вам)", executorName.FirstName, executorName.LastName);
                         await _telegramBotClient.SendTextMessageAsync(chatId, text, parseMode: ParseMode.Markdown);
                         return Ok();

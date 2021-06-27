@@ -3,14 +3,14 @@ using Manect.Data.Entities;
 using Manect.Interfaces;
 using System;
 
-namespace Manect.Services.MessageFormats
+namespace Manect.Services.StringFormats
 {
-    public class StageMessageFormat: MessageFormat
+    public class FileStringFormat: StringFormat
     {
         public override bool Contains(HistoryItem item)
         {
-            //Если id file равняется дефолт, значит изменения произошли в этапе.
-            if (item.StageId != default && item.FileId == default)
+            //Если id file не равняется дефолт, значит изменения произошли в файле.
+            if (item.FileId == -1)
             {
                 return true;
             }
@@ -22,7 +22,7 @@ namespace Manect.Services.MessageFormats
         {
             //Лиза выполнила 5 этап(Создание конечного макета) в проекте Шкаф 6.
             var statusRus = Convert.ToString((StatusRus)item.Status).ToLower();
-            var message = string.Format("{0} {1} {2}(а) этап: {3} в проекте: {4}.", item.ExecutorFirstName, item.ExecutorLastName, statusRus, item.StageName, item.ProjectName);
+            var message = string.Format("{0} {1} {2}(а) файл в этапe: {3} в проекте: {4}.", item.ExecutorFirstName, item.ExecutorLastName, statusRus, item.StageName, item.ProjectName);
             return message;
         }
     }
