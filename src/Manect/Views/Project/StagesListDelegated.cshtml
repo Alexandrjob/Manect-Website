@@ -1,0 +1,118 @@
+﻿@using Manect.Data.Entities
+@model IEnumerable<Manect.Data.Entities.Project>
+@{
+    int countSteps = 0;
+    int countExecutors = 0;
+    string state = "";
+}
+
+<html lang="ru">
+<head>
+    <title>Manect-Теперь моё</title>
+</head>
+<body class="project-page">
+<div id="app">
+    <div id="downLayer">
+        <header>
+            <div class="container">
+                <div class="header-menu">
+                    <a class="open-menu" href="#menu" title="Открыть меню">
+                        <img src="/image/icon/menu_bar.svg" alt="icon">
+                    </a>
+                </div>
+                <div class="header">
+                    <div class="header-title">Теперь моё</div>
+                </div>
+            </div>
+        </header>
+        <main>
+            <section id="project">
+                <div class="container">
+                    <div class="content">
+                        @foreach (Project project in Model)
+                        {
+                            <h3>@project.Name</h3>
+                            <h4 title="Исполнитель проекта">@project.Executor.FirstName @project.Executor.LastName</h4>
+                            <ul class="project-steps">
+                                @foreach (Stage stage in project.Stages)
+                                {
+                                    countSteps++;
+                                    state = "";
+                                    if (stage.Status == Status.Completed)
+                                    {
+                                        state = "checked";
+                                    }
+                                    <li class="stage-@countSteps @state">
+                                        <div class="project-steps__info">
+                                            <div class="project-steps__title">
+                                                <div class="checkbox">
+                                                    <div>
+                                                        <input hidden id="stage-@stage.Id-status" value="@Convert.ToInt32(stage.Status)"/>
+                                                        <input class="checkbox-check" type="checkbox" @state onclick="return clickCheckBox('stage-@stage.Id-status', @stage.Id);">
+                                                    </div>
+                                                    <div class="checkbox__text">@stage.Name</div>
+                                                </div>
+                                            </div>
+                                            <div class="project-steps__deadline">Дедлайн:<span>@stage.ExpirationDate.ToString("dd.MM.yyyy")</span></div>
+                                            <div class="project-steps__comments">
+                                                <input placeholder="Комментарии" style="cursor: auto;width: 100%;" value="@stage.Comment" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="select" id="project-steps__edit">
+                                            <a class="select-box" href="#" title="Открыть" onclick="return getFileList(@stage.Id);">
+                                                <img src="~/image/icon/settings48.png" alt="icon">
+                                            </a>
+                                            <div class="select-options" id="stage-sel-options-@stage.Id">
+                                                <div class="option">
+                                                    <button onclick="return editStageButton('stage-@countSteps', @stage.Id);">Редактировать этап</button>
+                                                </div>
+                                                <div class="option" style="width:300px">
+                                                    <input id="@stage.Id" name="files" type="file" multiple onchange="changeInputFiles(@stage.Id)" ;>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="project-steps__date">Дата:<span>@stage.CreationDate.ToString("dd.MM.yyyy")</span></div>
+                                        <div class="project-steps__users">
+                                            <div class="select">
+                                                <a class="select-box" href="#" title="Изменить исполнителя">
+                                                    <img src="/image/icon/add_user.svg" alt="icon"><span></span>
+                                                </a>
+                                                <div class="select-options">
+                                                    @foreach (Executor executor in ViewBag.Executors)
+                                                    {
+                                                        countExecutors++;
+                                                        <form asp-controller="Project" asp-action="ChengeExecutorDelegated">
+                                                            <input hidden asp-for=@project.ExecutorId name="executorId"/>
+                                                            <input hidden asp-for=@project.Id name="projectId"/>
+                                                            <input hidden asp-for=@stage.Id name="stageId"/>
+                                                            <button style="width: 100%;">
+                                                                <div class="option" data-id="@countExecutors">
+                                                                    <span class="icon"></span><span class="name">@executor.FirstName @executor.LastName</span>
+                                                                </div>
+                                                            </button>
+                                                        </form>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <div id="foreground" class="foregroundOpen" hidden>
+        <div id="project-form-container">
+            <div id="project-form"></div>
+        </div>
+        <div id="stage-form-container">
+            <div id="project-step-form"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+

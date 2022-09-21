@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Этот файл используется процессом публикации или упаковки вашего веб-проекта. Можно настроить поведение этого процесса,
+изменив этот файл MSBuild. Подробности см. на странице https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAgtQoERPjsEunQ01axUg42gAAAAACAAAAAAAQZgAAAAEAACAAAABlmRjnTFox8fQez8SmQFBS7pbqyGzlL8gZw5Aw6pjMCAAAAAAOgAAAAAIAACAAAAB+kH+Upj+Unc4x84VPFXFKpolWEE9Wq0kMw2dsmYLuLSAAAACBKuCect3LqBNOdx3vfSralrCiJawFHhsQfq3GHbWpC0AAAAA6ua9vapRs+q2KNsbNuDdkJFWGxu/2pz8/kHwNadewtGjyp4jCi+fBLGfsdECkEbY7+UN+B+gcNBr/DS6Obvli</EncryptedPassword>
+    <_PublishTargetUrl>ftp://31.31.196.234/manect</_PublishTargetUrl>
+    <History>True|2021-06-24T12:41:32.3881996Z;True|2021-06-24T19:36:38.9291546+07:00;True|2021-06-03T15:42:38.7479416+07:00;False|2021-06-03T15:38:18.1795460+07:00;False|2021-06-03T15:36:32.8571124+07:00;False|2021-06-03T15:31:50.6654833+07:00;</History>
+  </PropertyGroup>
+  <ItemGroup>
+    <File Include="appsettings.Development.json">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="appsettings.json">
+      <publishTime>06/03/2021 13:15:07</publishTime>
+    </File>
+    <File Include="BouncyCastle.Crypto.dll">
+      <publishTime>05/28/2018 16:12:20</publishTime>
+    </File>
+    <File Include="Google.Protobuf.dll">
+      <publishTime>02/16/2020 13:04:38</publishTime>
+    </File>
+    <File Include="K4os.Compression.LZ4.dll">
+      <publishTime>07/03/2019 22:59:30</publishTime>
+    </File>
+    <File Include="K4os.Compression.LZ4.Streams.dll">
+      <publishTime>07/03/2019 22:59:30</publishTime>
+    </File>
+    <File Include="K4os.Hash.xxHash.dll">
+      <publishTime>07/03/2019 20:39:02</publishTime>
+    </File>
+    <File Include="Manect.deps.json">
+      <publishTime>06/24/2021 19:39:06</publishTime>
+    </File>
+    <File Include="Manect.dll">
+      <publishTime>06/24/2021 19:38:58</publishTime>
+    </File>
+    <File Include="Manect.exe">
+      <publishTime>06/24/2021 19:38:59</publishTime>
+    </File>
+    <File Include="Manect.pdb">
+      <publishTime>06/24/2021 19:38:58</publishTime>
+    </File>
+    <File Include="Manect.runtimeconfig.json">
+      <publishTime>06/03/2021 15:29:14</publishTime>
+    </File>
+    <File Include="Manect.Views.dll">
+      <publishTime>06/24/2021 19:39:01</publishTime>
+    </File>
+    <File Include="Manect.Views.pdb">
+      <publishTime>06/24/2021 19:39:01</publishTime>
+    </File>
+    <File Include="ManectTelegramBot.dll">
+      <publishTime>06/03/2021 15:28:43</publishTime>
+    </File>
+    <File Include="ManectTelegramBot.pdb">
+      <publishTime>06/03/2021 15:28:43</publishTime>
+    </File>
+    <File Include="Microsoft.AspNetCore.Cryptography.Internal.dll">
+      <publishTime>12/01/2020 23:20:08</publishTime>
+    </File>
+    <File Include="Microsoft.AspNetCore.Cryptography.KeyDerivation.dll">
+      <publishTime>12/01/2020 23:20:08</publishTime>
+    </File>
+    <File Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll">
+      <publishTime>12/01/2020 23:20:12</publishTime>
+    </File>
+    <File Include="Microsoft.AspNetCore.JsonPatch.dll">
+      <publishTime>12/01/2020 23:19:02</publishTime>
+    </File>
+    <File Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll">
+      <publishTime>12/01/2020 23:22:16</publishTime>
+    </File>
+    <File Include="Microsoft.Data.SqlClient.dll">
+      <publishTime>08/25/2020 23:24:48</publishTime>
+    </File>
+    <File Include="Microsoft.EntityFrameworkCore.Abstractions.dll">
+      <publishTime>11/26/2020 05:31:18</publishTime>
+    </File>
+    <File Include="Microsoft.EntityFrameworkCore.dll">
+      <publishTime>11/26/2020 05:31:28</publishTime>
+    </File>
+    <File Include="Microsoft.EntityFrameworkCore.Relational.dll">
+      <publishTime>11/26/2020 05:31:36</publishTime>
+    </File>
+    <File Include="Microsoft.EntityFrameworkCore.SqlServer.dll">
+      <publishTime>11/26/2020 05:31:42</publishTime>
+    </File>
+    <File Include="Microsoft.Extensions.DependencyInjection.dll">
+      <publishTime>11/26/2020 01:59:12</publishTime>
+    </File>
+    <File Include="Microsoft.Extensions.Identity.Core.dll">
+      <publishTime>12/01/2020 23:20:10</publishTime>
+    </File>
+    <File Include="Microsoft.Extensions.Identity.Stores.dll">
+      <publishTime>12/01/2020 23:20:10</publishTime>
+    </File>
+    <File Include="Microsoft.Identity.Client.dll">
+      <publishTime>05/18/2020 20:11:54</publishTime>
+    </File>
+    <File Include="Microsoft.IdentityModel.JsonWebTokens.dll">
+      <publishTime>10/18/2019 23:39:24</publishTime>
+    </File>
+    <File Include="Microsoft.IdentityModel.Logging.dll">
+      <publishTime>10/18/2019 23:40:20</publishTime>
+    </File>
+    <File Include="Microsoft.IdentityModel.Protocols.dll">
+      <publishTime>10/18/2019 23:41:02</publishTime>
+    </File>
+    <File Include="Microsoft.IdentityModel.Protocols.OpenIdConnect.dll">
+      <publishTime>10/18/2019 23:48:48</publishTime>
+    </File>
+    <File Include="Microsoft.IdentityModel.Tokens.dll">
+      <publishTime>10/18/2019 23:43:40</publishTime>
+    </File>
+    <File Include="MySql.Data.dll">
+      <publishTime>09/18/2020 18:21:54</publishTime>
+    </File>
+    <File Include="MySql.Data.EntityFrameworkCore.dll">
+      <publishTime>09/18/2020 18:21:42</publishTime>
+    </File>
+    <File Include="Newtonsoft.Json.Bson.dll">
+      <publishTime>11/27/2018 23:10:18</publishTime>
+    </File>
+    <File Include="Newtonsoft.Json.dll">
+      <publishTime>04/22/2019 01:06:16</publishTime>
+    </File>
+    <File Include="Renci.SshNet.dll">
+      <publishTime>10/16/2017 20:53:06</publishTime>
+    </File>
+    <File Include="runtimes/unix/lib/netcoreapp3.1/Microsoft.Data.SqlClient.dll">
+      <publishTime>08/25/2020 23:25:12</publishTime>
+    </File>
+    <File Include="runtimes/win-arm/native/Microsoft.Data.SqlClient.SNI.dll">
+      <publishTime>08/25/2020 20:34:56</publishTime>
+    </File>
+    <File Include="runtimes/win-arm/native/Microsoft.Data.SqlClient.SNI.pdb">
+      <publishTime>08/25/2020 20:31:56</publishTime>
+    </File>
+    <File Include="runtimes/win-arm64/native/Microsoft.Data.SqlClient.SNI.dll">
+      <publishTime>08/25/2020 20:35:06</publishTime>
+    </File>
+    <File Include="runtimes/win-arm64/native/Microsoft.Data.SqlClient.SNI.pdb">
+      <publishTime>08/25/2020 20:31:56</publishTime>
+    </File>
+    <File Include="runtimes/win-x64/native/Microsoft.Data.SqlClient.SNI.dll">
+      <publishTime>08/25/2020 20:34:56</publishTime>
+    </File>
+    <File Include="runtimes/win-x64/native/Microsoft.Data.SqlClient.SNI.pdb">
+      <publishTime>08/25/2020 20:31:56</publishTime>
+    </File>
+    <File Include="runtimes/win-x86/native/Microsoft.Data.SqlClient.SNI.dll">
+      <publishTime>08/25/2020 20:34:56</publishTime>
+    </File>
+    <File Include="runtimes/win-x86/native/Microsoft.Data.SqlClient.SNI.pdb">
+      <publishTime>08/25/2020 20:31:56</publishTime>
+    </File>
+    <File Include="runtimes/win/lib/netcoreapp3.1/Microsoft.Data.SqlClient.dll">
+      <publishTime>08/25/2020 23:24:48</publishTime>
+    </File>
+    <File Include="runtimes/win/lib/netstandard2.0/System.Runtime.Caching.dll">
+      <publishTime>11/15/2019 08:53:44</publishTime>
+    </File>
+    <File Include="runtimes/win/lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll">
+      <publishTime>11/15/2019 08:53:46</publishTime>
+    </File>
+    <File Include="SshNet.Security.Cryptography.dll">
+      <publishTime>07/14/2016 20:47:20</publishTime>
+    </File>
+    <File Include="System.Configuration.ConfigurationManager.dll">
+      <publishTime>11/15/2019 08:37:04</publishTime>
+    </File>
+    <File Include="System.IdentityModel.Tokens.Jwt.dll">
+      <publishTime>10/18/2019 23:38:18</publishTime>
+    </File>
+    <File Include="System.Runtime.Caching.dll">
+      <publishTime>11/15/2019 08:37:36</publishTime>
+    </File>
+    <File Include="System.Security.Cryptography.ProtectedData.dll">
+      <publishTime>11/15/2019 08:37:42</publishTime>
+    </File>
+    <File Include="System.Xml.XPath.XmlDocument.dll">
+      <publishTime>06/11/2016 23:15:02</publishTime>
+    </File>
+    <File Include="Telegram.Bot.dll">
+      <publishTime>06/18/2020 17:46:38</publishTime>
+    </File>
+    <File Include="Ubiety.Dns.Core.dll">
+      <publishTime>09/18/2020 18:20:50</publishTime>
+    </File>
+    <File Include="web.config">
+      <publishTime>06/24/2021 19:39:06</publishTime>
+    </File>
+    <File Include="wwwroot/css/Error.css">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/css/Login.css">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/css/LoginImage.css">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/css/main.css">
+      <publishTime>01/20/2021 16:05:48</publishTime>
+    </File>
+    <File Include="wwwroot/font/font-awesome/font-awesome.min.css">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/font/font-awesome/fontawesome-webfont.eot">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/font/font-awesome/fontawesome-webfont.svg">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/font/font-awesome/fontawesome-webfont.ttf">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/font/font-awesome/fontawesome-webfont.woff">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/font/font-awesome/fontawesome-webfont.woff2">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/font/montserrat/Montserrat-Bold.ttf">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/font/montserrat/Montserrat-Regular.ttf">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/font/TTTravels/TTTravels-Bold.eot">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/font/TTTravels/TTTravels-Bold.ttf">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/font/TTTravels/TTTravels-Bold.woff">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/font/TTTravels/TTTravels-Bold.woff2">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/font/TTTravels/TTTravels-DemiBold.eot">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/font/TTTravels/TTTravels-DemiBold.ttf">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/font/TTTravels/TTTravels-DemiBold.woff">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/font/TTTravels/TTTravels-DemiBold.woff2">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/font/TTTravels/TTTravels-Medium.eot">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/font/TTTravels/TTTravels-Medium.ttf">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/font/TTTravels/TTTravels-Medium.woff">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/font/TTTravels/TTTravels-Medium.woff2">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/font/TTTravels/TTTravels-Regular.eot">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/font/TTTravels/TTTravels-Regular.ttf">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/font/TTTravels/TTTravels-Regular.woff">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/font/TTTravels/TTTravels-Regular.woff2">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/image/icon/add_user.svg">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/image/icon/cancel.png">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/image/icon/check.svg">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/image/icon/close.svg">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/image/icon/dowload48.png">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/image/icon/edit.png">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/image/icon/favicon.ico">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/image/icon/line.svg">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/image/icon/menu_bar.svg">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/image/icon/plus.svg">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/image/icon/save.png">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/image/icon/settings48.png">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/image/icon/trash.svg">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/image/LoginBackgroundFull.jpg">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/image/LoginBackgroundTiny.jpg">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/image/project.jpg">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/image/user/1.jpg">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/js/Error.js">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/js/Login.js">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/js/LoginLazyLoadingImage.js">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/js/main.js">
+      <publishTime>06/20/2021 13:18:12</publishTime>
+    </File>
+    <File Include="wwwroot/js/vendors/jqueryMin.js">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/js/vendors/moment.min.js">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/js/vendors/vendors.js">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="wwwroot/loginIcon.png">
+      <publishTime>01/15/2021 17:52:41</publishTime>
+    </File>
+    <File Include="Zstandard.Net.dll">
+      <publishTime>09/18/2020 18:20:50</publishTime>
+    </File>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,1146 @@
+/**/
+[contenteditable="true"]:focus {
+    outline: none;
+}
+
+.foregroundOpen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.7);
+    opacity: 0; /*������� ��������� ���������� (���������)*/
+    transition: 0.5s; /*�������� �������� ��������� ��������*/
+    animation: foregroundShow 0.5s 1; /* ��������� �������� ��������, � ����� � ���������� ��������*/
+    animation-fill-mode: forwards; /* ����� ������� ��������� � �������� ��������� �������� */
+    z-index: 2
+}
+
+@keyframes foregroundShow {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+#downLayer {
+    position: inherit;
+    z-index: 1
+}
+
+#project-form {
+    margin-left: auto;
+    height: 100%;
+    width: 451px
+}
+
+.project-container {
+    position: fixed;
+    display: flex
+}
+
+#project-form-container .project-name {
+    margin-top: 20px;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 29px
+}
+
+#project-form-container .project-property {
+    margin-top: 8px;
+    margin-left: 25px
+}
+
+#project-form-container .project-executor, .project-date, .project-price {
+    font-weight: 600;
+    font-size: 12px
+}
+
+#project-form-container .project-executor input, .project-date input, .project-price input {
+    margin-left: 10px;
+    font-weight: 400;
+    font-size: 14px
+}
+
+#project-form-container {
+    width: 49%;
+    height: 150px;
+    background-color: #F3F3F3;
+    box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.10);
+    opacity: 0;
+    transition: 0.5s;
+    animation: ProjectFormShow 0.5s 1;
+    animation-fill-mode: forwards;
+    animation-delay: 0.5s;
+}
+
+@keyframes ProjectFormShow {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+
+#stage-form-container {
+    background-color: #F3F3F3;
+    box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.10);
+    opacity: 0;
+    transition: 0.5s;
+    animation: StageFormShow 0.5s 1;
+    animation-fill-mode: forwards;
+    animation-delay: 0.5s;
+}
+
+@keyframes StageFormShow {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+form {
+    display: flex
+}
+
+textarea {
+    resize: none
+}
+
+.project-step-form {
+    position: relative;
+}
+
+/**/
+*, :after, :before {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0
+}
+
+html {
+    width: 100vw;
+    height: 100%;
+    overflow-x: hidden
+}
+
+body {
+    width: 100%;
+    min-height: 100vh;
+    text-align: left;
+    text-rendering: optimizeLegibility;
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    scroll-behavior: smooth;
+    overflow: hidden;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-font-smoothing: antialiased;
+    -moz-font-smoothing: antialiased
+}
+
+footer, form, header, main, section {
+    position: relative
+}
+
+article, aside, img, nav, section {
+    display: block
+}
+
+img {
+    position: relative;
+
+    height: auto
+}
+
+img:before {
+    content: attr(alt);
+    left: 0;
+    top: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: hsla(0, 0%, 100%, .75);
+    display: flex;
+    justify-content: center;
+    align-items: center
+}
+
+svg {
+    fill: currentColor
+}
+
+ol, ul {
+    list-style: none
+}
+
+blockquote, q {
+    quotes: none
+}
+
+blockquote:after, blockquote:before, q:after, q:before {
+    content: ""
+}
+
+a {
+    text-decoration: none;
+    -webkit-text-decoration-skip: ink;
+    text-decoration-skip-ink: auto
+}
+
+a:active, a:focus {
+    outline: none
+}
+
+hr {
+    height: 1px;
+    border: none
+}
+
+button, input, select, textarea {
+    border: none;
+    font: inherit;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: hsla(0, 0%, 0%, .0)
+}
+
+button:active, button:focus, input:active, input:focus, select:active, select:focus, textarea:active, textarea:focus {
+    outline: none
+}
+
+button {
+    cursor: pointer
+}
+
+@font-face {
+    font-family: TT Travels;
+    src: url(/font/TTTravels/TTTravels-Regular.eot);
+    src: local("TT Travels Regular"), local("TTTravels-Regular"), url(/font/TTTravels/TTTravels-Regular.eot) format("embedded-opentype"), url(/font/TTTravels/TTTravels-Regular.woff2) format("woff2"), url(/font/TTTravels/TTTravels-Regular.woff) format("woff"), url(font/TTTravels/TTTravels-Regular.ttf) format("truetype");
+    font-weight: 400;
+    font-style: normal
+}
+
+@font-face {
+    font-family: TT Travels;
+    src: url(/font/TTTravels/TTTravels-Bold.eot);
+    src: local("TT Travels Bold"), local("TTTravels-Bold"), url(/font/TTTravels/TTTravels-Bold.eot?#iefix) format("embedded-opentype"), url(/font/TTTravels/TTTravels-Bold.woff2) format("woff2"), url(/font/TTTravels/TTTravels-Bold.woff) format("woff"), url(/font/TTTravels/TTTravels-Bold.ttf) format("truetype");
+    font-weight: 700;
+    font-style: normal
+}
+
+@font-face {
+    font-family: TT Travels;
+    src: url(/font/TTTravels/TTTravels-Medium.eot);
+    src: local("TT Travels Medium"), local("TTTravels-Medium"), url(/font/TTTravels/TTTravels-Medium.eot?#iefix) format("embedded-opentype"), url(/font/TTTravels/TTTravels-Medium.woff2) format("woff2"), url(/font/TTTravels/TTTravels-Medium.woff) format("woff"), url(/font/TTTravels/TTTravels-Medium.ttf) format("truetype");
+    font-weight: 500;
+    font-style: normal
+}
+
+@font-face {
+    font-family: TT Travels;
+    src: url(/font/TTTravels/TTTravels-DemiBold.eot);
+    src: local("TT Travels DemiBold"), local("TTTravels-DemiBold"), url(/font/TTTravels/TTTravels-DemiBold.eot?#iefix) format("embedded-opentype"), url(/font/TTTravels/TTTravels-DemiBold.woff2) format("woff2"), url(/font/TTTravels/TTTravels-DemiBold.woff) format("woff"), url(/font/TTTravels/TTTravels-DemiBold.ttf) format("truetype");
+    font-weight: 600;
+    font-style: normal
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px
+}
+
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 1px rgba(0, 0, 0, .75)
+}
+
+::-webkit-scrollbar-thumb {
+    background: #000;
+    outline: 1px solid hsla(0, 0%, 76.9%, .3)
+}
+
+::-webkit-scrollbar-corner {
+    background: #000
+}
+
+::-webkit-resizer {
+    background: hsla(0, 0%, 76.9%, .3)
+}
+
+html {
+    font-size: 16px
+}
+
+body {
+    background: #fff;
+    color: #000;
+    font-weight: 400;
+    font-size: 1rem;
+    font-family: TT Travels, sans-serif;
+    line-height: 1.5
+}
+
+#app {
+    position: relative;
+    width: 100%;
+    max-width: 1920px;
+    margin: 0 auto
+}
+
+h1 {
+    font: 600 24px/29px TT Travels
+}
+
+h2 {
+    font: 500 24px/29px TT Travels
+}
+
+h3 {
+    font: 700 24px/29px TT Travels
+}
+
+p {
+    font-size: 1rem
+}
+
+b {
+    font-weight: 700
+}
+
+i {
+    font-style: italic
+}
+
+div {
+    transition: all .3s ease-out
+}
+
+a {
+    color: #202020;
+    transition: all .3s ease-out
+}
+
+a:active, a:focus, a:hover {
+    color: rgba(247, 209, 38, .75)
+}
+
+a svg {
+    transition: fill .3s ease-out
+}
+
+.container {
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    display: grid;
+    grid-gap: 2rem 1rem;
+    grid-template-rows: auto;
+    grid-template-columns: repeat(6, 1fr)
+}
+
+.container, input {
+    background: transparent
+}
+
+.checkbox {
+    display: flex
+}
+
+.checkbox-check {
+    height: 25px;
+    width: 25px;
+    appearance: auto
+}
+
+.checkbox__text {
+    padding: initial;
+    margin-left: 20px;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 29px
+}
+
+.button a {
+    height: 30px;
+    border: 1px solid #f7cf26;
+    border-radius: 5px;
+    padding: 0 10px;
+    background: #f7cf26;
+    color: #202020;
+    font: normal .875rem/17px TT Travels;
+    white-space: nowrap;
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: center
+}
+
+.button a:hover {
+    border-color: rgba(247, 209, 38, .75);
+    background: rgba(247, 209, 38, .75)
+}
+
+.button a img, .button a svg {
+    width: 12px;
+    height: 12px;
+    margin-right: 10px
+}
+
+.button_invert a, .button_invert a:hover {
+    border-color: transparent;
+    background: transparent
+}
+
+.button_invert a:hover {
+    color: red
+}
+
+.button_invert a:hover svg {
+    fill: red
+}
+
+header {
+    z-index: 3000
+}
+
+header .container {
+    height: 4.25rem;
+    padding: 0 1rem
+}
+
+header .container .header-menu {
+    grid-column: 1/2;
+    display: flex;
+    align-items: center
+}
+
+header .container .header-menu a {
+    flex: 0 0 auto
+}
+
+header .container .header-menu a img {
+    width: 45px;
+    height: 20px
+}
+
+header .container .header {
+    grid-column: 2/7;
+    display: flex;
+    justify-content: space-between;
+    align-items: center
+}
+
+header .container .header-title {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 17px;
+    display: inline-flex;
+    align-items: center
+}
+
+header .container .header-title .button {
+    margin-left: 24px
+}
+
+header .container .header-button .button {
+    float: left;
+    margin: 2px;
+    display: block
+}
+
+main {
+    z-index: 2000
+}
+
+main .container {
+    min-height: calc(100vh - 4.25rem)
+}
+
+main .container .content {
+    grid-column: 1/7
+}
+
+#index .container h1, #projects .container h1 {
+    margin-bottom: 40px
+}
+
+#index .container h2, #projects .container h2 {
+    margin-bottom: 18px
+}
+
+#index .container .project-list, #projects .container .project-list {
+    grid-column: 1/7;
+    display: flex;
+    flex-wrap: wrap
+}
+
+#index .container .project-list:not(:last-child), #projects .container .project-list:not(:last-child) {
+    margin-bottom: 56px
+}
+
+#index .container .project-list li, #projects .container .project-list li {
+    overflow: hidden
+}
+
+#index .container .project-list li:not(:last-child), #projects .container .project-list li:not(:last-child) {
+    margin-bottom: 40px
+}
+
+#index .container .project-list li.accent a, #projects .container .project-list li.accent a {
+    border-radius: 5px;
+    background: #5bda46;
+    display: inline-block
+}
+
+#index .container .project-list li.accent a img, #projects .container .project-list li.accent a img {
+    margin-bottom: 0
+}
+
+#index .container .project-list li.accent a span, #projects .container .project-list li.accent a span {
+    margin-bottom: 0;
+    padding: 12px 8px 8px
+}
+
+#index .container .project-list li a, #projects .container .project-list li a {
+    color: #202020
+}
+
+#index .container .project-list li a img, #projects .container .project-list li a img {
+    border-radius: 5px;
+    margin-bottom: 12px;
+    -o-object-fit: cover;
+    object-fit: cover
+}
+
+#index .container .project-list li a span, #projects .container .project-list li a span {
+    margin-bottom: 8px;
+    font-size: 14px;
+    line-height: 17px;
+    display: block
+}
+
+#calendar .container h2 {
+    margin-bottom: 18px
+}
+
+#calendar .container .days {
+    width: 580px;
+    display: flex;
+    flex-wrap: wrap
+}
+
+#calendar .container .days:not(:last-child) {
+    margin-bottom: 56px
+}
+
+#calendar .container .days li {
+    width: 40px
+}
+
+#calendar .container .days li:not(:nth-child(10n)) {
+    margin-right: 20px
+}
+
+#calendar .container .days li:not(:nth-last-child(-n+10)) {
+    margin-bottom: 20px
+}
+
+#calendar .container .days li.active a {
+    background: #f7cf26
+}
+
+#calendar .container .days li a {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #f7cf26;
+    border-radius: 50%;
+    margin-right: 24px;
+    background: #fff;
+    color: #202020;
+    font-size: 18px;
+    line-height: 22px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    flex: 0 0 auto
+}
+
+#my .container .project-steps:not(:last-child), #my .container h3, #project .container .project-steps:not(:last-child), #project .container h4 {
+    margin-bottom: 12px
+}
+
+#my .container .project-steps li, #project .container .project-steps li {
+    padding: 24px;
+    display: flex
+}
+
+/**/
+.project-step li {
+    padding: 24px;
+    display: flex
+}
+
+
+#my .container .project-steps li.checked, #project .container .project-steps li.checked {
+    background: hsla(0, 0%, 76.9%, .3)
+}
+
+#my .container .project-steps__info, #project .container .project-steps__info, .project-steps__info {
+    width: 500px
+}
+
+#my .container .project-steps__deadline, #project .container .project-steps__deadline, .project-steps__deadline {
+    margin: 2px 0 24px 60px;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 17px
+}
+
+#my .container .project-steps__deadline span, #project .container .project-steps__deadline span, .project-steps__deadline span, .project-steps__deadline input {
+    margin-left: 10px;
+    font-weight: 400
+}
+
+#my .container .project-steps__comments, #project .container .project-steps__comments, .project-steps__comments {
+    margin-left: 68px
+}
+
+.project-steps__comments label {
+    font: normal 18px/22px TT Travels;
+    width: 400px
+}
+
+#my .container .project-steps__edit, #my .container .project-steps__date, #my .container .project-steps__trash, #my .container .project-steps__users, #project .container .project-steps__edit, #project .container .project-steps__date, #project .container .project-steps__trash, #project .container .project-steps__users {
+    height: 40px;
+    min-height: 40px;
+    display: flex;
+    align-items: center
+}
+
+.project-steps__edit, .project-steps__date, .project-steps__trash, .project-steps__users {
+    height: 40px;
+    min-height: 40px;
+    display: flex;
+    align-items: center
+}
+
+#project-steps__edit {
+    height: 40px;
+    min-height: 40px;
+    display: flex;
+    align-items: center
+}
+
+#my .container .project-steps__date, #project .container .project-steps__date, .project-steps__date {
+    width: 165px;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 14px
+}
+
+#my .container .project-steps__date span, #project .container .project-steps__date span, .project-steps__date span input {
+    margin-left: 10px;
+    font-weight: 400
+}
+
+.project-steps__date input {
+    margin-left: 10px;
+    font-weight: 400
+}
+
+#my .container .project-steps__users, #project .container .project-steps__users, .project-steps__users {
+    position: relative;
+    max-width: 200px;
+    margin-left: 100px
+}
+
+#my .container .project-steps__users img, #project .container .project-steps__users img, .project-steps__users img {
+    height: 22px
+}
+
+#my .container .project-steps__users .selec-options, #project .container .project-steps__users .selec-options, .project-steps__users .selec-options {
+    left: -16px;
+    top: 32px;
+    min-width: 160px
+}
+
+#my .container .project-steps__users .selec-options .option, #project .container .project-steps__users .selec-options .option, .project-steps__users .selec-options .option {
+    height: 40px;
+    font-size: 18px;
+    line-height: 21px
+}
+
+#my .container .project-steps__trash, #project .container .project-steps__trash, .project-steps__trash {
+    margin-left: 10px
+}
+
+#my .container .project-steps__trash img, #project .container .project-steps__trash img, .project-steps__trash img {
+    height: 22px
+}
+
+/**/
+#history .container .history-list li {
+    display: flex
+}
+
+#history .container .history-list li:not(:last-child) {
+    /*margin-bottom: 40px*/
+}
+
+#history .container .history-list__image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 24px;
+    background: hsla(0, 0%, 76.9%, .3);
+    font-size: 20px;
+    line-height: 28px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    flex: 0 0 auto;
+    cursor: default
+}
+
+#history .container .history-list__image img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    -o-object-fit: cover;
+    object-fit: cover
+}
+
+#history .container .history-list__title {
+    font-size: 18px;
+    line-height: 21px
+}
+
+#history .container .history-list__changes, #history .container .history-list__date {
+    cursor: default;
+    margin-top: 2px;
+    font-size: 14px;
+    line-height: 16px
+}
+
+.select {
+    position: relative
+}
+
+.select-box {
+    font-size: 14px;
+    line-height: 17px;
+    display: flex;
+    align-items: center
+}
+
+.select-box span {
+    margin-left: 10px;
+    color: #000
+}
+
+.select-options {
+    position: absolute;
+    left: 0;
+    top: 40px;
+    border: 1px solid hsla(0, 0%, 76.9%, .3);
+    border-radius: 5px;
+    background: #e5e5e5;
+    overflow: hidden;
+    display: none;
+    flex-direction: column;
+    z-index: 2100
+}
+
+.select-options .option {
+    width: 100%;
+    height: 32px;
+    padding: 8px 16px;
+    background: #fff;
+    font-size: 14px;
+    line-height: 17px;
+    white-space: nowrap;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center
+}
+
+.select-options .option-file {
+    width: 100%;
+    height: 32px;
+    background: #fff;
+    display: inline-flex;
+    align-items: center
+}
+
+.select-options .option-file img {
+    width: 17px;
+    height: 17px;
+    margin-right: 10px
+}
+
+.select-options .file-info {
+    width: 245px;
+    font-size: 14px;
+    line-height: 17px;
+    white-space: nowrap;
+    cursor: default;
+    padding: 8px 16px;
+    display: inline-flex;
+    align-items: center
+}
+
+.select-options .file-name {
+    width: 180px;
+    text-overflow: ellipsis;
+    overflow: hidden
+}
+
+.select-options .file-act {
+    height: 100%;
+    padding-left: 5px;
+    cursor: pointer;
+    background: #fff;
+    margin-left: auto;
+    display: flex;
+    align-items: center
+}
+
+.select-options .file-act:hover {
+    background: #e5e5e5
+}
+
+.select-options .option:hover {
+    background: #e5e5e5
+}
+
+.select-options .option span.icon {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    margin-right: 10px;
+    background: #bdbdbd;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    flex: 0 0 auto
+}
+
+.select-options .option img {
+    width: 12px;
+    height: 12px;
+    margin-right: 10px
+}
+
+.menu {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    min-height: 100vh;
+    background: #f7cf26;
+    display: none;
+    z-index: 4000;
+    -webkit-overflow-scrolling: touch
+}
+
+.menu > * {
+    transform: translateZ(0)
+}
+
+.menu .overlay {
+    overflow: auto;
+    z-index: 4100
+}
+
+.menu .overlay, .menu .overlay .module {
+    width: 100%;
+    min-height: 100vh;
+    display: none
+}
+
+.menu .overlay .module {
+    position: relative;
+    padding: 63px 33px 23px;
+    opacity: 0;
+    overflow-x: hidden;
+    flex-direction: column
+}
+
+.menu .overlay .module .close-menu {
+    position: absolute;
+    top: 24px;
+    right: 24px
+}
+
+.menu .overlay .module .close-menu img {
+    width: 20px;
+    height: 20px
+}
+
+.menu .overlay .module#menu {
+    flex-direction: column;
+    justify-content: space-between
+}
+
+.menu .overlay .module#menu .sidebar-menu {
+    padding: 1rem
+}
+
+.menu .overlay .module#menu .sidebar-menu ul li:not(:last-child) {
+    margin-bottom: 18px
+}
+
+.menu .overlay .module#menu .sidebar-menu ul li.active a {
+    border-bottom: 1px solid #000
+}
+
+.menu .overlay .module#menu .sidebar-menu ul li a {
+    border-bottom: 1px solid transparent;
+    color: #202020;
+    font-size: 24px;
+    line-height: 29px
+}
+
+.menu .overlay .module#menu .sidebar-menu ul li a:hover {
+    border-bottom-color: #000
+}
+
+.menu .overlay .module#menu .sidebar-copyright {
+    font-size: 13px;
+    line-height: 16px;
+    text-align: center
+}
+
+.popup {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    min-height: 100vh;
+    overflow: auto;
+    display: none;
+    z-index: 5000;
+    -webkit-overflow-scrolling: touch
+}
+
+.popup > * {
+    transform: translateZ(0)
+}
+
+.popup .overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    min-height: 100vh;
+    background: rgba(14, 14, 14, .5);
+    overflow-x: hidden;
+    display: none;
+    z-index: 5100
+}
+
+.popup .overlay .close-popup {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%
+}
+
+.popup .overlay .module {
+    position: relative;
+    background: #fff;
+    opacity: 0;
+    display: none
+}
+
+.popup .overlay .module.position {
+    left: 50vw;
+    top: 50vh;
+    transform: translate(-50%, -50%)
+}
+
+.popup .overlay .module#stages {
+    width: 722px;
+    padding: 40px;
+    border-radius: 5px;
+    background: #e5e5e5
+}
+
+.popup .overlay .module#stages .close-popup {
+    position: absolute;
+    left: auto;
+    top: 24px;
+    right: 24px;
+    width: 20px;
+    height: 20px
+}
+
+.popup .overlay .module#stages .close-popup img {
+    width: 20px;
+    height: 20px
+}
+
+.popup .overlay .module#stages .stages__title {
+    margin-bottom: 40px;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 29px
+}
+
+.popup .overlay .module#stages .stages-list li {
+    width: 100%;
+    font-size: 18px;
+    line-height: 22px;
+    display: flex
+}
+
+.popup .overlay .module#stages .stages-list li:not(:last-child) {
+    margin-bottom: 56px
+}
+
+.popup .overlay .module#stages .stages-list__title {
+    width: calc((100% - 92px) / 2);
+    margin-right: 92px;
+    font-weight: 600
+}
+
+.popup .overlay .module#stages .stages-list__description {
+    position: relative;
+    width: calc((100% - 92px) / 2)
+}
+
+.popup .overlay .module#stages .stages-list__description:before {
+    content: "";
+    position: absolute;
+    display: block;
+    left: -52px;
+    top: 10px;
+    width: 32px;
+    height: 1px;
+    background: transparent url(/image/icon/line.svg) 50% no-repeat
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        -webkit-animation-duration: .01ms !important;
+        animation-duration: .01ms !important;
+        -webkit-animation-iteration-count: 1 !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+        scroll-behavior: auto !important
+    }
+}
+
+@media (min-width: 576px) and (max-width: calc($tabletWidth - 1px)) {
+    .container {
+        width: 576px;
+        grid-gap: 2rem
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .container {
+        width: 768px;
+        padding: 2rem;
+        grid-gap: 2rem;
+        grid-template-columns: repeat(8, 1fr)
+    }
+
+    .button a {
+        height: 40px;
+        padding: 0 40px
+    }
+
+    .button_invert a {
+        padding: 0 10px
+    }
+
+    header .container {
+        padding: 0 2rem
+    }
+
+    header .container .header-menu {
+        grid-column: 1/2
+    }
+
+    header .container .header {
+        grid-column: 2/9
+    }
+
+    header .container .header-title {
+        font-size: 24px;
+        line-height: 29px
+    }
+
+    #index .container .project-list, #projects .container .project-list, main .container .content {
+        grid-column: 1/9
+    }
+
+    #index .container .project-list li, #projects .container .project-list li {
+        width: calc((100% - 150px) / 4)
+    }
+
+    #index .container .project-list li:not(:last-child), #projects .container .project-list li:not(:last-child) {
+        margin-bottom: 0
+    }
+
+    #index .container .project-list li:not(:nth-child(4n)), #projects .container .project-list li:not(:nth-child(4n)) {
+        margin-right: 50px
+    }
+
+    #index .container .project-list li:not(:nth-last-child(-n+4)), #projects .container .project-list li:not(:nth-last-child(-n+4)) {
+        margin-bottom: 40px
+    }
+
+    #my .container, #project .container {
+        padding: 4rem 2rem
+    }
+
+    .menu {
+        left: auto;
+        width: 275px
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .container {
+        width: 992px
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .container {
+        width: 1200px;
+        grid-template-columns: repeat(12, 1fr)
+    }
+
+    header .container .header-menu {
+        grid-column: 1/2
+    }
+
+    header .container .header {
+        grid-column: 2/13
+    }
+
+    #index .container .project-list, #projects .container .project-list, main .container .content {
+        grid-column: 2/12
+    }
+
+    #calendar .container .content {
+        grid-column: 4/10;
+        margin: 0 -1rem
+    }
+}

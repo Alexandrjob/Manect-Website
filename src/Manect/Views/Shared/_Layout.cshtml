@@ -1,0 +1,52 @@
+﻿<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=1200">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+
+    <link rel="icon" type="image/png" href="~/image/icon/favicon.ico"/>
+    <link href="~/css/main.css" rel="stylesheet">
+</head>
+<body>
+<div id="app">
+    <header style="z-index:3001;">
+        <div class="menu">
+            <div class="overlay">
+                <div class="module" id="menu">
+                    <a class="close-menu" href="#" title="Закрыть меню">
+                        <img src="~/image/icon/close.svg" alt="icon">
+                    </a>
+                    <nav class="sidebar-menu">
+                        <ul>
+                            <li class="active">
+                                <a asp-controller="Home" asp-action="Index">Мои проекты</a>
+                            </li>
+                            @*<li><a href="calendar.html">Календарь</a></li>*@
+                            <li>
+                                <a asp-controller="Project" asp-action="StagesListDelegated">Теперь моё</a>
+                            </li>
+                            <li>
+                                <a asp-controller="Project" asp-action="History">История</a>
+                            </li>
+                            <li>
+                                <a asp-controller="Project" asp-action="ProgectListExecutors">Проекты сотрудников</a>
+                            </li>
+                            <li>
+                                <a asp-controller="Home" asp-action="LogOff">Выйти</a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <div class="sidebar-copyright">&copy; 2020 Alexandr Savarskiy</div>
+                </div>
+            </div>
+        </div>
+    </header>
+    @RenderBody()
+</div>
+<script src="~/js/vendors/vendors.js"></script>
+<script src="~/js/main.js"></script>
+<script src="~/js/vendors/jqueryMin.js"></script>
+</body>
+</html>

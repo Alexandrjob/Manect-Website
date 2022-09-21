@@ -1,0 +1,62 @@
+﻿@using Manect.Data.Entities
+@model IEnumerable<Manect.Data.Entities.Project>
+
+
+<html lang="ru">
+<head>
+    <title>Manect-Мои проекты</title>
+</head>
+<body class="index-page">
+
+<header>
+    <div class="container">
+        <div class="header-menu">
+            <a class="open-menu" href="#menu" title="Открыть меню">
+                <img src="~/image/icon/menu_bar.svg" alt="icon">
+            </a>
+        </div>
+        <div class="header">
+            <div class="header-title">Мои проекты</div>
+            <div class="header-button">
+                <div class="button select">
+                    <a class="select-box" href="#" title="Новый проект"><img src="~/image/icon/plus.svg" alt="icon">Новый проект</a>
+                    <div class="select-options">
+                        <form asp-controller="Home" asp-action="AddProject" method="post">
+                            <div class="option" data-id="4">
+                                <img src="~/image/icon/plus.svg" alt="icon"><button>Стандартный шаблон</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<main>
+    <section id="index">
+        <div class="container">
+            <div class="content">
+                <h1>Проекты в работе</h1>
+                <ul class="project-list">
+                    @foreach (Project project in Model)
+                    {
+                        if (project.Status != Status.Completed)
+                        {
+                            <li>
+                                <form asp-controller="Home" asp-action="OpenProject">
+                                    <input hidden asp-for=@project.Id name="projectId"/>
+                                    <button>
+                                        <img style="max-width: 100%;" src="~/image/project.jpg" alt="image"><span>@project.Name @project.CreationDate.ToString("dd.MM.yyyy")</span>
+                                    </button>
+                                </form>
+                            </li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+
+    </section>
+</main>
+</body>
+</html>
