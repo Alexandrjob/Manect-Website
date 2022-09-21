@@ -2,6 +2,11 @@
 Task-сайт и телеграм-бот, созданные, для контроля над проектами которые ведут сотрудники в кампании.
 # Demo
 
+![alt-текст][mainPage]
+![alt-текст][projectPage]
+
+[mainPage]: https://github.com/Alexandrjob/Manect-Website/blob/master/docs/mainPage.png "Страница проектов"
+[projectPage]: https://github.com/Alexandrjob/Manect-Website/blob/master/docs/projectPage.png "Страница проекта"
 
 # Usage
 Создать две базы данных.    
